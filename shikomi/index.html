@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body>
+<title>次回分の用意</title>
+<meta name="theme-color" content="#9a5b12">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="仕込み">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+  html{background:#fff;color-scheme:light}
+  :root{
+    --ink:#14181c;
+    --ink-2:#4d5762;
+    --ink-3:#8a949f;
+    --line:#dde3e8;
+    --line-2:#eef2f5;
+    --paper:#ffffff;
+    --panel:#f6f8fa;
+    --roshi:#0f6d8c;
+    --sara:#9a5b12;
+    --dassui:#a8341f;
+    --font:"Noto Sans JP",-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",sans-serif;
+    --num:"Roboto Condensed",var(--font);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);
+       -webkit-text-size-adjust:100%;padding-bottom:48px}
+  .wrap{max-width:640px;margin:0 auto;padding:0 12px}
+
+  /* タブ */
+  .tabs{position:sticky;top:0;z-index:5;background:var(--paper);
+        border-bottom:1px solid var(--line);
+        display:flex;gap:6px;overflow-x:auto;padding:8px 12px;
+        -webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex:0 0 auto;appearance:none;border:1px solid var(--line);background:var(--paper);
+       color:var(--ink-2);font-family:var(--font);font-weight:700;font-size:15px;
+       padding:9px 13px;border-radius:8px;cursor:pointer;white-space:nowrap;line-height:1}
+  .tab[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+  .tab:focus-visible{outline:2px solid var(--roshi);outline-offset:2px}
+
+  /* 見出し */
+  .head{padding:14px 0 10px}
+  .head .day{font-size:19px;font-weight:700;letter-spacing:.01em}
+  .head .sub{font-size:13px;color:var(--ink-2);margin-top:3px}
+  .head .sub b{color:var(--ink);font-weight:700}
+
+  /* 合計 */
+  .totals{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+  .tot{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--panel);
+       display:flex;align-items:baseline;justify-content:space-between}
+  .tot .lbl{font-size:13px;font-weight:700;letter-spacing:.04em}
+  .tot .n{font-family:var(--num);font-size:30px;font-weight:700;line-height:1;
+          font-variant-numeric:tabular-nums}
+  .tot.r .lbl,.tot.r .n{color:var(--roshi)}
+  .tot.s .lbl,.tot.s .n{color:var(--sara)}
+  .tot .n small{font-size:13px;font-weight:600;margin-left:2px}
+
+  /* 処理場 */
+  .plant{border-top:2px solid var(--ink);padding-top:9px;margin-bottom:20px}
+  .ptitle{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:2px}
+  .ptitle h2{margin:0;font-size:17px;font-weight:700;letter-spacing:.02em}
+  .ptitle .kind{font-size:12.5px;color:var(--ink-2);font-weight:500}
+  .ptitle .cnt{margin-left:auto;font-family:var(--num);font-size:13px;
+               color:var(--ink-3);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .none{font-size:14px;color:var(--ink-3);padding:6px 0 2px}
+
+  .grp{margin-top:9px}
+  .gh{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;
+      letter-spacing:.09em;padding-bottom:5px;border-bottom:1px solid var(--line-2)}
+  .gh .swatch{width:9px;height:9px;border-radius:2px;flex:0 0 auto}
+  .grp.r .gh{color:var(--roshi)} .grp.r .swatch{background:var(--roshi)}
+  .grp.s .gh{color:var(--sara)}  .grp.s .swatch{background:var(--sara)}
+  .gh .gn{margin-left:auto;font-family:var(--num);letter-spacing:0;font-size:14px}
+
+  ul{list-style:none;margin:0;padding:0}
+  li label{display:flex;align-items:center;gap:11px;padding:11px 2px;
+           border-bottom:1px solid var(--line-2);cursor:pointer;font-size:16px;line-height:1.25}
+  li:last-child label{border-bottom:0}
+  input[type=checkbox]{appearance:none;width:22px;height:22px;flex:0 0 auto;
+    border:2px solid var(--ink-3);border-radius:5px;background:var(--paper);cursor:pointer}
+  input[type=checkbox]:checked{background:var(--ink);border-color:var(--ink)}
+  input[type=checkbox]:checked::after{content:"";display:block;width:6px;height:11px;
+    margin:1px 0 0 5px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+  input[type=checkbox]:focus-visible{outline:2px solid var(--roshi);outline-offset:2px}
+  input:checked + .nm{color:var(--ink-3);text-decoration:line-through}
+  .nm{flex:1}
+  .dz{flex:0 0 auto;font-size:11px;font-weight:700;letter-spacing:.06em;
+      color:var(--dassui);border:1px solid currentColor;border-radius:4px;padding:2px 5px;line-height:1}
+  .empty{padding:40px 0;text-align:center;color:var(--ink-2);font-size:15px}
+</style>
+
+<div class="tabs" id="tabs" role="tablist"></div>
+<div class="wrap"><div id="view"></div></div>
+
+<script>
+const D = [
+ {d:"9/2(水)", tab:"9/2 水", target:"9/3(木)", none:false, plants:[
+   {name:"深川", kind:"水質中試験①・脱水あり",
+    r:["A","B","C","D","E",["ろ液1",1]],
+    s:["MLSS 3","MLSS 4","RSSS","生汚泥","朝一生汚泥","消化汚泥",["投入汚泥1",1],["投入汚泥2",1],["ケーキ1-1",1],["ケーキ1-2",1]]},
+   {name:"納内", kind:"分析なし・脱水なし", r:[], s:[]},
+   {name:"音江", kind:"水質中試験・脱水あり",
+    r:["A","D",["ろ液",1]],
+    s:["MLSS","RS","濃縮汚泥",["投入汚泥",1],["ケーキ1",1],["ケーキ2",1]]},
+   {name:"多度志", kind:"分析なし・脱水なし", r:[], s:[]}]},
+
+ {d:"9/3(木)", tab:"9/3 木", target:"9/4(金)", none:false, plants:[
+   {name:"深川", kind:"簡易分析・脱水あり",
+    r:[["ろ液1",1]],
+    s:["MLSS 3","MLSS 4","生汚泥","朝一生汚泥",["投入汚泥1",1],["投入汚泥2",1],["ケーキ1-1",1],["ケーキ1-2",1]]},
+   {name:"納内", kind:"分析なし・脱水なし", r:[], s:[]},
+   {name:"音江", kind:"分析なし・脱水のみ",
+    r:[["ろ液",1]], s:[["投入汚泥",1],["ケーキ1",1],["ケーキ2",1]]},
+   {name:"多度志", kind:"分析なし・脱水のみ",
+    r:[["ろ液",1]], s:[["投入汚泥",1],["ケーキ",1]]}]},
+
+ {d:"9/4(金)", tab:"9/4 金", target:"9/7(月)", none:false, plants:[
+   {name:"深川", kind:"日常分析・脱水あり",
+    r:["A","B","C","D","E",["ろ液1",1]],
+    s:["MLSS 3","MLSS 4","RSSS","生汚泥","朝一生汚泥",["投入汚泥1",1],["投入汚泥2",1],["ケーキ1-1",1],["ケーキ1-2",1]]},
+   {name:"納内", kind:"分析なし・脱水なし", r:[], s:[]},
+   {name:"音江", kind:"分析なし・脱水のみ",
+    r:[["ろ液",1]], s:[["投入汚泥",1],["ケーキ1",1],["ケーキ2",1]]},
+   {name:"多度志", kind:"分析なし・脱水なし", r:[], s:[]}]},
+
+ {d:"9/7(月)", tab:"9/7 月", target:"9/8(火)", none:false, plants:[
+   {name:"深川", kind:"簡易分析・脱水あり",
+    r:[["ろ液1",1]],
+    s:["MLSS 3","MLSS 4","生汚泥","朝一生汚泥",["投入汚泥1",1],["投入汚泥2",1],["ケーキ1-1",1],["ケーキ1-2",1]]},
+   {name:"納内", kind:"分析なし・脱水なし", r:[], s:[]},
+   {name:"音江", kind:"分析なし・脱水のみ",
+    r:[["ろ液",1]], s:[["投入汚泥",1],["ケーキ1",1],["ケーキ2",1]]},
+   {name:"多度志", kind:"分析なし・脱水なし", r:[], s:[]}]},
+
+ {d:"9/8(火)", tab:"9/8 火", target:"9/9(水)", none:false, plants:[
+   {name:"深川", kind:"水質中試験・脱水なし",
+    r:["A","B","C","D","E"],
+    s:["MLSS 3","MLSS 4","RSSS","生汚泥","朝一生汚泥","消化汚泥"]},
+   {name:"納内", kind:"水質中試験・脱水あり",
+    r:["A","D",["ろ液",1]],
+    s:["MLSS 1","MLSS 2","RS","濃縮汚泥",["投入汚泥",1],["ケーキ1",1],["ケーキ2",1]]},
+   {name:"音江", kind:"分析なし・脱水なし", r:[], s:[]},
+   {name:"多度志", kind:"水質中試験・脱水あり",
+    r:["A","D",["ろ液",1]], s:[["投入汚泥",1],["ケーキ",1]]}]},
+
+ {d:"9/9(水)", tab:"9/9 水", target:"9/10(木)", none:false, plants:[
+   {name:"深川", kind:"日常分析・脱水あり",
+    r:["A","B","C","D","E",["ろ液1",1]],
+    s:["MLSS 3","MLSS 4","RSSS","生汚泥","朝一生汚泥",["投入汚泥1",1],["投入汚泥2",1],["ケーキ1-1",1],["ケーキ1-2",1]]},
+   {name:"納内", kind:"分析なし・脱水なし", r:[], s:[]},
+   {name:"音江", kind:"日常分析・脱水あり",
+    r:["A","D",["ろ液",1]], s:["MLSS","RS",["投入汚泥",1],["ケーキ1",1],["ケーキ2",1]]},
+   {name:"多度志", kind:"分析なし・脱水なし", r:[], s:[]}]},
+
+ {d:"9/10(木)", tab:"9/10 木", target:"9/11(金)", none:false, plants:[
+   {name:"深川", kind:"簡易分析・脱水あり",
+    r:[["ろ液1",1]],
+    s:["MLSS 3","MLSS 4","生汚泥","朝一生汚泥",["投入汚泥1",1],["投入汚泥2",1],["ケーキ1-1",1],["ケーキ1-2",1]]},
+   {name:"納内", kind:"分析なし・脱水のみ",
+    r:[["ろ液",1]], s:[["投入汚泥",1],["ケーキ1",1],["ケーキ2",1]]},
+   {name:"音江", kind:"分析なし・脱水のみ",
+    r:[["ろ液",1]], s:[["投入汚泥",1],["ケーキ1",1],["ケーキ2",1]]},
+   {name:"多度志", kind:"分析なし・脱水なし", r:[], s:[]}]},
+
+ {d:"9/11(金)", tab:"9/11 金", target:"9/14(月)", none:true}
+];
+
+const tabs = document.getElementById("tabs");
+const view = document.getElementById("view");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const nm = it => Array.isArray(it) ? it[0] : it;
+const dz = it => Array.isArray(it) && it[1];
+
+function items(list, cls, key){
+  if(!list.length) return "";
+  const label = cls === "r" ? "ろ紙" : "磁皿";
+  return `<div class="grp ${cls}">
+    <div class="gh"><span class="swatch"></span>${label}<span class="gn">${list.length}</span></div>
+    <ul>${list.map((it,i)=>`<li><label>
+      <input type="checkbox" id="${key}-${cls}-${i}">
+      <span class="nm">${esc(nm(it))}</span>
+      ${dz(it) ? '<span class="dz">脱水</span>' : ''}
+    </label></li>`).join("")}</ul></div>`;
+}
+
+function render(i){
+  const day = D[i];
+  [...tabs.children].forEach((t,k)=>t.setAttribute("aria-selected", k===i ? "true":"false"));
+  if(day.none){
+    view.innerHTML = `<div class="head"><div class="day">${esc(day.d)}の朝 に用意する次回分</div>
+      <div class="sub">＝ <b>${esc(day.target)}</b> の分析ぶん</div></div>
+      <div class="empty">予定表が無いため作成できません</div>`;
+    return;
+  }
+  const R = day.plants.reduce((a,p)=>a+p.r.length,0);
+  const S = day.plants.reduce((a,p)=>a+p.s.length,0);
+  view.innerHTML = `
+    <div class="head">
+      <div class="day">${esc(day.d)}の朝 に用意する次回分</div>
+      <div class="sub">＝ <b>${esc(day.target)}</b> の分析ぶん</div>
+    </div>
+    <div class="totals">
+      <div class="tot r"><span class="lbl">ろ紙</span><span class="n">${R}<small>枚</small></span></div>
+      <div class="tot s"><span class="lbl">磁皿</span><span class="n">${S}<small>枚</small></span></div>
+    </div>
+    ${day.plants.map((p,pi)=>{
+      const tot = p.r.length + p.s.length;
+      return `<section class="plant">
+        <div class="ptitle"><h2>${esc(p.name)}</h2><span class="kind">${esc(p.kind)}</span>
+          ${tot ? `<span class="cnt">ろ紙 ${p.r.length} ／ 磁皿 ${p.s.length}</span>` : ''}</div>
+        ${tot ? items(p.r,"r",`d${i}p${pi}`) + items(p.s,"s",`d${i}p${pi}`)
+              : '<div class="none">用意するものなし</div>'}
+      </section>`;
+    }).join("")}`;
+}
+
+D.forEach((day,i)=>{
+  const b = document.createElement("button");
+  b.className = "tab"; b.type = "button"; b.role = "tab";
+  b.textContent = day.tab;
+  b.addEventListener("click", ()=>render(i));
+  tabs.appendChild(b);
+});
+render(0);
+</script>
+
+</body>
+</html>

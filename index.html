@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>仕事の手順</title>
+<meta name="theme-color" content="#14181c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="手順">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+  html{background:#fff;color-scheme:light}
+  :root{
+    --ink:#14181c; --ink-2:#4d5762; --ink-3:#8a949f;
+    --line:#dde3e8; --line-2:#eef2f5;
+    --paper:#ffffff; --panel:#f6f8fa;
+    --a:#0f6d8c; --b:#9a5b12;
+    --font:"Noto Sans JP",-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",sans-serif;
+    --num:"Roboto Condensed",var(--font);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);
+       -webkit-text-size-adjust:100%;padding:0 0 40px}
+  .wrap{max-width:620px;margin:0 auto;padding:0 14px}
+
+  header{border-bottom:1px solid var(--line);padding:18px 0 14px;margin-bottom:6px}
+  header h1{margin:0;font-size:19px;font-weight:700;letter-spacing:.02em}
+  header p{margin:5px 0 0;font-size:13px;color:var(--ink-2)}
+
+  a.item{display:block;text-decoration:none;color:inherit;
+         border:1px solid var(--line);border-radius:12px;
+         padding:17px 18px;margin-top:13px;background:var(--paper)}
+  a.item:active{background:var(--panel)}
+  .item .t{font-size:19px;font-weight:700;line-height:1.3}
+  .item .d{margin-top:5px;font-size:13.5px;color:var(--ink-2);line-height:1.55}
+  .item .tag{display:inline-block;margin-bottom:7px;font-size:11px;font-weight:700;
+             letter-spacing:.09em;padding:3px 8px;border-radius:5px;
+             background:var(--panel);color:var(--ink-2)}
+  .item.a .tag{background:#e8f2f6;color:var(--a)}
+  .item.b .tag{background:#f7efe4;color:var(--b)}
+
+  .soon{border:1px dashed var(--line);border-radius:12px;padding:15px 18px;margin-top:13px;
+        color:var(--ink-3);font-size:14px;line-height:1.6}
+  .soon .t{font-weight:700;font-size:15px;color:var(--ink-3)}
+
+  footer{margin-top:26px;padding-top:14px;border-top:1px solid var(--line-2);
+         font-size:12px;color:var(--ink-3);line-height:1.7}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>仕事の手順</h1>
+    <p>深川浄化センター</p>
+  </header>
+
+  <a class="item a" href="junkai/">
+    <span class="tag">場外点検</span>
+    <div class="t">ポンプ所巡回</div>
+    <div class="d">15か所を順に回る。ナビ付き。出発前の積み込みから帰着まで。</div>
+  </a>
+
+  <a class="item b" href="shikomi/">
+    <span class="tag">分析準備</span>
+    <div class="t">磁皿・ろ紙の仕込み</div>
+    <div class="d">その朝に用意する次回分の枚数。日付タブで週の全日ぶん。</div>
+  </a>
+
+  <div class="soon">
+    <div class="t">この先ここに増える</div>
+    ポンプ場（錦町・公園通）／マンホール内部作業／分析の手順（簡易・日常・中試験）／浄化センター内の作業
+  </div>
+
+  <footer>
+    現場で使う手順書。中身が変わったら差し替える。<br>
+    分からないことや違っていたことは、その場で残しておく。
+  </footer>
+
+</div>
+</body>
+</html>
