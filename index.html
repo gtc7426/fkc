@@ -8,6 +8,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="手順">
+<link rel="apple-touch-icon" href="icon.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
 <style>
   html{background:#fff;color-scheme:light}
@@ -79,5 +80,19 @@
   </footer>
 
 </div>
+<script>
+(function(){
+  try{
+    const icon = new URL("icon.png", location.href).href;
+    const mf = {name:"仕事の手順", short_name:"手順", start_url:location.href, scope:"./",
+      display:"standalone", background_color:"#ffffff", theme_color:"#14181c",
+      icons:[{src:icon,sizes:"512x512",type:"image/png",purpose:"any"},
+             {src:icon,sizes:"512x512",type:"image/png",purpose:"maskable"}]};
+    const l = document.createElement("link");
+    l.rel="manifest"; l.href=URL.createObjectURL(new Blob([JSON.stringify(mf)],{type:"application/manifest+json"}));
+    document.head.appendChild(l);
+  }catch(e){}
+})();
+</script>
 </body>
 </html>
