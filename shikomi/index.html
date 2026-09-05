@@ -40,23 +40,23 @@
         -webkit-overflow-scrolling:touch;scrollbar-width:none}
   .tabs::-webkit-scrollbar{display:none}
   .tab{flex:0 0 auto;appearance:none;border:1px solid var(--line);background:var(--paper);
-       color:var(--ink-2);font-family:var(--font);font-weight:700;font-size:15px;
-       padding:9px 13px;border-radius:8px;cursor:pointer;white-space:nowrap;line-height:1}
+       color:var(--ink-2);font-family:var(--font);font-weight:700;font-size:17px;
+       padding:10px 15px;border-radius:8px;cursor:pointer;white-space:nowrap;line-height:1}
   .tab[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
   .tab:focus-visible{outline:2px solid var(--roshi);outline-offset:2px}
 
   /* 見出し */
   .head{padding:14px 0 10px}
-  .head .day{font-size:19px;font-weight:700;letter-spacing:.01em}
-  .head .sub{font-size:13px;color:var(--ink-2);margin-top:3px}
+  .head .day{font-size:22px;font-weight:700;letter-spacing:.01em}
+  .head .sub{font-size:15px;color:var(--ink-2);margin-top:4px}
   .head .sub b{color:var(--ink);font-weight:700}
 
   /* 合計 */
   .totals{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
   .tot{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--panel);
        display:flex;align-items:baseline;justify-content:space-between}
-  .tot .lbl{font-size:13px;font-weight:700;letter-spacing:.04em}
-  .tot .n{font-family:var(--num);font-size:30px;font-weight:700;line-height:1;
+  .tot .lbl{font-size:15px;font-weight:700;letter-spacing:.04em}
+  .tot .n{font-family:var(--num);font-size:36px;font-weight:700;line-height:1;
           font-variant-numeric:tabular-nums}
   .tot.r .lbl,.tot.r .n{color:var(--roshi)}
   .tot.s .lbl,.tot.s .n{color:var(--sara)}
@@ -65,33 +65,45 @@
   /* 処理場 */
   .plant{border-top:2px solid var(--ink);padding-top:9px;margin-bottom:20px}
   .ptitle{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:2px}
-  .ptitle h2{margin:0;font-size:17px;font-weight:700;letter-spacing:.02em}
-  .ptitle .kind{font-size:12.5px;color:var(--ink-2);font-weight:500}
+  .ptitle h2{margin:0;font-size:20px;font-weight:700;letter-spacing:.02em}
+  .ptitle .kind{font-size:14px;color:var(--ink-2);font-weight:500}
   .ptitle .cnt{margin-left:auto;font-family:var(--num);font-size:13px;
                color:var(--ink-3);font-variant-numeric:tabular-nums;white-space:nowrap}
-  .none{font-size:14px;color:var(--ink-3);padding:6px 0 2px}
+  .none{font-size:16px;color:var(--ink-3);padding:8px 0 2px}
 
   .grp{margin-top:9px}
-  .gh{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;
-      letter-spacing:.09em;padding-bottom:5px;border-bottom:1px solid var(--line-2)}
-  .gh .swatch{width:9px;height:9px;border-radius:2px;flex:0 0 auto}
+  /* 見出し行：本文行と同じ列構成（ダミー枠 + 品名列 + 検水列） */
+  .gh{display:flex;align-items:center;gap:13px;font-size:14px;font-weight:700;
+      letter-spacing:.09em;padding:0 2px 5px;border-bottom:1px solid var(--line-2)}
+  .gh .box{flex:0 0 auto;width:26px;display:flex;align-items:center;justify-content:center}
+  .gh .swatch{width:11px;height:11px;border-radius:2px;flex:0 0 auto}
   .grp.r .gh{color:var(--roshi)} .grp.r .swatch{background:var(--roshi)}
   .grp.s .gh{color:var(--sara)}  .grp.s .swatch{background:var(--sara)}
-  .gh .gn{margin-left:auto;font-family:var(--num);letter-spacing:0;font-size:14px}
+  .gh .lb{flex:0 0 auto;min-width:118px;display:flex;align-items:baseline;gap:6px}
+  .gh .gn{font-family:var(--num);letter-spacing:0;font-size:17px;opacity:.65}
+  .gh .ghsp{flex:1}
 
   ul{list-style:none;margin:0;padding:0}
-  li label{display:flex;align-items:center;gap:11px;padding:11px 2px;
-           border-bottom:1px solid var(--line-2);cursor:pointer;font-size:16px;line-height:1.25}
+  li label{display:flex;align-items:center;gap:13px;padding:14px 2px;
+           border-bottom:1px solid var(--line-2);cursor:pointer;font-size:19px;line-height:1.3}
   li:last-child label{border-bottom:0}
-  input[type=checkbox]{appearance:none;width:22px;height:22px;flex:0 0 auto;
+  input[type=checkbox]{appearance:none;width:26px;height:26px;flex:0 0 auto;
     border:2px solid var(--ink-3);border-radius:5px;background:var(--paper);cursor:pointer}
   input[type=checkbox]:checked{background:var(--ink);border-color:var(--ink)}
-  input[type=checkbox]:checked::after{content:"";display:block;width:6px;height:11px;
-    margin:1px 0 0 5px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+  input[type=checkbox]:checked::after{content:"";display:block;width:7px;height:13px;
+    margin:2px 0 0 7px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg)}
   input[type=checkbox]:focus-visible{outline:2px solid var(--roshi);outline-offset:2px}
   input:checked + .nm{color:var(--ink-3);text-decoration:line-through}
-  .nm{flex:1}
-  .dz{flex:0 0 auto;font-size:11px;font-weight:700;letter-spacing:.06em;
+  .nm{flex:0 0 auto;min-width:118px}
+  .ml{flex:0 0 auto;width:62px;text-align:right;
+      font-family:var(--num);font-size:19px;font-weight:700;
+      color:var(--sara);font-variant-numeric:tabular-nums;line-height:1}
+  .sp{flex:1}
+  input:checked ~ .ml{opacity:.35}
+  /* グループ見出しに「検水」を出す */
+  .gh .vh{flex:0 0 auto;width:62px;text-align:right;font-size:12px;
+          font-weight:700;letter-spacing:.06em;color:var(--ink-3)}
+  .dz{flex:0 0 auto;font-size:12.5px;font-weight:700;letter-spacing:.06em;
       color:var(--dassui);border:1px solid currentColor;border-radius:4px;padding:2px 5px;line-height:1}
   .empty{padding:40px 0;text-align:center;color:var(--ink-2);font-size:15px}
 </style>
@@ -112,11 +124,12 @@
     document.head.appendChild(l);
   }catch(e){}
 })();
+const VOL = {"深川": {"MLSS 3": "100", "MLSS 4": "100", "RSSS": "100", "生汚泥1": "20", "生汚泥2": "20", "投入汚泥1": "20", "投入汚泥2": "20", "ケーキ1": "10", "ケーキ2": "10"}, "納内": {"MLSS 1": "100", "MLSS 2": "100", "RSSS": "100", "RS": "100", "投入汚泥": "20", "ケーキ1": "20", "ケーキ2": "20"}, "多度志": {"投入汚泥": "20", "ケーキ": "20"}, "音江": {"投入汚泥": "20", "ケーキ1": "20", "ケーキ2": "20"}};
 const D = [
  {d:"9/2(水)", tab:"9/2 水", target:"9/3(木)", none:false, plants:[
    {name:"深川", kind:"水質中試験①・脱水あり",
-    r:["A","B","C","D","E",["ろ液1",1]],
-    s:["MLSS 3","MLSS 4","RSSS","生汚泥","朝一生汚泥","消化汚泥",["投入汚泥1",1],["投入汚泥2",1],["ケーキ1-1",1],["ケーキ1-2",1]]},
+    r:["A","B","C","D","E",["ろ液",1]],
+    s:["MLSS 3","MLSS 4","RSSS","生汚泥1","生汚泥2","消化汚泥",["投入汚泥1",1],["投入汚泥2",1],["ケーキ1",1],["ケーキ2",1]]},
    {name:"納内", kind:"分析なし・脱水なし", r:[], s:[]},
    {name:"音江", kind:"水質中試験・脱水あり",
     r:["A","D",["ろ液",1]],
@@ -125,8 +138,8 @@ const D = [
 
  {d:"9/3(木)", tab:"9/3 木", target:"9/4(金)", none:false, plants:[
    {name:"深川", kind:"簡易分析・脱水あり",
-    r:[["ろ液1",1]],
-    s:["MLSS 3","MLSS 4","生汚泥","朝一生汚泥",["投入汚泥1",1],["投入汚泥2",1],["ケーキ1-1",1],["ケーキ1-2",1]]},
+    r:[["ろ液",1]],
+    s:["MLSS 3","MLSS 4","生汚泥1","生汚泥2",["投入汚泥1",1],["投入汚泥2",1],["ケーキ1",1],["ケーキ2",1]]},
    {name:"納内", kind:"分析なし・脱水なし", r:[], s:[]},
    {name:"音江", kind:"分析なし・脱水のみ",
     r:[["ろ液",1]], s:[["投入汚泥",1],["ケーキ1",1],["ケーキ2",1]]},
@@ -135,8 +148,8 @@ const D = [
 
  {d:"9/4(金)", tab:"9/4 金", target:"9/7(月)", none:false, plants:[
    {name:"深川", kind:"日常分析・脱水あり",
-    r:["A","B","C","D","E",["ろ液1",1]],
-    s:["MLSS 3","MLSS 4","RSSS","生汚泥","朝一生汚泥",["投入汚泥1",1],["投入汚泥2",1],["ケーキ1-1",1],["ケーキ1-2",1]]},
+    r:["A","B","C","D","E",["ろ液",1]],
+    s:["MLSS 3","MLSS 4","RSSS","生汚泥1","生汚泥2",["投入汚泥1",1],["投入汚泥2",1],["ケーキ1",1],["ケーキ2",1]]},
    {name:"納内", kind:"分析なし・脱水なし", r:[], s:[]},
    {name:"音江", kind:"分析なし・脱水のみ",
     r:[["ろ液",1]], s:[["投入汚泥",1],["ケーキ1",1],["ケーキ2",1]]},
@@ -144,8 +157,8 @@ const D = [
 
  {d:"9/7(月)", tab:"9/7 月", target:"9/8(火)", none:false, plants:[
    {name:"深川", kind:"簡易分析・脱水あり",
-    r:[["ろ液1",1]],
-    s:["MLSS 3","MLSS 4","生汚泥","朝一生汚泥",["投入汚泥1",1],["投入汚泥2",1],["ケーキ1-1",1],["ケーキ1-2",1]]},
+    r:[["ろ液",1]],
+    s:["MLSS 3","MLSS 4","生汚泥1","生汚泥2",["投入汚泥1",1],["投入汚泥2",1],["ケーキ1",1],["ケーキ2",1]]},
    {name:"納内", kind:"分析なし・脱水なし", r:[], s:[]},
    {name:"音江", kind:"分析なし・脱水のみ",
     r:[["ろ液",1]], s:[["投入汚泥",1],["ケーキ1",1],["ケーキ2",1]]},
@@ -154,7 +167,7 @@ const D = [
  {d:"9/8(火)", tab:"9/8 火", target:"9/9(水)", none:false, plants:[
    {name:"深川", kind:"水質中試験・脱水なし",
     r:["A","B","C","D","E"],
-    s:["MLSS 3","MLSS 4","RSSS","生汚泥","朝一生汚泥","消化汚泥"]},
+    s:["MLSS 3","MLSS 4","RSSS","生汚泥1","生汚泥2","消化汚泥"]},
    {name:"納内", kind:"水質中試験・脱水あり",
     r:["A","D",["ろ液",1]],
     s:["MLSS 1","MLSS 2","RS","濃縮汚泥",["投入汚泥",1],["ケーキ1",1],["ケーキ2",1]]},
@@ -164,8 +177,8 @@ const D = [
 
  {d:"9/9(水)", tab:"9/9 水", target:"9/10(木)", none:false, plants:[
    {name:"深川", kind:"日常分析・脱水あり",
-    r:["A","B","C","D","E",["ろ液1",1]],
-    s:["MLSS 3","MLSS 4","RSSS","生汚泥","朝一生汚泥",["投入汚泥1",1],["投入汚泥2",1],["ケーキ1-1",1],["ケーキ1-2",1]]},
+    r:["A","B","C","D","E",["ろ液",1]],
+    s:["MLSS 3","MLSS 4","RSSS","生汚泥1","生汚泥2",["投入汚泥1",1],["投入汚泥2",1],["ケーキ1",1],["ケーキ2",1]]},
    {name:"納内", kind:"分析なし・脱水なし", r:[], s:[]},
    {name:"音江", kind:"日常分析・脱水あり",
     r:["A","D",["ろ液",1]], s:["MLSS","RS",["投入汚泥",1],["ケーキ1",1],["ケーキ2",1]]},
@@ -173,8 +186,8 @@ const D = [
 
  {d:"9/10(木)", tab:"9/10 木", target:"9/11(金)", none:false, plants:[
    {name:"深川", kind:"簡易分析・脱水あり",
-    r:[["ろ液1",1]],
-    s:["MLSS 3","MLSS 4","生汚泥","朝一生汚泥",["投入汚泥1",1],["投入汚泥2",1],["ケーキ1-1",1],["ケーキ1-2",1]]},
+    r:[["ろ液",1]],
+    s:["MLSS 3","MLSS 4","生汚泥1","生汚泥2",["投入汚泥1",1],["投入汚泥2",1],["ケーキ1",1],["ケーキ2",1]]},
    {name:"納内", kind:"分析なし・脱水のみ",
     r:[["ろ液",1]], s:[["投入汚泥",1],["ケーキ1",1],["ケーキ2",1]]},
    {name:"音江", kind:"分析なし・脱水のみ",
@@ -190,16 +203,28 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":
 const nm = it => Array.isArray(it) ? it[0] : it;
 const dz = it => Array.isArray(it) && it[1];
 
-function items(list, cls, key){
+function items(list, cls, key, plant){
   if(!list.length) return "";
   const label = cls === "r" ? "ろ紙" : "磁皿";
+  const tbl = (cls === "s" && VOL[plant]) ? VOL[plant] : null;
   return `<div class="grp ${cls}">
-    <div class="gh"><span class="swatch"></span>${label}<span class="gn">${list.length}</span></div>
-    <ul>${list.map((it,i)=>`<li><label>
+    <div class="gh">
+      <span class="box"><span class="swatch"></span></span>
+      <span class="lb">${label}<span class="gn">${list.length}</span></span>
+      <span class="vh">${tbl ? '検水' : ''}</span>
+      <span class="ghsp"></span>
+    </div>
+    <ul>${list.map((it,i)=>{
+      const name = nm(it);
+      const v = tbl ? tbl[name] : null;
+      return `<li><label>
       <input type="checkbox" id="${key}-${cls}-${i}">
-      <span class="nm">${esc(nm(it))}</span>
+      <span class="nm">${esc(name)}</span>
+      <span class="ml">${v ? v : ''}</span>
+      <span class="sp"></span>
       ${dz(it) ? '<span class="dz">脱水</span>' : ''}
-    </label></li>`).join("")}</ul></div>`;
+    </label></li>`;
+    }).join("")}</ul></div>`;
 }
 
 function render(i){
@@ -227,7 +252,7 @@ function render(i){
       return `<section class="plant">
         <div class="ptitle"><h2>${esc(p.name)}</h2><span class="kind">${esc(p.kind)}</span>
           ${tot ? `<span class="cnt">ろ紙 ${p.r.length} ／ 磁皿 ${p.s.length}</span>` : ''}</div>
-        ${tot ? items(p.r,"r",`d${i}p${pi}`) + items(p.s,"s",`d${i}p${pi}`)
+        ${tot ? items(p.r,"r",`d${i}p${pi}`,p.name) + items(p.s,"s",`d${i}p${pi}`,p.name)
               : '<div class="none">用意するものなし</div>'}
       </section>`;
     }).join("")}`;
