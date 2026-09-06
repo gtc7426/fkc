@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body>
+<title>停電対応手順</title>
+<meta name="theme-color" content="#a8341f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="停電">
+<link rel="apple-touch-icon" href="../icon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+
+  html{background:#fff;color-scheme:light}
+  :root{
+    --ink:#14181c; --ink-2:#4d5762; --ink-3:#8a949f;
+    --line:#dde3e8; --line-2:#eef2f5;
+    --paper:#ffffff; --panel:#f6f8fa;
+    --go:#0f6d8c; --warn:#a8341f; --done:#1d7a4d;
+    --font:"Noto Sans JP",-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",sans-serif;
+    --num:"Roboto Condensed",var(--font);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);
+       -webkit-text-size-adjust:100%;padding-bottom:70px}
+  .wrap{max-width:620px;margin:0 auto;padding:0 12px}
+
+  /* ヘッダ */
+  .bar{position:sticky;top:0;z-index:10;background:var(--paper);border-bottom:1px solid var(--line);
+       padding:9px 12px;display:flex;align-items:center;gap:10px}
+  .bar .ttl{font-size:15px;font-weight:700;letter-spacing:.02em}
+  .bar .prog{margin-left:auto;font-family:var(--num);font-size:15px;font-weight:700;
+             color:var(--ink-2);font-variant-numeric:tabular-nums}
+  .bar button{appearance:none;border:1px solid var(--line);background:var(--paper);
+       color:var(--ink-2);font-family:var(--font);font-weight:700;font-size:13px;
+       padding:7px 11px;border-radius:8px;cursor:pointer;white-space:nowrap}
+
+  /* 出発前 */
+  .depart{border:2px solid var(--warn);border-radius:12px;padding:13px 14px;margin:14px 0 18px}
+  .depart h2{margin:0 0 4px;font-size:16px;font-weight:700;color:var(--warn)}
+  .depart p{margin:0 0 9px;font-size:13px;color:var(--ink-2);line-height:1.5}
+
+  /* 現在地カード */
+  .card{margin:16px 0}
+  .num{font-family:var(--num);font-size:15px;font-weight:700;color:var(--ink-3);
+       letter-spacing:.08em}
+  .name{font-size:23px;font-weight:700;line-height:1.25;margin:2px 0 0}
+  .kind{font-size:13px;color:var(--ink-2);margin-top:3px}
+  .note{margin-top:11px;border-left:4px solid var(--warn);background:#fdf4f2;
+        padding:9px 12px;border-radius:0 8px 8px 0;font-size:14.5px;line-height:1.55;
+        color:var(--ink);font-weight:500}
+  .note b{color:var(--warn)}
+
+  /* ナビボタン */
+  .nav{display:block;width:100%;margin-top:13px;text-align:center;text-decoration:none;
+       background:var(--go);color:#fff;font-weight:700;font-size:17px;
+       padding:15px;border-radius:11px;letter-spacing:.03em}
+  .nav.off{background:var(--panel);color:var(--ink-3);border:1px dashed var(--line)}
+
+  /* チェック */
+  ul{list-style:none;margin:15px 0 0;padding:0}
+  li label{display:flex;align-items:center;gap:12px;padding:13px 2px;
+           border-bottom:1px solid var(--line-2);cursor:pointer;font-size:16.5px;line-height:1.3}
+  li:last-child label{border-bottom:0}
+  input[type=checkbox]{appearance:none;width:24px;height:24px;flex:0 0 auto;
+    border:2px solid var(--ink-3);border-radius:6px;background:var(--paper);cursor:pointer}
+  input[type=checkbox]:checked{background:var(--ink);border-color:var(--ink)}
+  input[type=checkbox]:checked::after{content:"";display:block;width:6px;height:12px;
+    margin:1px 0 0 6px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+  input:checked + .nm{color:var(--ink-3);text-decoration:line-through}
+  .nm{flex:1}
+
+  /* 次へ */
+  .next{position:fixed;left:0;right:0;bottom:0;background:var(--paper);
+        border-top:1px solid var(--line);padding:10px 12px;
+        padding-bottom:calc(10px + env(safe-area-inset-bottom))}
+  .next .inner{max-width:620px;margin:0 auto;display:flex;gap:9px}
+  .next button{flex:1;appearance:none;border:0;border-radius:11px;padding:15px;
+       font-family:var(--font);font-weight:700;font-size:16.5px;cursor:pointer;
+       background:var(--ink);color:#fff}
+  .next button.sub{flex:0 0 auto;background:var(--panel);color:var(--ink-2);
+       border:1px solid var(--line);padding:15px 17px;font-size:15px}
+  .next button:disabled{opacity:.4}
+
+  /* 一覧 */
+  .list{margin:12px 0}
+  .row{display:flex;align-items:center;gap:11px;width:100%;text-align:left;
+       appearance:none;background:var(--paper);border:0;border-bottom:1px solid var(--line-2);
+       padding:13px 3px;font-family:var(--font);font-size:16px;color:var(--ink);cursor:pointer}
+  .row .n{font-family:var(--num);font-weight:700;color:var(--ink-3);flex:0 0 26px}
+  .row .t{flex:1}
+  .row .s{font-size:12px;font-weight:700;letter-spacing:.06em}
+  .row.done .t{color:var(--ink-3);text-decoration:line-through}
+  .row.done .s{color:var(--done)}
+  .row.cur{background:#f2f8fb}
+  .row.cur .n{color:var(--go)}
+
+  .fin{padding:44px 0;text-align:center}
+  .fin .big{font-size:21px;font-weight:700}
+  .fin .sub{margin-top:7px;font-size:14px;color:var(--ink-2)}
+  /* 地区えらび */
+  .pick{margin:18px 0;display:flex;flex-direction:column;gap:11px}
+  .dbtn{display:flex;align-items:center;gap:12px;width:100%;text-align:left;appearance:none;
+        background:var(--paper);border:1px solid var(--line);border-radius:12px;
+        padding:18px 16px;font-family:var(--font);cursor:pointer}
+  .dbtn .dn{font-size:21px;font-weight:700;color:var(--ink)}
+  .dbtn .ds{font-size:13px;color:var(--ink-2)}
+  .dbtn .dp{margin-left:auto;font-family:var(--num);font-size:16px;font-weight:700;color:var(--ink-3);
+            font-variant-numeric:tabular-nums}
+  .hide{display:none!important}
+
+  .pick{margin:16px 0;display:flex;flex-direction:column;gap:10px}
+  .dbtn{display:flex;align-items:center;gap:12px;width:100%;text-align:left;appearance:none;
+        background:var(--paper);border:1px solid var(--line);border-radius:12px;
+        padding:16px;font-family:var(--font);cursor:pointer}
+  .dbtn .dn{font-size:19px;font-weight:700;color:var(--ink)}
+  .dbtn .dp{margin-left:auto;font-family:var(--num);font-size:14px;font-weight:700;color:var(--ink-3)}
+  .lead{margin:14px 0;padding:12px 14px;border:2px solid var(--warn);border-radius:12px;background:#fdf4f2}
+  .lead h2{margin:0 0 4px;font-size:15px;font-weight:700;color:var(--warn)}
+  .lead p{margin:0;font-size:14px;line-height:1.55;color:var(--ink)}
+  .tabs{display:flex;gap:7px;margin:14px 0 4px}
+  .tab{flex:1;appearance:none;border:1px solid var(--line);background:var(--panel);color:var(--ink-2);
+       border-radius:10px;padding:11px 4px;font-family:var(--font);font-weight:700;font-size:13.5px;cursor:pointer}
+  .tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .sec h2{font-size:17px;font-weight:700;margin:16px 0 0}
+  .calls{margin:16px 0 4px}
+  .calls h3{margin:0 0 7px;font-size:13px;font-weight:700;color:var(--ink-3);letter-spacing:.06em}
+  .call{display:flex;align-items:center;gap:11px;width:100%;text-decoration:none;
+        background:var(--paper);border:2px solid var(--warn);border-radius:11px;
+        padding:13px 14px;margin-bottom:8px}
+  .call .cn{font-size:16px;font-weight:700;color:var(--ink)}
+  .call .ct{margin-left:auto;font-family:var(--num);font-size:15px;font-weight:700;color:var(--warn)}
+  .call.todo{border-style:dashed;border-color:var(--line);opacity:.75}
+  .call.todo .ct{color:var(--ink-3)}
+</style>
+
+<div class="bar">
+  <span class="ttl" id="ttl">停電対応手順</span>
+  <span class="prog" id="prog"></span>
+  <button type="button" id="back" class="hide">施設</button>
+  <button type="button" id="reset" class="hide">リセット</button>
+</div>
+
+<div class="wrap">
+  <div id="home"></div>
+  <div id="view"></div>
+</div>
+
+<script>
+const F = [{"id": "fukagawa", "name": "深川浄化センター", "volt": "6.6kV", "where": "中央監視装置で受電電圧を確認（電気室(2) 受電盤でも可）", "a": ["自家発が運転しているか確認", "<b>停電が15分以上続く場合</b>、以下を行う", "中央監視室／初沈汚泥掻寄機 → 中央監視装置にて運転", "事務室／自家発 → 積算表で重油残量を見る。<b>（重油残量−2,700ℓ）÷11.0ℓ/h ＝ 運転可能時間</b>", "ブロワ室／曝気ブロワ → 現場操作盤で「現場」に切換 → 先発号機を「運転」 → 「中央」に戻す"], "b": ["自家発が運転しているか確認", "発生している故障表示を引込受電盤又は中央監視装置で確認", "<b>責任者へ連絡</b>（責任者から電気保安協会へ）", "自家発が運転していない場合 → <b>流入ゲートを手動で閉める</b>（別紙 流入ゲート手動操作方法）"], "r": ["自家発運転中に<b>運転できない設備</b>", "脱水設備（脱水機等）", "消化設備（加温ボイラー、消化タンク攪拌機等）"], "f": ["中央監視装置で受電電圧が6.6kVであることを確認", "中央監視室／初沈汚泥掻寄機 → 中央監視装置にて運転", "中央監視室／UPS → LEDの「Bypass」(橙)が点灯なら、<b>「RESET」と「BATT CHECK」を同時に3秒押して復帰</b>", "ブロワ室／曝気ブロワ → 「現場」に切換 → 先発号機を「運転」 → 「中央」に戻す", "自家発室／自家発 → 操作パネルで運転時間確認。油量計（送り・戻り）で重油使用量を確認", "電気室CC-8／給水ユニット → 「始動ボタン」を押す", "水質試験室／低温インキュベータ → Pro表示になる。電源「切」→「入」で温度表示に復帰", "水質試験室／蒸留水製造装置 → 液晶画面で「スタート」", "脱水機室／脱水機 → 運転中だった場合、インバータ故障はインバーター本体でリセット。運転モード操作スイッチ→停電復旧「確認」。手動で残留汚泥排出工程を実施し再起動", "ボイラー室／ボイラー → 運転中だった場合、<b>蒸気吹込弁を開けてから</b>ボイラー起動", "暖房機（事務室・水質試験室・3階・脱水機室南側・濾過棟）→ 状態確認。エラー表示ならリセット又は電源OFF→ONで運転", "処理棟／3,4系終沈汚泥引抜ポンプ → 現場操作盤にて運転", "機械棟 電気室CC-5／消化タンク攪拌機 → 運転の確認", "機械棟／消化タンク攪拌機軸封弁 → <b>冬季は手動開</b>", "機械棟 ボイラー室／軟水装置 → 表示が点滅しているので上下操作キーのいずれかを押して復帰", "最後に、中央監視装置で復帰していない警報が無いか、各機器が正常に運転しているか確認", "※復電時に運転する機器：ボイラ原水ポンプ、高架揚水ポンプ、濾過原水ポンプ、消化汚泥引抜弁"]}, {"id": "otoe", "name": "音江浄化センター", "volt": "6.6kV", "where": "電気室 受電盤で受電電圧を確認", "a": ["自家発が運転しているか確認", "事務室／中央監視装置 → パソコンがダウンしていないか。再起動を実施。システム画面表示ならF1キー", "自家発室／自家発 → 燃料タンク(490ℓ)の軽油残量を確認。<b>軽油残量÷26.10ℓ/h ＝ 運転可能時間</b>", "電気室／汚水ポンプ → 現場操作盤で温度異常が出ていないか確認。出ていれば故障復帰"], "b": ["自家発が運転しているか確認", "発生している故障表示を引込受電盤又は中央監視装置で確認", "<b>責任者へ連絡</b>（責任者から電気保安協会へ）", "自家発が運転していない場合 → <b>流入ゲートを手動で閉める</b>（別紙）"], "r": ["自家発運転中に<b>運転できない設備</b>", "脱水設備（脱水機等）"], "f": ["電気室 受電盤で6.6kVであることを確認", "事務室／中央監視装置 → ダウンしていないか（UPS不調時）。再起動。システム画面表示ならF1キー", "事務室／暖房機 → 状態確認。エラー表示ならリセット又は電源OFF→ONで運転", "ゲート室／流入ゲート → 全開か確認。<b>全閉なら寸開から徐々に開け、汚水ポンプ1台運転を維持しながら全開に</b>", "自家発室／自家発 → 燃料小出槽を確認し、軽油残量を確認", "電気室／汚水ポンプ → 温度異常・NV故障が出ていないか。出ていれば故障復帰", "電気室／進相コンデンサ → 常時入のものが入っているか。入っていなければ投入", "ポンプ室／濃縮汚泥貯留機 → 中央監視装置で運転を確認（基本は自動復帰）。停止していれば現場盤で運転", "脱水機室／各制御盤・調節器 → Mになるので<b>Aキー</b>を押す。運転完了ランプの点灯を確認。<b>薬品供給量の再設定が要るので次回音江担当者へ停電の旨を申し送り</b>", "脱水機室／脱水機（運転中に停電した場合）→ インバータ故障はインバーター本体でリセット。手動洗浄（現場に手順書あり）の後、再起動", "水処理棟 電気室／曝気装置 → 運転時間が次運転時間分に足りなければタイマーで運転（一時入を押す）", "水処理棟 最終沈殿池／終沈汚泥掻寄機 → 中央監視装置で確認（基本は自動復帰）。停止していれば現場盤で運転", "最後に、中央監視装置で復帰していない警報が無いか、各機器が正常に運転しているか確認"]}, {"id": "osamunai", "name": "納内農業集落排水処理場", "volt": "6.6kV", "where": "電気室 受電盤で受電電圧を確認", "a": ["自家発が運転しているか確認", "自家発室／自家発 → 燃料タンク(200ℓ)の軽油残量を確認。<b>軽油残量÷17.35ℓ/h ＝ 運転可能時間</b>"], "b": ["自家発が運転しているか確認", "発生している故障表示を引込受電盤又はコントロール盤で確認", "<b>責任者へ連絡</b>（責任者から電気保安協会へ）", "自家発が運転していない場合 → <b>流入ゲートを手動で閉める</b>（別紙）"], "r": ["自家発運転中は<b>原水ポンプ、流量調整槽移送ポンプのみ運転</b>"], "f": ["電気室 受電盤で6.6kVであることを確認", "事務室／暖房機、脱水機室／暖房機 → 状態確認。エラー表示ならリセット又は電源OFF→ONで運転", "自家発室／自家発 → 燃料タンクを確認し、軽油残量を確認", "電気室／進相コンデンサ → 常時入のものが入っているか。入っていなければ投入", "電気室／コントロール盤 → 停止時間内の各機器タイマー設定を<b>「無効」にしてから「有効」に戻す</b>", "事務室／返送汚泥ポンプ → インバーター本体で故障表示の有無を確認。<b>有り</b>＝インバーターでリセット→コントロール盤で故障復帰→タイマー時間を調整し再起動。<b>無し</b>＝コントロール盤で故障復帰→タイマー時間を調整し再起動", "最後に、中央監視装置で復帰していない警報が無いか、各機器が正常に運転しているか確認"]}, {"id": "tadoshi", "name": "多度志農業集落排水処理場", "volt": "6.6kV", "where": "電気室 受電盤で受電電圧を確認", "a": ["自家発が運転しているか確認", "自家発室／自家発 → 燃料タンクの軽油残量を確認。<b>軽油残量÷11.48ℓ/h ＝ 運転可能時間</b>"], "b": ["自家発が運転しているか確認", "発生している故障表示を引込受電盤で確認", "<b>責任者へ連絡</b>（責任者から電気保安協会へ）", "自家発が運転していない場合 → <b>流入ゲートを手動で閉める</b>（別紙）"], "r": ["自家発運転中は<b>原水ポンプのみ運転</b>（※流量調整槽から放流までは自然流下）"], "f": ["電気室 受電盤で6.6kVであることを確認", "事務室／暖房機、脱水機室／暖房機 → 状態確認。エラー表示ならリセット又は電源OFF→ONで運転", "自家発室／自家発 → 燃料タンクを確認し、軽油残量を確認", "電気室 引込受電盤／進相コンデンサ → <b>引込受電盤内の進相コンデンサ用ONスイッチを2ヵ所押す</b>", "最後に、<b>動力盤</b>で復帰していない警報が無いか、各機器が正常に運転しているか確認"]}, {"id": "pjo", "name": "公園通・錦町 汚水中継ポンプ場", "volt": "200V", "where": "電気室 受電盤で受電電圧が200Vか0Vか確認", "a": ["<b>流入ゲートを手動で閉める</b>（別紙 流入ゲート手動操作方法）"], "b": ["<b>流入ゲートを手動で閉める</b>（別紙）", "発生している故障表示を引込受電盤で確認", "<b>責任者へ連絡</b>（責任者から電気保安協会へ）"], "r": ["<b>長時間停電の場合</b>", "客先指示の下、可搬式発電機を設置", "公園通ポンプ場の<b>可搬式発電機の接続箇所は、引込受電盤の側面に別紙掲示</b>"], "f": ["電気室 受電盤で200Vであることを確認", "<b>汚水ポンプが2台間欠運転になるまで、流入ゲートの開度調整を行う</b>"]}, {"id": "mhp", "name": "汚水中継ポンプ所（マンホール24か所）", "volt": "200V", "where": "制御盤の電源ランプ点灯状況、又は電圧計で200Vか0Vか確認", "a": ["<b>マンホール内の水位を確認</b>（中間スラブ以上／以下、タラップ上から何段目 等）"], "b": ["故障状況の確認 → <b>引込盤ブレーカー又は主幹ブレーカーが落ちていないか</b>", "<b>責任者へ連絡</b>（責任者から電気保安協会へ）"], "r": ["<b>長時間停電の場合</b>", "客先指示の下、可搬式発電機の設置 又は 吸引車の手配", "<b>判断水位の目安は中間スラブ以上</b>", "バイパス管あり：あけぼの汚水中継ポンプ所（雨水管?）／広里橋汚水中継ポンプ所（圧送先MH?）", "【管内貯留、可搬式発電機の優先順位等 要調査】"], "f": ["電圧が200Vであることを確認", "汚水ポンプの自動運転を確認", "非常通報装置の表示確認、<b>発報試験を実施</b>", "※バッテリー低下でシステムデータが消え通報できなくなる場合あり（表示「EO○」）", "<b>●過去にデータ消去・エラーが発生：陸上競技場</b>"]}];
+const CALLS = [
+  {n:"責任者", t:"000-0000-0000"},
+  {n:"電気保安協会", t:"000-0000-0000"},
+  {n:"深川浄化センター", t:"000-0000-0000"}
+];
+
+const KEY = "teiden_state_v1";
+let fi = -1, tab = "a";
+let st = {};
+
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(st)); }catch(e){} }
+function load(){
+  try{ st = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; }catch(e){ st = {}; }
+  F.forEach(f=>{
+    if(!st[f.id]) st[f.id] = {};
+    ["a","b","f"].forEach(k=>{
+      if(!Array.isArray(st[f.id][k]) || st[f.id][k].length !== f[k].length) st[f.id][k] = f[k].map(()=>false);
+    });
+  });
+}
+
+const home = document.getElementById("home");
+const view = document.getElementById("view");
+const ttl = document.getElementById("ttl");
+const prog = document.getElementById("prog");
+const backBtn = document.getElementById("back");
+const resetBtn = document.getElementById("reset");
+
+function renderHome(){
+  home.classList.remove("hide"); view.classList.add("hide");
+  backBtn.classList.add("hide"); resetBtn.classList.add("hide");
+  ttl.textContent = "停電対応手順"; prog.textContent = "";
+  home.innerHTML = `<div class="lead"><h2>まず受電電圧を見る</h2>
+    <p>施設を選ぶと、<b>0V（北電側停電）</b>・<b>施設側停電</b>・<b>復電</b>の3つに分かれる。</p></div>
+    <div class="pick">` + F.map((f,i)=>
+    `<button type="button" class="dbtn" data-f="${i}"><span class="dn">${f.name}</span>
+     <span class="dp">${f.volt}</span></button>`).join("") + `</div>`;
+}
+
+function renderView(){
+  home.classList.add("hide"); view.classList.remove("hide");
+  backBtn.classList.remove("hide"); resetBtn.classList.remove("hide");
+  const f = F[fi], s = st[f.id];
+  ttl.textContent = f.name;
+  const list = f[tab];
+  const cnt = s[tab].filter(Boolean).length;
+  prog.textContent = cnt + " / " + list.length;
+  const label = {a:"0V<br>北電側", b:f.volt+"<br>施設側", f:"復電"};
+  view.innerHTML = `
+    <div class="lead"><h2>確認する場所</h2><p>${f.where}</p></div>
+    <div class="tabs">
+      ${["a","b","f"].map(k=>`<button type="button" class="tab ${k===tab?'on':''}" data-tab="${k}">${label[k]}</button>`).join("")}
+    </div>
+    <div class="card">
+      <ul>${list.map((t,i)=>
+        `<li><label><input type="checkbox" data-step="${i}"${s[tab][i]?" checked":""}><span class="nm">${t}</span></label></li>`
+      ).join("")}</ul>
+    </div>
+    <div class="calls"><h3>連絡先</h3>
+      ${CALLS.map(c=>`<a class="call todo" href="tel:${c.t.replace(/-/g,"")}">
+        <span class="cn">${c.n}</span><span class="ct">${c.t}</span></a>`).join("")}
+    </div>
+    ${f.r && f.r.length ? `<div class="note">${f.r.join("<br>・")}</div>` : ""}`;
+}
+
+function render(){ if(fi < 0) renderHome(); else renderView(); }
+
+home.addEventListener("click", e=>{
+  const b = e.target.closest("[data-f]");
+  if(!b) return;
+  fi = +b.dataset.f; tab = "a"; window.scrollTo(0,0); render();
+});
+view.addEventListener("click", e=>{
+  const b = e.target.closest("[data-tab]");
+  if(!b) return;
+  tab = b.dataset.tab; window.scrollTo(0,0); render();
+});
+backBtn.addEventListener("click", ()=>{ fi = -1; render(); });
+resetBtn.addEventListener("click", ()=>{
+  if(!window.confirm(F[fi].name + "のチェックを全部外す？")) return;
+  const f = F[fi];
+  ["a","b","f"].forEach(k=> st[f.id][k] = f[k].map(()=>false));
+  save(); render();
+});
+document.addEventListener("change", e=>{
+  const t = e.target;
+  if(!t.dataset || t.dataset.step === undefined || fi < 0) return;
+  st[F[fi].id][tab][+t.dataset.step] = t.checked; save();
+});
+
+load(); render();
+</script>
+
+</body>
+</html>

@@ -3,96 +3,157 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>マニュアル</title>
-<meta name="theme-color" content="#14181c">
+</head>
+<body>
+<title>深川事業所</title>
+<meta name="theme-color" content="#0f6d8c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="マニュアル">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="深川">
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
 <style>
+
   html{background:#fff;color-scheme:light}
   :root{
     --ink:#14181c; --ink-2:#4d5762; --ink-3:#8a949f;
     --line:#dde3e8; --line-2:#eef2f5;
     --paper:#ffffff; --panel:#f6f8fa;
-    --a:#0f6d8c; --b:#9a5b12;
+    --go:#0f6d8c; --warn:#a8341f; --done:#1d7a4d;
     --font:"Noto Sans JP",-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",sans-serif;
     --num:"Roboto Condensed",var(--font);
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);
-       -webkit-text-size-adjust:100%;padding:0 0 40px}
-  .wrap{max-width:620px;margin:0 auto;padding:0 14px}
+       -webkit-text-size-adjust:100%;padding-bottom:70px}
+  .wrap{max-width:620px;margin:0 auto;padding:0 12px}
 
-  header{border-bottom:1px solid var(--line);padding:18px 0 14px;margin-bottom:6px}
-  header h1{margin:0;font-size:19px;font-weight:700;letter-spacing:.02em}
-  header p{margin:5px 0 0;font-size:13px;color:var(--ink-2)}
+  /* ヘッダ */
+  .bar{position:sticky;top:0;z-index:10;background:var(--paper);border-bottom:1px solid var(--line);
+       padding:9px 12px;display:flex;align-items:center;gap:10px}
+  .bar .ttl{font-size:15px;font-weight:700;letter-spacing:.02em}
+  .bar .prog{margin-left:auto;font-family:var(--num);font-size:15px;font-weight:700;
+             color:var(--ink-2);font-variant-numeric:tabular-nums}
+  .bar button{appearance:none;border:1px solid var(--line);background:var(--paper);
+       color:var(--ink-2);font-family:var(--font);font-weight:700;font-size:13px;
+       padding:7px 11px;border-radius:8px;cursor:pointer;white-space:nowrap}
 
-  a.item{display:block;text-decoration:none;color:inherit;
-         border:1px solid var(--line);border-radius:12px;
-         padding:17px 18px;margin-top:13px;background:var(--paper)}
-  a.item:active{background:var(--panel)}
-  .item .t{font-size:19px;font-weight:700;line-height:1.3}
-  .item .d{margin-top:5px;font-size:13.5px;color:var(--ink-2);line-height:1.55}
-  .item .tag{display:inline-block;margin-bottom:7px;font-size:11px;font-weight:700;
-             letter-spacing:.09em;padding:3px 8px;border-radius:5px;
-             background:var(--panel);color:var(--ink-2)}
-  .item.a .tag{background:#e8f2f6;color:var(--a)}
-  .item.b .tag{background:#f7efe4;color:var(--b)}
+  /* 出発前 */
+  .depart{border:2px solid var(--warn);border-radius:12px;padding:13px 14px;margin:14px 0 18px}
+  .depart h2{margin:0 0 4px;font-size:16px;font-weight:700;color:var(--warn)}
+  .depart p{margin:0 0 9px;font-size:13px;color:var(--ink-2);line-height:1.5}
 
-  .soon{border:1px dashed var(--line);border-radius:12px;padding:15px 18px;margin-top:13px;
-        color:var(--ink-3);font-size:14px;line-height:1.6}
-  .soon .t{font-weight:700;font-size:15px;color:var(--ink-3)}
+  /* 現在地カード */
+  .card{margin:16px 0}
+  .num{font-family:var(--num);font-size:15px;font-weight:700;color:var(--ink-3);
+       letter-spacing:.08em}
+  .name{font-size:23px;font-weight:700;line-height:1.25;margin:2px 0 0}
+  .kind{font-size:13px;color:var(--ink-2);margin-top:3px}
+  .note{margin-top:11px;border-left:4px solid var(--warn);background:#fdf4f2;
+        padding:9px 12px;border-radius:0 8px 8px 0;font-size:14.5px;line-height:1.55;
+        color:var(--ink);font-weight:500}
+  .note b{color:var(--warn)}
 
-  footer{margin-top:26px;padding-top:14px;border-top:1px solid var(--line-2);
-         font-size:12px;color:var(--ink-3);line-height:1.7}
+  /* ナビボタン */
+  .nav{display:block;width:100%;margin-top:13px;text-align:center;text-decoration:none;
+       background:var(--go);color:#fff;font-weight:700;font-size:17px;
+       padding:15px;border-radius:11px;letter-spacing:.03em}
+  .nav.off{background:var(--panel);color:var(--ink-3);border:1px dashed var(--line)}
+
+  /* チェック */
+  ul{list-style:none;margin:15px 0 0;padding:0}
+  li label{display:flex;align-items:center;gap:12px;padding:13px 2px;
+           border-bottom:1px solid var(--line-2);cursor:pointer;font-size:16.5px;line-height:1.3}
+  li:last-child label{border-bottom:0}
+  input[type=checkbox]{appearance:none;width:24px;height:24px;flex:0 0 auto;
+    border:2px solid var(--ink-3);border-radius:6px;background:var(--paper);cursor:pointer}
+  input[type=checkbox]:checked{background:var(--ink);border-color:var(--ink)}
+  input[type=checkbox]:checked::after{content:"";display:block;width:6px;height:12px;
+    margin:1px 0 0 6px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+  input:checked + .nm{color:var(--ink-3);text-decoration:line-through}
+  .nm{flex:1}
+
+  /* 次へ */
+  .next{position:fixed;left:0;right:0;bottom:0;background:var(--paper);
+        border-top:1px solid var(--line);padding:10px 12px;
+        padding-bottom:calc(10px + env(safe-area-inset-bottom))}
+  .next .inner{max-width:620px;margin:0 auto;display:flex;gap:9px}
+  .next button{flex:1;appearance:none;border:0;border-radius:11px;padding:15px;
+       font-family:var(--font);font-weight:700;font-size:16.5px;cursor:pointer;
+       background:var(--ink);color:#fff}
+  .next button.sub{flex:0 0 auto;background:var(--panel);color:var(--ink-2);
+       border:1px solid var(--line);padding:15px 17px;font-size:15px}
+  .next button:disabled{opacity:.4}
+
+  /* 一覧 */
+  .list{margin:12px 0}
+  .row{display:flex;align-items:center;gap:11px;width:100%;text-align:left;
+       appearance:none;background:var(--paper);border:0;border-bottom:1px solid var(--line-2);
+       padding:13px 3px;font-family:var(--font);font-size:16px;color:var(--ink);cursor:pointer}
+  .row .n{font-family:var(--num);font-weight:700;color:var(--ink-3);flex:0 0 26px}
+  .row .t{flex:1}
+  .row .s{font-size:12px;font-weight:700;letter-spacing:.06em}
+  .row.done .t{color:var(--ink-3);text-decoration:line-through}
+  .row.done .s{color:var(--done)}
+  .row.cur{background:#f2f8fb}
+  .row.cur .n{color:var(--go)}
+
+  .fin{padding:44px 0;text-align:center}
+  .fin .big{font-size:21px;font-weight:700}
+  .fin .sub{margin-top:7px;font-size:14px;color:var(--ink-2)}
+  /* 地区えらび */
+  .pick{margin:18px 0;display:flex;flex-direction:column;gap:11px}
+  .dbtn{display:flex;align-items:center;gap:12px;width:100%;text-align:left;appearance:none;
+        background:var(--paper);border:1px solid var(--line);border-radius:12px;
+        padding:18px 16px;font-family:var(--font);cursor:pointer}
+  .dbtn .dn{font-size:21px;font-weight:700;color:var(--ink)}
+  .dbtn .ds{font-size:13px;color:var(--ink-2)}
+  .dbtn .dp{margin-left:auto;font-family:var(--num);font-size:16px;font-weight:700;color:var(--ink-3);
+            font-variant-numeric:tabular-nums}
+  .hide{display:none!important}
+
+  .menu{margin:18px 0;display:flex;flex-direction:column;gap:11px}
+  .m{display:block;text-decoration:none;background:var(--paper);border:1px solid var(--line);
+     border-radius:12px;padding:17px 16px}
+  .m .mt{font-size:20px;font-weight:700;color:var(--ink);line-height:1.3}
+  .m .ms{margin-top:4px;font-size:13px;color:var(--ink-2)}
 </style>
-</head>
-<body>
-<div class="wrap">
 
-  <header>
-    <h1>マニュアル</h1>
-    <p>深川浄化センター</p>
-  </header>
-
-  <a class="item a" href="junkai/">
-    <span class="tag">場外点検</span>
-    <div class="t">ポンプ所巡回</div>
-    <div class="d">15か所を順に回る。ナビ付き。出発前の積み込みから帰着まで。</div>
-  </a>
-
-  <a class="item b" href="shikomi/">
-    <span class="tag">分析準備</span>
-    <div class="t">磁皿・ろ紙</div>
-    <div class="d">その朝に用意する次回分の枚数。日付タブで週の全日ぶん。</div>
-  </a>
-
-  <div class="soon">
-    <div class="t">この先ここに増える</div>
-    ポンプ場（錦町・公園通）／マンホール内部作業／分析の手順（簡易・日常・中試験）／浄化センター内の作業
-  </div>
-
-  <footer>
-    現場で使う手順書。中身が変わったら差し替える。<br>
-    分からないことや違っていたことは、その場で残しておく。
-  </footer>
-
+<div class="bar">
+  <span class="ttl">深川事業所</span>
 </div>
+
+<div class="wrap">
+  <div class="menu">
+    <a class="m" href="junkai/"><div class="mt">P所巡回</div><div class="ms">深川15・音江4・納内2・多度志3</div></a>
+    <a class="m" href="naibu/"><div class="mt">マンホール内部点検</div><div class="ms">2人以上。所を選んで入る</div></a>
+    <a class="m" href="pjo/"><div class="mt">ポンプ場点検</div><div class="ms">④錦町・⑰公園通</div></a>
+    <a class="m" href="teiden/"><div class="mt">停電対応</div><div class="ms">6区分。0V／施設側／復電</div></a>
+    <a class="m" href="bunseki/"><div class="mt">分析準備</div><div class="ms">磁皿・ろ紙の枚数</div></a>
+  </div>
+</div>
+
 <script>
 (function(){
   try{
     const icon = new URL("icon.png", location.href).href;
-    const mf = {name:"マニュアル", short_name:"マニュアル", start_url:location.href, scope:"./",
-      display:"standalone", background_color:"#ffffff", theme_color:"#14181c",
-      icons:[{src:icon,sizes:"512x512",type:"image/png",purpose:"any"},
-             {src:icon,sizes:"512x512",type:"image/png",purpose:"maskable"}]};
+    const mf = {
+      name: "深川事業所", short_name: "深川",
+      start_url: location.href, scope: "./", display: "standalone",
+      orientation: "portrait", background_color: "#ffffff", theme_color: "#0f6d8c",
+      icons: [
+        {src: icon, sizes: "512x512", type: "image/png", purpose: "any"},
+        {src: icon, sizes: "512x512", type: "image/png", purpose: "maskable"}
+      ]
+    };
+    const url = URL.createObjectURL(new Blob([JSON.stringify(mf)], {type:"application/manifest+json"}));
     const l = document.createElement("link");
-    l.rel="manifest"; l.href=URL.createObjectURL(new Blob([JSON.stringify(mf)],{type:"application/manifest+json"}));
+    l.rel = "manifest"; l.href = url;
     document.head.appendChild(l);
   }catch(e){}
 })();
 </script>
+
 </body>
 </html>
