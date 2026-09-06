@@ -28,16 +28,17 @@
 
   /* ヘッダ */
   .bar{position:sticky;top:0;z-index:10;background:var(--paper);border-bottom:1px solid var(--line);
-       padding:9px 12px;display:flex;align-items:center;gap:10px}
-  .bar .ttl{font-size:15px;font-weight:700;letter-spacing:.02em;white-space:nowrap}
+       padding:9px 10px;display:flex;align-items:center;gap:7px}
+  .bar .ttl{font-size:15px;font-weight:700;letter-spacing:.02em;white-space:nowrap;
+             min-width:0;overflow:hidden;text-overflow:ellipsis}
   .bar .prog{margin-left:auto;font-family:var(--num);font-size:15px;font-weight:700;
              color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap}
   .bar button{appearance:none;border:1px solid var(--line);background:var(--paper);
-       color:var(--ink-2);font-family:var(--font);font-weight:700;font-size:13px;
-       padding:7px 11px;border-radius:8px;cursor:pointer;white-space:nowrap}
+       color:var(--ink-2);font-family:var(--font);font-weight:700;font-size:12.5px;
+       padding:7px 9px;border-radius:8px;cursor:pointer;white-space:nowrap;flex:0 0 auto}
   .bar a.home{appearance:none;border:1px solid var(--line);background:var(--paper);
-       color:var(--ink-2);font-family:var(--font);font-weight:700;font-size:13px;
-       padding:7px 11px;border-radius:8px;cursor:pointer;white-space:nowrap;
+       color:var(--ink-2);font-family:var(--font);font-weight:700;font-size:12.5px;
+       padding:7px 9px;border-radius:8px;cursor:pointer;white-space:nowrap;flex:0 0 auto;
        text-decoration:none;line-height:1;display:inline-flex;align-items:center}
 
   /* 出発前 */
@@ -105,13 +106,13 @@
   .fin .big{font-size:21px;font-weight:700}
   .fin .sub{margin-top:7px;font-size:14px;color:var(--ink-2)}
   /* 地区えらび */
-  .pick{margin:18px 0;display:flex;flex-direction:column;gap:11px}
+  .pick{margin:18px 0;display:flex;flex-direction:column;gap:13px}
   .dbtn{display:flex;align-items:center;gap:12px;width:100%;text-align:left;appearance:none;
-        background:var(--paper);border:1px solid var(--line);border-radius:12px;
-        padding:18px 16px;font-family:var(--font);cursor:pointer}
-  .dbtn .dn{font-size:21px;font-weight:700;color:var(--ink)}
-  .dbtn .ds{font-size:13px;color:var(--ink-2)}
-  .dbtn .dp{margin-left:auto;font-family:var(--num);font-size:16px;font-weight:700;color:var(--ink-3);
+        background:var(--paper);border:1px solid var(--line);border-radius:14px;
+        padding:26px 18px;font-family:var(--font);cursor:pointer}
+  .dbtn .dn{font-size:30px;font-weight:700;color:var(--ink);letter-spacing:.04em}
+  .dbtn .ds{font-size:15px;color:var(--ink-2)}
+  .dbtn .dp{margin-left:auto;font-family:var(--num);font-size:19px;font-weight:700;color:var(--ink-3);
             font-variant-numeric:tabular-nums}
   .hide{display:none!important}
 </style>
