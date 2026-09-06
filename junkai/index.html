@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ポンプ所巡回</title>
+<title>P所巡回</title>
 <meta name="theme-color" content="#0f6d8c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -114,7 +114,7 @@
 <body>
 
 <div class="bar">
-  <span class="ttl" id="ttl">ポンプ所巡回</span>
+  <span class="ttl" id="ttl">P所巡回</span>
   <span class="prog" id="prog"></span>
   <button type="button" id="back">地区</button>
   <button type="button" id="toggle">一覧</button>
@@ -145,7 +145,7 @@
   try{
     const icon = new URL("../icon.png", location.href).href;
     const mf = {
-      name: "ポンプ所巡回",
+      name: "P所巡回",
       short_name: "巡回",
       start_url: location.href,
       scope: "./",
@@ -303,7 +303,7 @@ function renderHome(){
   view.classList.add("hide"); listView.classList.add("hide");
   departBox.classList.add("hide"); nextBar.classList.add("hide");
   toggleBtn.classList.add("hide"); resetBtn.classList.add("hide"); backBtn.classList.add("hide");
-  ttl.textContent = "ポンプ所巡回";
+  ttl.textContent = "P所巡回";
   prog.textContent = "";
   home.innerHTML = "<div class='pick'>" + D.map((d,i)=>{
     const s = st[d.id], t = d.list.length - 1;
