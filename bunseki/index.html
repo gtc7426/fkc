@@ -32,6 +32,13 @@
   .wrap{max-width:640px;margin:0 auto;padding:0 12px}
 
   /* タブ */
+  .bar{background:var(--paper);border-bottom:1px solid var(--line);
+       padding:9px 12px;display:flex;align-items:center;gap:10px}
+  .bar .ttl{font-size:15px;font-weight:700;letter-spacing:.02em}
+  .bar a.home{appearance:none;border:1px solid var(--line);background:var(--paper);
+       color:var(--ink-2);font-family:var(--font);font-weight:700;font-size:13px;
+       padding:7px 11px;border-radius:8px;cursor:pointer;white-space:nowrap;
+       text-decoration:none;line-height:1;display:inline-flex;align-items:center}
   .tabs{position:sticky;top:0;z-index:5;background:var(--paper);
         border-bottom:1px solid var(--line);
         display:flex;gap:6px;overflow-x:auto;padding:8px 12px;
@@ -107,6 +114,11 @@
 </style>
 </head>
 <body>
+
+<div class="bar">
+  <a class="home" href="../">メニュー</a>
+  <span class="ttl">分析準備</span>
+</div>
 
 <div class="tabs" id="tabs" role="tablist"></div>
 <div class="wrap"><div id="view"></div></div>

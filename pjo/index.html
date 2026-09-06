@@ -35,6 +35,10 @@
   .bar button{appearance:none;border:1px solid var(--line);background:var(--paper);
        color:var(--ink-2);font-family:var(--font);font-weight:700;font-size:13px;
        padding:7px 11px;border-radius:8px;cursor:pointer;white-space:nowrap}
+  .bar a.home{appearance:none;border:1px solid var(--line);background:var(--paper);
+       color:var(--ink-2);font-family:var(--font);font-weight:700;font-size:13px;
+       padding:7px 11px;border-radius:8px;cursor:pointer;white-space:nowrap;
+       text-decoration:none;line-height:1;display:inline-flex;align-items:center}
 
   /* 出発前 */
   .depart{border:2px solid var(--warn);border-radius:12px;padding:13px 14px;margin:14px 0 18px}
@@ -115,6 +119,7 @@
 <body>
 
 <div class="bar">
+  <a class="home" href="../">メニュー</a>
   <span class="ttl">P場点検</span>
   <span class="prog" id="prog"></span>
   <button type="button" id="toggle">一覧</button>
@@ -139,7 +144,7 @@
 </div>
 
 <script>
-const P = [{"n": "④", "name": "錦町汚水中継ポンプ場", "ll": "", "note": "資料待ち。建物あり。", "steps": ["設備点検（中身 未確定）", "洗砂作業（中身 未確定）", "運転切替（中身 未確定）"]}, {"n": "⑰", "name": "公園通汚水中継ポンプ場", "ll": "", "note": "<b>運転切替がここだけ違う</b>（盤の手順書 2022.03.20）。※水位が来れば自動で回るので、手動で回してから自動に戻す必要はない。※切替後に全台停止していても問題ない。", "steps": ["設備点検（中身 未確定）", "洗砂作業（中身 未確定）", "【切替1】汚水ポンプ運転制御が<b>自動</b>になっていることを確認", "【切替2】運転制御を <b>自動 → 手動</b> に切り替える", "【切替3】汚水ポンプを手動で<b>全て停止</b>する", "【切替4】運転順序選択スイッチを操作し、運転切替を行う", "【切替5】全て停止したまま、運転制御を <b>手動 → 自動</b> に戻す"]}];
+const P = [{"n": "", "name": "錦町汚水中継ポンプ場", "ll": "", "note": "資料待ち。建物あり。", "steps": ["設備点検（中身 未確定）", "洗砂作業（中身 未確定）", "運転切替（中身 未確定）"]}, {"n": "", "name": "公園通汚水中継ポンプ場", "ll": "", "note": "<b>運転切替がここだけ違う</b>（盤の手順書 2022.03.20）。※水位が来れば自動で回るので、手動で回してから自動に戻す必要はない。※切替後に全台停止していても問題ない。", "steps": ["設備点検（中身 未確定）", "洗砂作業（中身 未確定）", "【切替1】汚水ポンプ運転制御が<b>自動</b>になっていることを確認", "【切替2】運転制御を <b>自動 → 手動</b> に切り替える", "【切替3】汚水ポンプを手動で<b>全て停止</b>する", "【切替4】運転順序選択スイッチを操作し、運転切替を行う", "【切替5】全て停止したまま、運転制御を <b>手動 → 自動</b> に戻す"]}];
 const DEPART = ["タブレット", "車の鍵", "（積み込みの中身 未確定）"];
 P.push({n:"⛳", name:"深川浄化センターへ戻る", ll:"43.70768621628015,142.0319488095895", note:"", steps:["戻った"]});
 
@@ -186,7 +191,7 @@ function render(){
     listView.classList.remove("hide"); nextBar.classList.add("hide");
     listView.innerHTML = P.map((p,i)=>
       `<button type="button" class="row ${done[i]?'done':''} ${i===cur?'cur':''}" data-go="${i}">
-        <span class="n">${p.n}</span><span class="t">${p.name}</span>
+        ${p.n ? `<span class="n">${p.n}</span>` : ""}<span class="t">${p.name}</span>
         <span class="s">${done[i]?'済':''}</span></button>`).join("");
     return;
   }
@@ -196,7 +201,7 @@ function render(){
   const isLast = cur === P.length - 1;
   view.innerHTML = `
     <div class="card">
-      <div class="num">${p.n}</div>
+      ${p.n ? `<div class="num">${p.n}</div>` : ""}
       <div class="name">${p.name}</div>
       ${p.note ? `<div class="note">${p.note}</div>` : ""}
       ${p.ll ? `<a class="nav" href="${navUrl(p.ll)}" rel="noopener">ここへ案内</a>`

@@ -36,6 +36,10 @@
   .bar button{appearance:none;border:1px solid var(--line);background:var(--paper);
        color:var(--ink-2);font-family:var(--font);font-weight:700;font-size:13px;
        padding:7px 11px;border-radius:8px;cursor:pointer;white-space:nowrap}
+  .bar a.home{appearance:none;border:1px solid var(--line);background:var(--paper);
+       color:var(--ink-2);font-family:var(--font);font-weight:700;font-size:13px;
+       padding:7px 11px;border-radius:8px;cursor:pointer;white-space:nowrap;
+       text-decoration:none;line-height:1;display:inline-flex;align-items:center}
 
   /* 出発前 */
   .depart{border:2px solid var(--warn);border-radius:12px;padding:13px 14px;margin:14px 0 18px}
@@ -127,10 +131,12 @@
 <body>
 
 <div class="bar">
+  <a class="home" href="../">メニュー</a>
   <span class="ttl" id="ttl">マンホール内部点検</span>
   <span class="prog" id="prog"></span>
   <button type="button" id="back">選び直す</button>
   <button type="button" id="toggle">一覧</button>
+  <button type="button" id="reset">リセット</button>
 </div>
 
 <div class="wrap">
@@ -152,7 +158,7 @@
 </div>
 
 <script>
-const SITES = [{"d": "深川", "n": "①", "name": "開西町", "ll": "43.709387623292955,142.0125255851098"}, {"d": "深川", "n": "②", "name": "文光町", "ll": "43.71324809932045,142.02001242337272"}, {"d": "深川", "n": "③", "name": "拓大", "ll": "43.71832825434898,142.02299307627956"}, {"d": "深川", "n": "⑤", "name": "堺川雨水幹線", "ll": "43.72394108074986,142.04024028999405"}, {"d": "深川", "n": "⑥", "name": "堺町", "ll": "43.72449767468144,142.04596277158336"}, {"d": "深川", "n": "⑦", "name": "北光町", "ll": "43.7325717751852,142.03946540254876"}, {"d": "深川", "n": "⑧", "name": "大鳳川1号雨水幹線", "ll": "43.741234599466424,142.03689621757945"}, {"d": "深川", "n": "⑨", "name": "あけぼの", "ll": "43.74192098244028,142.03810793282625"}, {"d": "深川", "n": "⑩", "name": "桜坂", "ll": "43.743229791218944,142.04079652627135"}, {"d": "深川", "n": "⑪", "name": "稲穂町", "ll": "43.72739356567422,142.05039506985594"}, {"d": "深川", "n": "⑫", "name": "蓬莱町", "ll": "43.724873427770454,142.05609480340163"}, {"d": "深川", "n": "⑬", "name": "二十四孝", "ll": "43.72652871701054,142.06606685192006"}, {"d": "深川", "n": "⑭", "name": "一已8丁目", "ll": "43.72438293768381,142.06724482883993"}, {"d": "深川", "n": "⑮", "name": "陸上競技場", "ll": "43.72307868209763,142.06601417735737"}, {"d": "深川", "n": "⑯", "name": "運動公園", "ll": "43.721856883013416,142.06129340601865"}, {"d": "音江", "n": "P1", "name": "広里橋ポンプ所", "ll": "43.70280381853278,142.06656391451864"}, {"d": "音江", "n": "P2", "name": "音江橋ポンプ所", "ll": "43.6976184687923,142.07912590032063"}, {"d": "音江", "n": "P3", "name": "新橋溜池ポンプ所", "ll": "43.692345437381746,142.06950087778202"}, {"d": "音江", "n": "P4", "name": "柳橋ポンプ所", "ll": "43.697671875166286,142.05099618312684"}, {"d": "納内", "n": "㉒", "name": "8区マンホールポンプ所", "ll": "43.728732137525526,142.1274779518117"}, {"d": "納内", "n": "㉓", "name": "10区マンホールポンプ所", "ll": "43.726208096751506,142.12972120036534"}, {"d": "多度志", "n": "1", "name": "中央ポンプ所", "ll": "43.81021444475322,142.02932797368857"}, {"d": "多度志", "n": "2", "name": "弥栄ポンプ所", "ll": "43.81399048467062,142.0319491350166"}, {"d": "多度志", "n": "3", "name": "下多度志ポンプ所", "ll": "43.81027829856542,142.02356460896397"}];
+const SITES = [{"d": "深川", "n": "①", "name": "開西町", "ll": "43.709387623292955,142.0125255851098"}, {"d": "深川", "n": "②", "name": "文光町", "ll": "43.71324809932045,142.02001242337272"}, {"d": "深川", "n": "③", "name": "拓大", "ll": "43.71832825434898,142.02299307627956"}, {"d": "深川", "n": "④", "name": "堺川雨水幹線", "ll": "43.72394108074986,142.04024028999405"}, {"d": "深川", "n": "⑤", "name": "堺町", "ll": "43.72449767468144,142.04596277158336"}, {"d": "深川", "n": "⑥", "name": "北光町", "ll": "43.7325717751852,142.03946540254876"}, {"d": "深川", "n": "⑦", "name": "大鳳川1号雨水幹線", "ll": "43.741234599466424,142.03689621757945"}, {"d": "深川", "n": "⑧", "name": "あけぼの", "ll": "43.74192098244028,142.03810793282625"}, {"d": "深川", "n": "⑨", "name": "桜坂", "ll": "43.743229791218944,142.04079652627135"}, {"d": "深川", "n": "⑩", "name": "稲穂町", "ll": "43.72739356567422,142.05039506985594"}, {"d": "深川", "n": "⑪", "name": "蓬莱町", "ll": "43.724873427770454,142.05609480340163"}, {"d": "深川", "n": "⑫", "name": "二十四孝", "ll": "43.72652871701054,142.06606685192006"}, {"d": "深川", "n": "⑬", "name": "一已8丁目", "ll": "43.72438293768381,142.06724482883993"}, {"d": "深川", "n": "⑭", "name": "陸上競技場", "ll": "43.72307868209763,142.06601417735737"}, {"d": "深川", "n": "⑮", "name": "運動公園", "ll": "43.721856883013416,142.06129340601865"}, {"d": "音江", "n": "", "name": "広里橋ポンプ所", "ll": "43.70280381853278,142.06656391451864"}, {"d": "音江", "n": "", "name": "音江橋ポンプ所", "ll": "43.6976184687923,142.07912590032063"}, {"d": "音江", "n": "", "name": "新橋溜池ポンプ所", "ll": "43.692345437381746,142.06950087778202"}, {"d": "音江", "n": "", "name": "柳橋ポンプ所", "ll": "43.697671875166286,142.05099618312684"}, {"d": "納内", "n": "", "name": "8区マンホールポンプ所", "ll": "43.728732137525526,142.1274779518117"}, {"d": "納内", "n": "", "name": "10区マンホールポンプ所", "ll": "43.726208096751506,142.12972120036534"}, {"d": "多度志", "n": "", "name": "中央ポンプ所", "ll": "43.81021444475322,142.02932797368857"}, {"d": "多度志", "n": "", "name": "弥栄ポンプ所", "ll": "43.81399048467062,142.0319491350166"}, {"d": "多度志", "n": "", "name": "下多度志ポンプ所", "ll": "43.81027829856542,142.02356460896397"}];
 const STEPS = [{"t": "車を停める・周囲の安全確保", "w": false}, {"t": "蓋を開ける", "w": false}, {"t": "開口部を板・毛布で養生", "w": false}, {"t": "三脚を立てる（地面の傾きを見る）", "w": false}, {"t": "発電機を始動 → 送風機で換気", "w": false}, {"t": "ガス検知器のセンサーを下へ降ろす", "w": false}, {"t": "酸素と硫化水素を見て、降りられるか判断する", "w": false}, {"t": "安全ブロックを装着", "w": false}, {"t": "下の人が降りる", "w": true}, {"t": "フロートの確認と清掃", "w": true}, {"t": "ポンプの状態を確認（吊るならチェーンブロック）", "w": true}, {"t": "異常が無いか目視", "w": true}, {"t": "オイル交換（やる日のみ）", "w": true}, {"t": "下の人が上がる", "w": true}, {"t": "三脚・安全ブロックを撤収", "w": false}, {"t": "送風機・発電機を止める", "w": false}, {"t": "養生を外す", "w": false}, {"t": "蓋を閉める", "w": false}];
 const LOAD = ["発電機の燃料が入っているか（現地で足せない）", "発電機", "送風機とダクト", "ガス検知器（酸素・硫化水素／電池）", "三脚", "チェーンブロック", "安全ブロック", "板・毛布（養生）", "マンホールを開ける道具（バール／フック）", "オイル交換の用具とオイル（やる日のみ）", "車の鍵", "制御盤のカギ", "タブレット"];
 
@@ -178,6 +184,7 @@ const nextBtn = document.getElementById("nextBtn");
 const prevBtn = document.getElementById("prevBtn");
 const toggleBtn = document.getElementById("toggle");
 const backBtn = document.getElementById("back");
+const resetBtn = document.getElementById("reset");
 
 function navUrl(ll){
   return "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(ll) + "&travelmode=driving";
@@ -187,7 +194,7 @@ function renderHome(){
   home.classList.remove("hide");
   loadBox.classList.add("hide"); view.classList.add("hide");
   listView.classList.add("hide"); nextBar.classList.add("hide");
-  toggleBtn.classList.add("hide"); backBtn.classList.add("hide");
+  toggleBtn.classList.add("hide"); backBtn.classList.add("hide"); resetBtn.classList.add("hide");
   ttl.textContent = "マンホール内部点検"; prog.textContent = "";
   const picked = window.__pick || [];
   let h = `<div class="warn2"><h2>入る前に</h2><p>2人以上。上に残る人がこの画面を持つ。
@@ -196,7 +203,7 @@ function renderHome(){
   SITES.forEach((s,i)=>{
     if(s.d !== last){ h += `<h3>${s.d}</h3>`; last = s.d; }
     h += `<li style="list-style:none"><label><input type="checkbox" data-pick="${i}"${picked.includes(i)?" checked":""}>
-      <span class="nm">${s.n} ${s.name}</span></label></li>`;
+      <span class="nm">${s.n ? s.n+" " : ""}${s.name}</span></label></li>`;
   });
   h += `</div><button type="button" class="go" id="goBtn"${picked.length?"":" disabled"}>この${picked.length}か所で始める</button>`;
   home.innerHTML = h;
@@ -210,7 +217,7 @@ function renderLoad(){
 function render(){
   if(!st){ renderHome(); return; }
   home.classList.add("hide");
-  toggleBtn.classList.remove("hide"); backBtn.classList.remove("hide");
+  toggleBtn.classList.remove("hide"); backBtn.classList.remove("hide"); resetBtn.classList.remove("hide");
   const total = st.pick.length;
   prog.textContent = st.done.filter(Boolean).length + " / " + total;
   ttl.textContent = "内部点検";
@@ -221,7 +228,7 @@ function render(){
     listView.innerHTML = st.pick.map((si,i)=>{
       const s = SITES[si];
       return `<button type="button" class="row ${st.done[i]?'done':''} ${i===cur?'cur':''}" data-go="${i}">
-        <span class="n">${s.n}</span><span class="t">${s.d}　${s.name}</span>
+        ${s.n ? `<span class="n">${s.n}</span>` : ""}<span class="t">${s.d}　${s.name}</span>
         <span class="s">${st.done[i]?'済':''}</span></button>`;
     }).join("");
     return;
@@ -233,7 +240,7 @@ function render(){
   const watching = STEPS.some((x,i)=> x.w && st.step[cur][i]) && !st.step[cur][13];
   view.innerHTML = `
     <div class="card">
-      <div class="num">${s.d}　${s.n}</div>
+      <div class="num">${s.d}${s.n ? "　"+s.n : ""}</div>
       <div class="name">${s.name}</div>
       ${s.ll ? `<a class="nav" href="${navUrl(s.ll)}" rel="noopener">ここへ案内</a>`
               : `<div class="nav off">座標 未登録</div>`}
@@ -272,6 +279,14 @@ backBtn.addEventListener("click", ()=>{
   window.__pick = st ? st.pick.slice() : [];
   st = null; try{ localStorage.removeItem(KEY); }catch(e){}
   showList = false; render();
+});
+resetBtn.addEventListener("click", ()=>{
+  if(!st) return;
+  if(!window.confirm("この" + st.pick.length + "か所を最初からやり直す？")) return;
+  st = {pick: st.pick.slice(), cur:0, done: st.pick.map(()=>false),
+        step: st.pick.map(()=>STEPS.map(()=>false)), load: LOAD.map(()=>false)};
+  cur = 0; showList = false; toggleBtn.textContent = "一覧";
+  save(); renderLoad(); render();
 });
 toggleBtn.addEventListener("click", ()=>{
   showList = !showList;
