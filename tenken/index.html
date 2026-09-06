@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>深川事業所</title>
+<title>点検</title>
 <meta name="theme-color" content="#0f6d8c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="マニュアル">
-<link rel="apple-touch-icon" href="icon.png">
+<meta name="apple-mobile-web-app-title" content="点検">
+<link rel="apple-touch-icon" href="../icon.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
 <style>
 
@@ -120,45 +120,35 @@
   .m.off{background:var(--panel);border-style:dashed}
   .m.off .mt{color:var(--ink-3)}
   .m.off .ms{color:var(--ink-3)}
-  .m.alert{border:2px solid var(--warn);background:#fdf4f2}
-  .m.alert .mt{color:var(--warn);font-size:23px}
-  .m.alert .ms{color:var(--warn)}
-  .sec{margin:26px 0 -2px;font-size:12px;font-weight:700;letter-spacing:.14em;
-       color:var(--ink-3);display:flex;align-items:center;gap:10px}
-  .sec::after{content:"";flex:1;height:1px;background:var(--line)}
-  .menu{gap:9px}
+  .bar a.home{border:1px solid var(--line);background:var(--paper);color:var(--ink-2);
+       font-weight:700;font-size:13px;padding:7px 11px;border-radius:8px;
+       text-decoration:none;line-height:1;display:inline-flex;align-items:center}
 </style>
 </head>
 <body>
 
 <div class="bar">
-  <span class="ttl">深川事業所</span>
+  <a class="home" href="../index.html">メニュー</a>
+  <span class="ttl">点検</span>
 </div>
 
 <div class="wrap">
   <div class="menu">
-    <a class="m alert" href="teiden/index.html"><div class="mt">停電対応</div><div class="ms">6区分。0V／施設側／復電</div></a>
-    <a class="m" href="suishitsu/index.html"><div class="mt">水質分析</div><div class="ms">分析準備・日常分析・中試験</div></a>
-    <a class="m" href="tenken/index.html"><div class="mt">点検</div><div class="ms">日常・月例・汚水P・計装・各機器・硫可重安</div></a>
-    <div class="m off"><div class="mt">加温</div><div class="ms">準備中</div></div>
-    <div class="m off"><div class="mt">日報・脱水</div><div class="ms">準備中</div></div>
-    <div class="m off"><div class="mt">音江</div><div class="ms">準備中</div></div>
-    <div class="m off"><div class="mt">納内</div><div class="ms">準備中</div></div>
-    <div class="m off"><div class="mt">多度志</div><div class="ms">準備中</div></div>
-    <a class="m" href="pjo/index.html"><div class="mt">P場点検</div><div class="ms">錦町・公園通</div></a>
-    <a class="m" href="junkai/index.html"><div class="mt">P所巡回</div><div class="ms">深川15・音江4・納内2・多度志3</div></a>
-    <a class="m" href="naibu/index.html"><div class="mt">P所マンホール内部</div><div class="ms">2人以上。所を選んで入る</div></a>
-    <div class="m off"><div class="mt">※P</div><div class="ms">公園通の軽い点検</div></div>
-    <div class="m off"><div class="mt">送・迎</div><div class="ms">準備中</div></div>
+    <div class="m off"><div class="mt">日常</div><div class="ms">準備中</div></div>
+    <div class="m off"><div class="mt">月例</div><div class="ms">準備中</div></div>
+    <div class="m off"><div class="mt">汚水P</div><div class="ms">準備中</div></div>
+    <div class="m off"><div class="mt">計装</div><div class="ms">準備中</div></div>
+    <div class="m off"><div class="mt">各機器</div><div class="ms">準備中</div></div>
+    <div class="m off"><div class="mt">硫可重安</div><div class="ms">準備中</div></div>
   </div>
 </div>
 
 <script>
 (function(){
   try{
-    const icon = new URL("icon.png", location.href).href;
+    const icon = new URL("../icon.png", location.href).href;
     const mf = {
-      name: "マニュアル", short_name: "マニュアル",
+      name: "点検", short_name: "点検",
       start_url: location.href, scope: "./", display: "standalone",
       orientation: "portrait", background_color: "#ffffff", theme_color: "#0f6d8c",
       icons: [
