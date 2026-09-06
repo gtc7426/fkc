@@ -170,11 +170,10 @@ const KEY = "naibu_state_v1";
 let st = null;
 let cur = 0, showList = false;
 
-function save(){ try{ localStorage.setItem(KEY, JSON.stringify(st)); }catch(e){} }
-function load(){
-  try{ st = JSON.parse(localStorage.getItem(KEY) || "null"); }catch(e){ st = null; }
-  if(st && (!Array.isArray(st.pick) || !st.pick.length)) st = null;
-}
+/* 開くたびに最初から。前回の選択も進捗も持ち越さない（うさぎの指示 2026/9/7）。
+   記録はタブレットに残るので、ここで持つ必要がない。 */
+function save(){}
+function load(){ st = null; try{ localStorage.removeItem(KEY); }catch(e){} }
 
 const home = document.getElementById("home");
 const loadBox = document.getElementById("load");
