@@ -50,6 +50,13 @@
   .route .x{color:var(--ink-3);font-weight:400;margin:0 4px}
   .who{margin-top:6px;font-size:14px;color:var(--ink-2);line-height:1.6}
   .none{font-size:17px;font-weight:700;color:var(--ink-3)}
+  .out{font-size:30px;font-weight:700;color:var(--warn);line-height:1.2;margin-bottom:4px}
+  .out span{font-size:14px;color:var(--ink-2);font-weight:700;margin-left:4px}
+  .pp{margin-top:12px;background:#f4f0e6;border-left:4px solid #8a6d1f;
+      padding:9px 12px;border-radius:0 8px 8px 0;font-size:14px;line-height:1.55}
+  .pp b{color:#8a6d1f}
+  .lock{margin-top:10px;font-size:14px;color:var(--ink-2);line-height:1.5}
+  .lock b{color:var(--ink)}
 
   .warn{margin-top:12px;border-left:4px solid var(--warn);background:#fdf4f2;
         padding:9px 12px;border-radius:0 8px 8px 0;font-size:14px;line-height:1.55;font-weight:500}
@@ -74,7 +81,10 @@
     社有車（サクシード）の行と各人の行から読んだもの。<br>
     朝の「送」は人を送るついでに<b>検水を採取</b>して持ち帰る便。<br>
     脱水のケーキ・投入・ろ液は<b>夕方の「迎」</b>で、現地で作業した人が持ち帰る。<br>
-    <b>予定表そのものに書き落としがある。</b>おかしい所は印を付けてある。
+    <b>予定表そのものに書き落としがある。</b>おかしい所は印を付けてある。<br><br>
+    <b>迎えの出発 目安</b>（社内資料より）<br>
+    15:20 出→多度志→納内→戻 ／ 15:30 出→納内→音江→戻 ／ 15:40 出→音江→戻<br>
+    <b>多度志が遠い</b>ので、多度志が入る日は早く出る。戻る時刻が揃うように決めてある。
   </div>
 </div>
 
@@ -95,27 +105,27 @@
 /* 2026/9/7〜9/13。原本 job\schedule\20260907-0913_schedule.png */
 const D = [
 {d:"9/7", w:"月",
- go:["音江"], back:["音江"],
+ go:["音江"], back:["音江"], out:"15:40",
  goWho:"加茂さんを音江へ", backWho:"加茂さんを迎えに",
  mine:"送", mineNote:"朝の送りが徳田。迎えは江口さん",
  samp:"音江は脱水・月例だけで<b>分析なし</b>。採水は無いはず"},
 {d:"9/8", w:"火",
- go:["音江"], back:["音江"],
+ go:["音江"], back:["音江"], out:"15:40",
  goWho:"江口さんを音江へ", backWho:"江口さんを迎えに",
  mine:"", mineNote:"送も迎も遠藤さん",
  samp:"音江は脱水・月例だけで<b>分析なし</b>。採水は無いはず"},
 {d:"9/9", w:"水",
- go:["納内","多度志"], back:["多度志","納内"],
+ go:["納内","多度志"], back:["多度志","納内"], out:"15:20",
  goWho:"遠藤さんを納内へ、加茂さんを多度志へ", backWho:"加茂さん → 遠藤さんの順で迎えに",
  mine:"送迎", mineNote:"朝の送りも夕方の迎えも徳田",
  samp:"<b>納内・多度志とも水質中試験。</b>検水を採って深川へ持ち帰る"},
 {d:"9/10", w:"木",
- go:["音江"], back:["音江"],
+ go:["音江"], back:["音江"], out:"15:40",
  goWho:"遠藤さんを音江へ", backWho:"遠藤さんを迎えに",
  mine:"", mineNote:"送も迎も江口さん",
  samp:"<b>音江が日常分析。</b>検水を採って深川へ持ち帰る"},
 {d:"9/11", w:"金",
- go:["音江"], back:["納内","音江"],
+ go:["音江"], back:["納内","音江"], out:"15:30", pp:true,
  goWho:"加茂さんを音江へ。<b>江口さんは納内</b>", backWho:"江口さん → 加茂さんの順で迎えに",
  mine:"送迎", mineNote:"朝の送りも夕方の迎えも徳田。迎えは ※P（公園通の軽い点検）と同じ枠",
  warn:"<b>予定表の書き落とし。</b>社有車の行が「音→戻→納→音」で、<b>朝の納内が抜けている</b>。江口さんが納内へ行くので、朝も納内へ寄るはず",
@@ -146,9 +156,12 @@ function render(){
     <div class="route">${arrow(p.go)}<span class="x">→</span><span>深川へ戻る</span></div>
     <div class="who">${p.goWho}</div>
     <h3>夕方 ・ 迎え</h3>
-    <div class="route">${arrow(p.back)}</div>
+    ${p.out ? `<div class="out">${p.out} <span>出発</span></div>` : ""}
+    <div class="route">${arrow(p.back)}<span class="x">→</span><span>戻る</span></div>
     <div class="who">${p.backWho}</div>
     ${p.samp ? `<div class="samp">${p.samp}</div>` : ""}
+    ${p.pp ? `<div class="pp"><b>※P</b> 金曜は迎えのときに公園通ポンプ場の軽い点検</div>` : ""}
+    <div class="lock">戻ったら <b>ホッパー室の扉を施錠</b></div>
     ${p.warn ? `<div class="warn">${p.warn}</div>` : ""}
     <div class="who" style="margin-top:14px;color:var(--ink-3)">${p.mineNote}</div>
   </div>`;
