@@ -85,6 +85,13 @@
   .pit{display:flex;flex-wrap:wrap;gap:4px;flex:1;min-width:0}
   .pit i{font-style:normal;font-size:13px;font-weight:700;padding:3px 7px;border-radius:6px;
          background:#e6eef3;color:#124f66;white-space:nowrap;line-height:1.3}
+  .pit i.t{background:#ffd6d0;color:var(--ink)}
+  .pit i.p{background:#e3d8f8;color:var(--ink)}
+  .pit i.tr{background:#c2e7f4;color:var(--ink)}
+  .pit i.sv{background:#c8e9c9;color:var(--ink)}
+  .pit i.cod{background:#ffdfa6;color:var(--ink)}
+  .pit i.do{background:#cfdcfb;color:var(--ink)}
+  .pit i.cl{background:#fbd0e2;color:var(--ink)}
   .pit i.s{background:#8a5a12;color:#fff}
   .pit i.r{background:#fff;color:#0f6d8c;border:1.5px solid #a6c8d6;padding:2px 6px}
   .pit i.w{background:#fdf0ec;color:#a8341f}
@@ -106,14 +113,14 @@
   <h2>この日 測る項目</h2>
   <div class="cap">採水しながら、この順で見る。水温はその場で測る。</div>
   <div class="gh">水</div>
-  <div class="prow"><div class="ploc"><b>A</b><span>流入</span></div><div class="pit"><i>水温</i><i>pH</i><i>透視度</i><i>COD</i><i class="r">SS ろ紙</i></div></div>
-  <div class="prow"><div class="ploc"><b>B</b><span>初沈</span></div><div class="pit"><i>水温</i><i>pH</i><i>透視度</i><i>COD</i><i class="r">SS ろ紙</i></div></div>
-  <div class="prow"><div class="ploc"><b>AT-3</b><span>曝気槽</span></div><div class="pit"><i>水温</i><i>pH</i><i>SV</i><i>DO</i><i class="s">SS 磁皿</i></div></div>
-  <div class="prow"><div class="ploc"><b>AT-4</b><span>曝気槽</span></div><div class="pit"><i>水温</i><i>pH</i><i>SV</i><i>DO</i><i class="s">SS 磁皿</i></div></div>
-  <div class="prow"><div class="ploc"><b>C</b><span>終沈</span></div><div class="pit"><i>水温</i><i>pH</i><i>透視度</i><i>COD</i><i class="r">SS ろ紙</i></div></div>
-  <div class="prow"><div class="ploc"><b>D</b><span>放流</span></div><div class="pit"><i>水温</i><i>pH</i><i>透視度</i><i>COD</i><i class="w">残塩 木のみ</i><i class="r">SS ろ紙</i></div></div>
-  <div class="prow"><div class="ploc"><b>E</b><span>中水</span></div><div class="pit"><i>水温</i><i>pH</i><i>透視度</i><i>COD</i><i>残塩</i><i class="r">SS ろ紙</i></div></div>
-  <div class="prow"><div class="ploc"><b>RS</b><span>返送</span></div><div class="pit"><i>pH</i><i class="s">SS 磁皿</i><em>水温・透視度は無し</em></div></div>
+  <div class="prow"><div class="ploc"><b>A</b><span>流入</span></div><div class="pit"><i class="t">水温</i><i class="p">pH</i><i class="tr">透視度</i><i class="cod">COD</i><i class="r">SS ろ紙</i></div></div>
+  <div class="prow"><div class="ploc"><b>B</b><span>初沈</span></div><div class="pit"><i class="t">水温</i><i class="p">pH</i><i class="tr">透視度</i><i class="cod">COD</i><i class="r">SS ろ紙</i></div></div>
+  <div class="prow"><div class="ploc"><b>AT-3</b><span>曝気槽</span></div><div class="pit"><i class="t">水温</i><i class="p">pH</i><i class="sv">SV</i><i class="do">DO</i><i class="s">SS 磁皿</i></div></div>
+  <div class="prow"><div class="ploc"><b>AT-4</b><span>曝気槽</span></div><div class="pit"><i class="t">水温</i><i class="p">pH</i><i class="sv">SV</i><i class="do">DO</i><i class="s">SS 磁皿</i></div></div>
+  <div class="prow"><div class="ploc"><b>C</b><span>終沈</span></div><div class="pit"><i class="t">水温</i><i class="p">pH</i><i class="tr">透視度</i><i class="cod">COD</i><i class="r">SS ろ紙</i></div></div>
+  <div class="prow"><div class="ploc"><b>D</b><span>放流</span></div><div class="pit"><i class="t">水温</i><i class="p">pH</i><i class="tr">透視度</i><i class="cod">COD</i><i class="cl">残塩 <b style="font-size:11px;color:#9c2a5c">木のみ</b></i><i class="r">SS ろ紙</i></div></div>
+  <div class="prow"><div class="ploc"><b>E</b><span>中水</span></div><div class="pit"><i class="t">水温</i><i class="p">pH</i><i class="tr">透視度</i><i class="cod">COD</i><i class="cl">残塩</i><i class="r">SS ろ紙</i></div></div>
+  <div class="prow"><div class="ploc"><b>RS</b><span>返送</span></div><div class="pit"><i class="p">pH</i><i class="s">SS 磁皿</i><em>水温・透視度は無し</em></div></div>
   <div class="gh">汚泥　※点検当番が採ってバスに入れる</div>
   <div class="prow"><div class="ploc"><b>生1</b><span>生汚泥</span></div><div class="pit"><i class="s">SS 磁皿</i></div></div>
   <div class="prow"><div class="ploc"><b>生2</b><span>生汚泥</span></div><div class="pit"><i class="s">SS 磁皿</i></div></div>
@@ -126,7 +133,7 @@
   <div class="ileg">
     <span><b style="border:1.5px solid #a6c8d6"></b> SS ろ紙</span>
     <span><b style="background:#8a5a12"></b> SS 磁皿</span>
-    <span><b style="background:#e6eef3"></b> その場で測る</span>
+    <span>色分けは項目ごと（SV・DO・pH・COD…）</span>
   </div>
 </div>
 
