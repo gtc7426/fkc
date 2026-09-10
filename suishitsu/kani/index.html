@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>簡易分析</title>
+<meta name="theme-color" content="#0f6d8c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="簡易分析">
+<link rel="apple-touch-icon" href="../../icon.png">
+<style>
+  html{background:#aabbe6;color-scheme:light}
+  :root{
+    --ink:#14181c; --ink-2:#4d5762; --ink-3:#8a949f;
+    --line:#dde3e8; --line-2:#eef2f5;
+    --paper:#ffffff; --panel:#f6f8fa;
+    --go:#0f6d8c; --warn:#a8341f; --wait:#8a5a12;
+    --font:"Noto Sans JP",-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#aabbe6;color:var(--ink);font-family:var(--font);
+       -webkit-text-size-adjust:100%;padding:0 12px 50px;font-variant-numeric:tabular-nums}
+  .wrap{max-width:620px;margin:0 auto}
+
+  .bar{position:sticky;top:0;z-index:10;background:var(--paper);border-bottom:1px solid var(--line);
+       padding:9px 10px;display:flex;align-items:center;gap:7px;margin:0 -12px}
+  .bar .ttl{font-size:15px;font-weight:700;white-space:nowrap;min-width:0;
+            overflow:hidden;text-overflow:ellipsis}
+  .bar a.home{border:1px solid var(--line);background:var(--paper);color:var(--ink-2);
+       font-weight:700;font-size:12.5px;padding:7px 9px;border-radius:8px;white-space:nowrap;
+       flex:0 0 auto;text-decoration:none;line-height:1;display:inline-flex;align-items:center}
+
+  .lead{background:var(--paper);border:1px solid var(--line);border-radius:14px;
+        padding:15px 14px;margin:14px 0}
+  .lead h2{margin:0 0 8px;font-size:17px;font-weight:700}
+  .lead p{margin:0;font-size:14.5px;color:var(--ink-2);line-height:1.7}
+  .lead b{color:var(--ink)}
+
+  .step{background:var(--paper);border:1px solid var(--line);border-radius:14px;
+        padding:16px 15px;margin:11px 0}
+  .step.wait{border-left:5px solid var(--wait)}
+  .step.now{border-left:5px solid var(--go)}
+  .step.end{border-left:5px solid var(--warn)}
+  .no{font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--ink-3)}
+  .ttl2{font-size:21px;font-weight:700;line-height:1.35;margin-top:3px}
+  .clock{display:inline-block;margin-top:7px;font-size:15px;font-weight:700;
+         color:var(--warn);background:#fdf4f2;border-radius:7px;padding:3px 9px}
+  .timer{display:inline-block;margin-top:7px;font-size:26px;font-weight:700;color:var(--wait)}
+  .timer span{font-size:14px;color:var(--ink-2);margin-left:5px}
+  .push{display:block;margin-top:7px;font-size:15px;font-weight:700;color:#8a4b12;
+        background:#fbf0dd;border:1.5px solid #e0b877;border-radius:8px;padding:7px 11px}
+  .body{margin-top:9px;font-size:15.5px;line-height:1.75;color:var(--ink)}
+  .body b{color:var(--warn)}
+  .list{margin:8px 0 0;padding-left:1.1em;font-size:15px;line-height:1.85}
+  .list li{margin:1px 0}
+  .fill{margin-top:11px;background:#f4f0e6;border-left:4px solid var(--wait);
+        padding:9px 12px;border-radius:0 8px 8px 0;font-size:14.5px;line-height:1.65}
+  .fill b{color:var(--wait)}
+  .ask{margin-top:11px;background:var(--panel);border:1px dashed var(--ink-3);
+       border-radius:9px;padding:9px 12px;font-size:14px;color:var(--ink-2);line-height:1.6}
+  .ask b{color:var(--ink)}
+  .sec{margin:26px 0 6px;font-size:13px;font-weight:700;letter-spacing:.14em;
+       color:#26364f;display:flex;align-items:center;gap:10px}
+  .sec::after{content:"";flex:1;height:1px;background:#8fa3d0}
+  table{width:100%;border-collapse:collapse;margin-top:9px;font-size:14.5px}
+  th,td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line-2)}
+  th{font-size:12px;color:var(--ink-3);letter-spacing:.08em;font-weight:700}
+  td.n{text-align:right;font-weight:700;white-space:nowrap}
+  .foot{margin-top:26px;font-size:12.5px;color:#2b3a52;line-height:1.8}
+
+
+  /* 採水地点ごとの項目表 */
+  .items{background:var(--paper);border:1px solid var(--line);border-radius:14px;
+         padding:13px 13px 11px;margin:14px 0}
+  .items h2{margin:0 0 2px;font-size:17px;font-weight:700}
+  .items .cap{font-size:12.5px;color:var(--ink-3);line-height:1.6}
+  .gh{margin:13px 0 2px;font-size:11.5px;font-weight:700;letter-spacing:.12em;color:var(--ink-3)}
+  .prow{display:flex;gap:9px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line-2)}
+  .prow:last-child{border-bottom:0}
+  .ploc{flex:0 0 58px;line-height:1.25;padding-top:2px}
+  .ploc b{display:block;font-size:15px;font-weight:700}
+  .ploc span{display:block;font-size:11px;color:var(--ink-3)}
+  .pit{display:flex;flex-wrap:wrap;gap:4px;flex:1;min-width:0}
+  .pit i{font-style:normal;font-size:13px;font-weight:700;padding:3px 7px;border-radius:6px;
+         background:#e6eef3;color:#124f66;white-space:nowrap;line-height:1.3}
+  .pit i.s{background:#8a5a12;color:#fff}
+  .pit i.r{background:#fff;color:#0f6d8c;border:1.5px solid #a6c8d6;padding:2px 6px}
+  .pit i.w{background:#fdf0ec;color:#a8341f}
+  .pit em{font-style:normal;font-size:11.5px;color:var(--ink-3);align-self:center}
+  .ileg{display:flex;flex-wrap:wrap;gap:10px;margin-top:11px;padding-top:10px;
+        border-top:1px solid var(--line-2);font-size:11.5px;color:var(--ink-2);line-height:1.5}
+  .ileg b{display:inline-block;width:10px;height:10px;border-radius:3px;vertical-align:-1px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="bar">
+  <a class="home" href="../index.html">メニュー</a>
+  <span class="ttl">簡易分析</span>
+</div>
+
+<div class="items">
+  <h2>この日 測る項目</h2>
+  <div class="cap">曝気槽が主役。水温と COD は簡易には無い。</div>
+  <div class="gh">水</div>
+  <div class="prow"><div class="ploc"><b>AT-3</b><span>曝気槽</span></div><div class="pit"><i>pH</i><i>SV</i><i>DO</i><i class="s">SS 磁皿</i></div></div>
+  <div class="prow"><div class="ploc"><b>AT-4</b><span>曝気槽</span></div><div class="pit"><i>pH</i><i>SV</i><i>DO</i><i class="s">SS 磁皿</i></div></div>
+  <div class="prow"><div class="ploc"><b>C</b><span>終沈</span></div><div class="pit"><i>透視度</i><em>SS は取らない</em></div></div>
+  <div class="prow"><div class="ploc"><b>D</b><span>放流</span></div><div class="pit"><i>透視度</i><em>SS は取らない</em></div></div>
+  <div class="prow"><div class="ploc"><b>E</b><span>中水</span></div><div class="pit"><i>透視度</i><i>残塩</i><em>SS は取らない</em></div></div>
+  <div class="gh">汚泥　※点検当番が採ってバスに入れる</div>
+  <div class="prow"><div class="ploc"><b>生1</b><span>生汚泥</span></div><div class="pit"><i class="s">SS 磁皿</i></div></div>
+  <div class="prow"><div class="ploc"><b>生2</b><span>生汚泥</span></div><div class="pit"><i class="s">SS 磁皿</i></div></div>
+  <div class="gh">脱水がある日だけ</div>
+  <div class="prow"><div class="ploc"><b>投入1</b><span>投入汚泥</span></div><div class="pit"><i class="s">SS 磁皿</i></div></div>
+  <div class="prow"><div class="ploc"><b>投入2</b><span>投入汚泥</span></div><div class="pit"><i class="s">SS 磁皿</i></div></div>
+  <div class="prow"><div class="ploc"><b>ろ液</b><span></span></div><div class="pit"><i class="r">SS ろ紙</i></div></div>
+  <div class="prow"><div class="ploc"><b>ケーキ1</b><span></span></div><div class="pit"><i class="s">SS 磁皿</i></div></div>
+  <div class="prow"><div class="ploc"><b>ケーキ2</b><span></span></div><div class="pit"><i class="s">SS 磁皿</i></div></div>
+  <div class="ileg">
+    <span><b style="border:1.5px solid #a6c8d6"></b> SS ろ紙</span>
+    <span><b style="background:#8a5a12"></b> SS 磁皿</span>
+    <span><b style="background:#e6eef3"></b> その場で測る</span>
+  </div>
+</div>
+
+<div class="lead">
+  <h2>上から順になぞるだけ</h2>
+  <p><b>SV の60分が律速。</b>採水から戻ったら一番先に仕掛ける。<br>
+  <b>COD が無いぶん、日常よりずっと軽い。</b>手が塞がるのはろ過だけ（脱水がある日のろ液1枚）。<br>
+  値が出たら、その場でタブレットに入れる。</p>
+  <p style="margin-top:9px">待ちのある工程は<b>茶色</b>。<br>
+  タイマーを押すのは <b>SV（30分・60分）</b>と<b>遠心（20分）</b>だけ。<br>
+  バス・乾燥機・デシケーターは「◯分<b>以上</b>」なので押さない＝時刻で動く。</p>
+</div>
+
+<div class="sec">朝</div>
+
+<div class="step">
+  <div class="no">0</div>
+  <div class="ttl2">8:30 — 計量と仕込み</div>
+  <div class="clock">8:30</div>
+  <div class="body">前日分の計量 → 次回分のろ紙・磁皿を用意（1枚ずつ風袋を測ってタブレットへ）→ 一服</div>
+  <div class="fill"><b>乾燥機に入っているものは、深川の分だけとは限らない。</b><br>
+  納内・音江・多度志で作業してきた人が、持ち帰ったケーキやろ液を<b>自分で乾燥機に入れて帰る。</b>それを翌朝<b>最初に分析に入る人がまとめて測る</b>。</div>
+  <div class="fill">枚数は <b>水質分析 → 分析準備</b> の表で引く。</div>
+</div>
+
+<div class="sec">現場</div>
+
+<div class="step now">
+  <div class="no">1</div>
+  <div class="ttl2">9:30 — 採水</div>
+  <div class="clock">9:30</div>
+  <div class="body"><b>AT-3 / AT-4 / C / D / E</b>。曝気槽が主役で、C・D・E は透視度と残塩のぶん。</div>
+  <div class="fill"><b>生汚泥は採らない。</b>点検当番の人が採って、そのままウォーターバスに入れてくれる。</div>
+  <div class="ask">簡易は<b>水温を測らない</b>。持ち帰ってから困ることはない</div>
+</div>
+
+<div class="step wait">
+  <div class="no">2</div>
+  <div class="ttl2">SV を仕掛ける</div>
+  <div class="timer">30分 <span>＋ さらに 30分</span></div>
+  <div class="body">AT-3・AT-4 の2本。<b>戻ったら一番先にこれ。</b></div>
+  <div class="push">▶ タイマー <b>30分</b> を押す</div>
+  <div class="fill"><b>30分で鳴ったら読む。</b>読んだら、もう一度 30分 を押す（帳票の括弧の中が60分値）。</div>
+</div>
+
+<div class="step wait">
+  <div class="no">3</div>
+  <div class="ttl2">遠心を回す</div>
+  <div class="timer">20分</div>
+  <div class="body">AT-3・AT-4 の水を <b>100mL</b> 量って遠心へ。4本×2台なので同時に回せる。</div>
+  <div class="push">▶ タイマー <b>20分</b> を押す</div>
+  <div class="fill">
+    <b>この20分の間にやること</b>
+    <ul class="list" style="margin-top:4px">
+      <li>pH … <b>AT-3 / AT-4</b></li>
+      <li>透視度 … <b>C / D / E</b></li>
+      <li>残留塩素 … <b>E</b></li>
+      <li>DO（MLDO）… AT-3 / AT-4。15分もかからない</li>
+    </ul>
+  </div>
+</div>
+
+<div class="step now">
+  <div class="no">4</div>
+  <div class="ttl2">遠心が上がる → 磁皿へ</div>
+  <div class="body">AT-3・AT-4 を磁皿に移して<b>ウォーターバスへ</b>。</div>
+  <div class="fill"><b>バスに入れたら、そこで手は離れる。</b><b>2時間以上</b>入っていればいい。<br>
+  <b>早く入れるほど早く終わる。</b>10:55 は 12:55 の乾燥機に間に合う最低ライン。</div>
+  <div class="ask">バスは<b>穴ごとに定位置のラベル</b>が貼ってある。どの磁皿をどの穴に置くかが決まっている</div>
+</div>
+
+<div class="step now">
+  <div class="no">5</div>
+  <div class="ttl2">ろ過（脱水がある日だけ）</div>
+  <div class="body"><b>ろ液 1枚</b>。ろ紙に蒸留水を通してから試料を通す。</div>
+  <div class="fill">脱水が無い日は<b>ろ紙を使わない</b>。簡易でろ紙が要るのはろ液だけ。</div>
+</div>
+
+<div class="step now">
+  <div class="no">6</div>
+  <div class="ttl2">SV 60分を読む</div>
+  <div class="body">これで午前の手作業は終わり。</div>
+</div>
+
+<div class="sec">午後</div>
+
+<div class="step end">
+  <div class="no">7</div>
+  <div class="ttl2">12:55 — 乾燥機へ</div>
+  <div class="clock">12:55</div>
+  <div class="body">磁皿（バスから上げたもの）とろ紙を一緒に。<b>2時間以上</b>。</div>
+</div>
+
+<div class="step end">
+  <div class="no">8</div>
+  <div class="ttl2">15:00 — デシケーターへ</div>
+  <div class="clock">15:00</div>
+  <div class="body"><b>30分</b>置く。</div>
+</div>
+
+<div class="step end">
+  <div class="no">9</div>
+  <div class="ttl2">15:30 — 秤量</div>
+  <div class="clock">15:30</div>
+  <div class="body">1/1000 g まで測る。値はその場でタブレットへ。</div>
+</div>
+
+<div class="foot">
+  日常分析との差 … <b>水温と COD が無い</b>、<b>ろ紙はろ液だけ</b>、採水が曝気槽中心。<br>
+  バス・乾燥機は<b>2時間以上</b>（下限）。デシケーターは30分。<br>
+  日常分析の手順 → <a href="../nichijo/index.html" style="color:#0f6d8c">こちら</a>
+</div>
+
+</div>
+</body>
+</html>
