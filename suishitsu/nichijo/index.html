@@ -49,6 +49,8 @@
          color:var(--warn);background:#fdf4f2;border-radius:7px;padding:3px 9px}
   .timer{display:inline-block;margin-top:7px;font-size:26px;font-weight:700;color:var(--wait)}
   .timer span{font-size:14px;color:var(--ink-2);margin-left:5px}
+  .push{display:block;margin-top:7px;font-size:15px;font-weight:700;color:#8a4b12;
+        background:#fbf0dd;border:1.5px solid #e0b877;border-radius:8px;padding:7px 11px}
   .body{margin-top:9px;font-size:15.5px;line-height:1.75;color:var(--ink)}
   .body b{color:var(--warn)}
   .list{margin:8px 0 0;padding-left:1.1em;font-size:15px;line-height:1.85}
@@ -86,6 +88,11 @@
   <p style="margin-top:9px"><b>採水は 9:30 から。</b>戻ってすぐ SV を仕掛ける。<br><b>SV の60分がそのまま律速。</b>早い人は 11:00 に終わっている。遅くとも 11:40。<br>
   バス・乾燥機・SV は<b>仕掛けた時点で手が離れる</b>。早く入れるほど早く終わる。<br>
   手が塞がるのは <b>COD滴定</b> と <b>ろ過</b> の2つだけ。</p>
+  <p style="margin-top:9px"><b>待ちのある工程は、その場でタイマーを押す。</b>機器にタイマーが付いていて、アラームで呼び戻してくれる。<br>
+  <b>時刻を覚えておく必要はない。</b>押したら次の作業に移っていい。</p>
+  <p style="margin-top:9px"><b>タイマーを押すのは「ちょうど◯分」で戻る工程だけ。</b><br>
+  ・押す … <b>SV（30分・60分）／ COD加熱（30分）／ 遠心（20分）</b><br>
+  ・押さない … <b>ウォーターバス ／ 乾燥機 ／ デシケーター</b>（どれも「◯分<b>以上</b>」で、過ぎても構わない）</p>
 </div>
 
 <div class="sec">朝</div>
@@ -141,7 +148,8 @@
     <li><b>30分後に1回読む</b></li>
     <li><b>60分後にもう1回読む</b>（帳票の括弧の中が60分値）</li>
   </ul>
-  <div class="fill">仕掛けたら放置ではない。<b>30分でいったん戻る。</b></div>
+  <div class="push">▶ タイマー <b>30分</b> を押す</div>
+  <div class="fill">仕掛けたら放置ではない。<b>30分で鳴ったらいったん戻る。</b>読んだら、もう一度 30分 を押す。</div>
 </div>
 
 <div class="step now">
@@ -162,12 +170,12 @@
     <li>検水を量ってフラスコへ。<b>足りない分は蒸留水で100mLにメスアップ</b></li>
     <li>BL は蒸留水 100mL</li>
     <li>硫酸(1+2) <b>10mL</b> ＋ 過マンガン酸カリウム <b>10mL</b></li>
-    <li>ウォーターバスで <b>30分</b></li>
+    <li>ウォーターバスで <b>30分</b> … <b>タイマー30分を押す</b></li>
   </ul>
   <div class="fill">
     <b>この30分の間にやること</b>
     <ul class="list" style="margin-top:4px">
-      <li><b>遠心を回す（20分）</b> — 4本×2台で AT-3・AT-4 を同時に</li>
+      <li><b>遠心を回す（20分）</b> — 4本×2台で AT-3・AT-4 を同時に。<b>ここもタイマー</b></li>
       <li>pH … A / B / AT-3 / AT-4 / C / D / E / RS の <b>8か所</b></li>
       <li>残留塩素 … D と E</li>
     </ul>
@@ -178,7 +186,7 @@
 <div class="step now">
   <div class="no">5</div>
   <div class="ttl2">SV 30分を読む</div>
-  <div class="body">AT-3・AT-4。読んだらまた 30分。</div>
+  <div class="body">AT-3・AT-4。読んだら<b>もう一度タイマー 30分</b> を押す。</div>
 </div>
 
 <div class="step now">
@@ -243,6 +251,8 @@
   <div class="ttl2">12:55 — 乾燥機へ入れる</div>
   <div class="clock">12:55</div>
   <div class="body"><b>磁皿</b>（バスから上げたもの）と<b>ろ紙</b>を一緒に。乾燥機はスペースが足りる。<br>ここも<b>2時間以上</b>。</div>
+  <div class="fill"><b>バス・乾燥機・デシケーターはタイマーで呼ばれない。</b>どれも<b>下限</b>で、長く入れておくのは構わないから。<br>
+  この3つは<b>時刻で動く</b> … 12:55 に入れて、15:00 に出して、15:30 に測る。</div>
   <div class="fill"><b>昼へ行く前に、乾燥機に入れる物を全部そろえておく。</b></div>
 </div>
 
@@ -251,6 +261,7 @@
   <div class="ttl2">15:00 — 出してデシケーターへ</div>
   <div class="clock">15:00</div>
   <div class="body">磁皿もろ紙も同じ。<b>デシケーターで30分。</b></div>
+  <div class="fill"><b>ここもタイマーは要らない。</b>30分を過ぎても問題ないから。</div>
 </div>
 
 <div class="step end">
