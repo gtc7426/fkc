@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#12161c">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <title>P所点検</title>
-<meta name="build" content="20260912120205">
+<meta name="build" content="20260912123124">
 <style>
 :root{
   --bg:#12161c; --panel:#1b2029; --line:#2b323d; --fg:#e8ecf2; --dim:#9aa5b4;
@@ -801,7 +801,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 <!-- ===== 地区タブ（常時） ===== -->
 <div id="tabs">
-  <span class="tt">P所点検<span class="ver">Ver 1.2</span></span>
+  <span class="tt">P所点検<span class="ver">Ver 1.6</span></span>
   <div class="tabwrap" id="areas"></div>
   <a class="home" href="/fkc/" title="トップメニューへ">☰</a>
 </div>
@@ -1102,6 +1102,7 @@ const NAV = {
   on:false, path:null, turns:null, cum:null, stopS:null, stopName:"", stopSay:"",
   said:{},        /* 角ごと：予告した/直前を言った（経路に復帰すると消える＝言い直す） */
   cueSaid:{},     /* 合図ごと：一度言ったら二度と言わない（復帰しても消さない） */
+  kmSaid:{},      /* 所ごと：1km手前の知らせを言ったか */
   saidStop:{},    /* 目的地ごと：まもなく/到着を言った */
   stopSAll:[], targetIdx:-1, offRoute:false, wasQuiet:false, quietTarget:-1, quietPending:-1, doneSay:{}, nearSay:{},
   set(dIdx){
@@ -1109,7 +1110,7 @@ const NAV = {
     this.path = (typeof ROUTES!=='undefined' && ROUTES[d.id]) ? ROUTES[d.id] : null;
     const b = buildTurns(this.path);
     this.turns = b.turns; this.cum = b.cum; this.said = {}; this.saidStop = {}; this.doneSay = {}; this.nearSay = {};
-    this.cueSaid = {};
+    this.cueSaid = {}; this.kmSaid = {};
     this.targetIdx = -1;
     /* 帰り道は線を持たないので、帰着は目的地に選ばない */
     this.stopSAll = this.path ? d.list.map(p => {
@@ -1160,6 +1161,8 @@ const NAV = {
   },
   /* 「右側にポンプ所です」。側が分かっていない所は「到着です」だけ */
   sideWord(){ return (typeof SIDE!=='undefined' && SIDE[this.stopKey]) || null; },
+  /* 1km手前は必ず所の名前を読む。どこへ向かっているかの確認になる */
+  kmWord(){ return this.stopSay; },
   stopPhraseSide(){
     const sd = this.sideWord();
     if (!sd) return this.stopPhrase();
@@ -1222,22 +1225,16 @@ const NAV = {
 
     let main="", sub="", arrow="↑", turnish=false;
 
-    /* 静かな区間（市街を抜けるまで等）を出たら、最初のP所の 1km 手前で一度だけ言う。
-       半端な数字（1700メートル先…）を避けるため、位置ではなく距離で鳴らす */
-    if (inYard){
-      if (!this.wasQuiet){ this.wasQuiet = true; this.quietTarget = this.targetIdx; }
-      this.quietPending = -1;
-    } else {
-      if (this.wasQuiet){ this.wasQuiet = false; this.quietPending = this.quietTarget; }
-      if (this.quietPending === this.targetIdx && restStop != null){
-        if (restStop <= 1000 && restStop > 850){
-          /* この先すぐ角がある時は言わない（角の合図と重なる） */
-          const turnSoon = this.turns.some(t => t.s > loc.s && t.s - loc.s <= 250);
-          this.quietPending = -1;
-          if (!turnSoon) this.fire("outquiet", "1キロメートル先、"+this.stopPhrase());
-        } else if (restStop <= 850){
-          this.quietPending = -1;      /* もう近い。今さら言っても仕方ない */
-        }
+    /* 次の所まで1km以上ある区間は、1km手前で一度だけ知らせる。
+       黙る区間の中では言わない。この先すぐ角がある時も言わない（合図が重なる） */
+    const km1on = (typeof KM1!=='undefined') && !!KM1[D[di].id];
+    if (km1on && !inYard && restStop != null && this.legLen > 1000 && !this.kmSaid[this.targetIdx]){
+      if (restStop <= 1000 && restStop > 850){
+        this.kmSaid[this.targetIdx] = 1;
+        const turnSoon = this.turns.some(t => t.s > loc.s && t.s - loc.s <= 250);
+        if (!turnSoon) SPK.say("つぎの "+this.kmWord()+" まで 1キロメートルです");
+      } else if (restStop <= 850){
+        this.kmSaid[this.targetIdx] = 1;   /* もう近い。今さら言っても仕方ない */
       }
     }
 
@@ -1334,6 +1331,9 @@ const NAV = {
       }
     }
     if (best) this.stopS = best.s;
+    /* 前の所からの距離。1km以上ある区間だけ、途中で1回知らせる */
+    const prev = (i>0 && this.stopSAll[i-1] != null && isFinite(this.stopSAll[i-1])) ? this.stopSAll[i-1] : 0;
+    this.legLen = (this.stopS != null) ? (this.stopS - prev) : 0;
     this.saidStop = {};
   }
 };
@@ -1427,6 +1427,9 @@ const WARN = {
    ほかは「ポンプ所です」「到着です」だけ（画面に名前も写真も出る） */
 const SAYNAME = { otoe: true };
 
+/* 「つぎの ◯◯ まで 1キロメートルです」を鳴らす地区。所の間隔が長い深川だけ */
+const KM1 = { fukagawa: true, otoe: true, tadoshi: true };
+
 /* 「100メートル先を左折、右側に◯◯です」と、曲がりを予告に混ぜる所。
    所へ入るのに必ず曲がる形（広里橋は本線から分かれて入る）だけ。
    所の先にある角（①開西町のように、着いた先で次へ向かう角）は混ぜない */
@@ -1473,7 +1476,7 @@ function renderPre(){
     '><b>'+d.name+'</b><span>'+d.sub+'</span></button>').join('');
   $('areas').querySelectorAll('.tab').forEach(b=>{
     /* 地区を変えても地図は動かさない。その地区の道が出るだけ */
-    b.onclick = ()=>{ di=+b.dataset.i; cur=0; closeCard(); renderPre(); drawDistrict(false); };
+    b.onclick = ()=>{ di=+b.dataset.i; cur=0; closeCard(); renderPre(); drawDistrict(true); };
   });
   upGo();
 }
@@ -1503,6 +1506,7 @@ function drawDistrict(fit){
   markers.forEach(m=>map.removeLayer(m)); markers=[];
   mkIndex = []; line = null;
   const all = L.latLngBounds([]);
+  const sel = L.latLngBounds([]);   /* 選んだ地区だけの範囲。地区を押したらここに寄せる */
   D.forEach((d,ai)=>{
     if (started && ai!==di) return;
     const on = (ai===di);
@@ -1527,6 +1531,7 @@ function drawDistrict(fit){
       /* 発着（深川浄化センター）は4地区とも同じ地点。重ねずに1つだけ出す */
       if (p.kind==='帰着' && !started && ai!==0) { all.extend(ll(p)); return; }
       all.extend(ll(p));
+      if (on && p.kind!=='帰着') sel.extend(ll(p));   /* 寄せるのは所だけ */
       const m=L.marker(ll(p),{icon:pin(p,i,ai), opacity:on?1:.7,
         zIndexOffset: on ? (i===cur?1000:400) : 0})
         .addTo(map)
@@ -1534,7 +1539,8 @@ function drawDistrict(fit){
       markers.push(m); mkIndex.push([ai,i]);
     });
   });
-  fitPts = all;
+  /* 地区を選んでいる間はその地区だけに寄せる。選ぶ前（di<0）は全地区 */
+  fitPts = (di>=0 && sel.isValid()) ? sel : all;
   if (fit) fitAll();
   prog();
 }
@@ -1559,7 +1565,8 @@ function fitAll(){
   /* 地図コンテナ自体を出発前は上38%にしてあるので、余白は普通の値でいい。
      fitBounds 任せだと1〜2段ズームが落ちたので、倍率を出して直接当てる */
   const padX=22, padTop=started?80:64, padBot=started?54:86;
-  const z = map.getBoundsZoom(b, false, L.point(padX*2, padTop+padBot));
+  let z = map.getBoundsZoom(b, false, L.point(padX*2, padTop+padBot));
+  if (!started) z = Math.min(z, 15);          /* 寄せすぎると周りが分からなくなる */
   map.setView(b.getCenter(), z, {animate:false});
   if (padTop !== padBot) map.panBy([0, (padTop-padBot)/2], {animate:false});
 }
@@ -1707,6 +1714,10 @@ $('vsel').onclick = ()=>{
   SPK.on = was || true;
   toast('声：'+SPK.label());
 };
+
+/* 戻るボタンで前の状態のまま復元されることがある（bfcache）。
+   位置の追従も音声も切れているので続きにはならない。最初の画面から始め直す */
+window.addEventListener('pageshow', e => { if (e.persisted) location.reload(); });
 
 renderPre();
 setTimeout(()=>{
