@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#12161c">
 <title>P所点検</title>
-<meta name="build" content="202609120758">
+<meta name="build" content="202609120810">
 <style>
 :root{
   --bg:#12161c; --panel:#1b2029; --line:#2b323d; --fg:#e8ecf2; --dim:#9aa5b4;
@@ -832,7 +832,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
   <div id="cbody"></div>
 </div>
 
-<script src="photos.js?v=202609120758" defer></script>
+<script src="photos.js?v=202609120810" defer></script>
 <script>
 /* @preserve
  * Leaflet 1.9.4, a JS library for interactive maps. https://leafletjs.com
@@ -949,8 +949,7 @@ const ROUTES = {"fukagawa":[[43.70791,142.03189],[43.70799,142.03253],[43.70806,
 
 
 const WP = {"fukagawa": ["43.707990,142.032530|43.708140,142.032550|43.708090,142.030960|43.708730,142.031150|43.709590,142.030650|43.704840,142.015190", "43.709460,142.012420|43.712010,142.020590|43.713180,142.019900", "43.714300,142.023385|43.715011,142.022987|43.715309,142.023992|43.718105,142.022389", "43.720420,142.029740|43.722630,142.036800|43.723520,142.039620", "43.724330,142.041060|43.725670,142.045220", "43.725000,142.045640|43.724590,142.044400", "43.736050,142.037480|43.739160,142.035600|43.740480,142.034800", "43.741640,142.038460", "43.741640,142.038460|43.742500,142.041170", "43.738830,142.043390|43.732710,142.047090", "43.723698,142.052535", "43.726160,142.060200|43.727510,142.064350|43.727790,142.065240", "43.725850,142.066400|43.725030,142.066910", "43.721989,142.068716|43.721614,142.065875", "43.721590,142.065860|43.721120,142.062560", "43.721840,142.061230|43.721460,142.061460|43.721370,142.061190|43.711680,142.030250|43.709810,142.031340|43.709590,142.030650|43.708730,142.031150|43.708130,142.030930"], "otoe": ["43.708140,142.032550|43.708170,142.030910|43.709590,142.030650|43.709810,142.031340|43.711680,142.030250|43.716190,142.044570|43.711030,142.048930|43.708350,142.052860|43.705330,142.061380", "43.702620,142.066380|43.695500,142.074740|43.697040,142.077340", "43.696980,142.077230|43.696090,142.075740|43.694530,142.073120", "43.686460,142.059180|43.685850,142.055760|43.691750,142.053540", "43.704310,142.047580|43.709920,142.050500|43.716190,142.044570|43.711680,142.030250|43.709810,142.031340|43.709590,142.030650|43.708170,142.030910|43.708140,142.032550"]};
-/* 案内を切る区間（構内など）。経路上の距離 [開始, 終了] */
-const NOGUIDE = {"fukagawa": [[13385.8, 13666.8]], "otoe": []};
+const NOGUIDE = {"fukagawa": [[13385.8, 13666.8]], "otoe": [[0.0, 2507.4]]};
 
 
 /* 読み上げ用のふりがな。漢字のままだと音声合成が地名を読み違える。
@@ -1080,7 +1079,7 @@ const NAV = {
   on:false, path:null, turns:null, cum:null, stopS:null, stopName:"", stopSay:"",
   said:{},        /* 角ごと：予告した/直前を言った */
   saidStop:{},    /* 目的地ごと：まもなく/到着を言った */
-  stopSAll:[], targetIdx:-1, offRoute:false,
+  stopSAll:[], targetIdx:-1, offRoute:false, wasQuiet:false,
   set(dIdx){
     const d = D[dIdx];
     this.path = (typeof ROUTES!=='undefined' && ROUTES[d.id]) ? ROUTES[d.id] : null;
@@ -1157,8 +1156,19 @@ const NAV = {
 
     let main="", sub="", arrow="↑", turnish=false;
 
+    /* 静かな区間（市街を抜けるまで等）を出たら、目的地までの距離を一度だけ言う */
+    if (this.wasQuiet && !inYard){
+      this.wasQuiet = false;
+      if (restStop != null && restStop > 120){
+        const r = Math.round(restStop/100)*100;
+        this.fire("outquiet", r+"メートルで"+this.stopPhrase());
+      }
+    }
+    if (inYard) this.wasQuiet = true;
+
+    /* 到着（15m以内）は曲がり角より優先する。直前に角があると到着を言い損ねていた */
     if (restStop!=null && restStop <= 80 && restStop > -20 &&
-        (!nt || nt.s - loc.s > restStop)){
+        (restStop <= 15 || !nt || nt.s - loc.s > restStop)){
       arrow="◉";
       if (restStop <= 15){ main = this.stopName; sub="到着";
         this.fire("arrive", this.stopPhrase()); }
@@ -1290,6 +1300,10 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19, attri
 function ll(p){ const a=p.ll.split(','); return [parseFloat(a[0]), parseFloat(a[1])]; }
 /* 地区ごとの色。出発前は4地区ぶん同時に描いて、選んでいる所だけ濃くする */
 const AREA_COLOR = {fukagawa:'#4a9eff', otoe:'#3ec98d', osamunai:'#e8a33d', tadoshi:'#b07ef0'};
+/* 出発の第一声。市街を抜けるまで道が決まりきっている地区は、細かく喋らずこれだけ言う */
+const FIRST_SAY = {
+  otoe: "深川橋を渡って下さい"
+};
 function label(p,i){ return p.kind==='帰着' ? '<small>発着</small>' : (p.n || (i+1)); }
 
 /* ---------- 地区タブと道具シート ---------- */
@@ -1496,7 +1510,7 @@ $('departBtn').onclick = ()=>{
   drawDistrict(true);        /* started が立っているので選んだ地区だけになる */
   NAV.set(di); NAV.target(0); NAV.on = true;
   SPK.on = true; SPK.init();
-  SPK.say('案内を始めます');
+  SPK.say(FIRST_SAY[D[di].id] || '案内を始めます');
   $('voiceBtn').classList.add('on');
   $('guide').hidden = false;
   startGps();
