@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#12161c">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <title>P所点検</title>
-<meta name="build" content="20260912115201">
+<meta name="build" content="20260912120205">
 <style>
 :root{
   --bg:#12161c; --panel:#1b2029; --line:#2b323d; --fg:#e8ecf2; --dim:#9aa5b4;
@@ -801,7 +801,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 <!-- ===== 地区タブ（常時） ===== -->
 <div id="tabs">
-  <span class="tt">P所点検<span class="ver">Ver 1.1</span></span>
+  <span class="tt">P所点検<span class="ver">Ver 1.2</span></span>
   <div class="tabwrap" id="areas"></div>
   <a class="home" href="/fkc/" title="トップメニューへ">☰</a>
 </div>
@@ -1103,7 +1103,7 @@ const NAV = {
   said:{},        /* 角ごと：予告した/直前を言った（経路に復帰すると消える＝言い直す） */
   cueSaid:{},     /* 合図ごと：一度言ったら二度と言わない（復帰しても消さない） */
   saidStop:{},    /* 目的地ごと：まもなく/到着を言った */
-  stopSAll:[], targetIdx:-1, offRoute:false, wasQuiet:false, quietTarget:-1, doneSay:{}, nearSay:{},
+  stopSAll:[], targetIdx:-1, offRoute:false, wasQuiet:false, quietTarget:-1, quietPending:-1, doneSay:{}, nearSay:{},
   set(dIdx){
     const d = D[dIdx];
     this.path = (typeof ROUTES!=='undefined' && ROUTES[d.id]) ? ROUTES[d.id] : null;
@@ -1222,17 +1222,22 @@ const NAV = {
 
     let main="", sub="", arrow="↑", turnish=false;
 
-    /* 静かな区間（市街を抜けるまで等）を出たら、目的地までの距離を一度だけ言う。
-       ただし黙っている間に目的地に着いてしまった時は言わない（着いた直後に喋ると重なる） */
+    /* 静かな区間（市街を抜けるまで等）を出たら、最初のP所の 1km 手前で一度だけ言う。
+       半端な数字（1700メートル先…）を避けるため、位置ではなく距離で鳴らす */
     if (inYard){
       if (!this.wasQuiet){ this.wasQuiet = true; this.quietTarget = this.targetIdx; }
-    } else if (this.wasQuiet){
-      this.wasQuiet = false;
-      /* この先すぐ角がある時は言わない（角の合図と重なる） */
-      const turnSoon = this.turns.some(t => t.s > loc.s && t.s - loc.s <= 250);
-      if (!turnSoon && this.targetIdx === this.quietTarget && restStop != null && restStop > 120){
-        const r = Math.round(restStop/100)*100;
-        this.fire("outquiet", r+"メートル先、"+this.stopPhrase());
+      this.quietPending = -1;
+    } else {
+      if (this.wasQuiet){ this.wasQuiet = false; this.quietPending = this.quietTarget; }
+      if (this.quietPending === this.targetIdx && restStop != null){
+        if (restStop <= 1000 && restStop > 850){
+          /* この先すぐ角がある時は言わない（角の合図と重なる） */
+          const turnSoon = this.turns.some(t => t.s > loc.s && t.s - loc.s <= 250);
+          this.quietPending = -1;
+          if (!turnSoon) this.fire("outquiet", "1キロメートル先、"+this.stopPhrase());
+        } else if (restStop <= 850){
+          this.quietPending = -1;      /* もう近い。今さら言っても仕方ない */
+        }
       }
     }
 
