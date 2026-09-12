@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#12161c">
 <title>P所点検</title>
-<meta name="build" content="202609120733">
+<meta name="build" content="202609120758">
 <style>
 :root{
   --bg:#12161c; --panel:#1b2029; --line:#2b323d; --fg:#e8ecf2; --dim:#9aa5b4;
@@ -16,41 +16,55 @@ html,body{margin:0;height:100%;overflow:hidden}
 body{background:var(--bg);color:var(--fg);
   font:15px/1.6 -apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif}
 
-/* ===== 出発前 ===== */
-#pre{position:absolute;left:0;right:0;top:38%;bottom:0;z-index:850;background:var(--panel);
-  border-top:1px solid var(--line);border-radius:15px 15px 0 0;
-  box-shadow:0 -8px 26px rgba(0,0,0,.55);overflow:auto;-webkit-overflow-scrolling:touch;
-  padding:15px 14px calc(env(safe-area-inset-bottom) + 96px)}
-#pre h1{margin:0 0 3px;font-size:21px}
-#pre .lead{margin-bottom:14px}
-#pre .lead{color:var(--dim);font-size:13.5px;margin:0 0 18px}
-.sec{margin:20px 0 9px;font-size:12px;font-weight:700;letter-spacing:.13em;color:var(--dim);
-  display:flex;align-items:center;gap:10px}
-.sec::after{content:"";flex:1;height:1px;background:var(--line)}
-.areas{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.area{appearance:none;font-family:inherit;text-align:left;cursor:pointer;
-  background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 14px;color:var(--fg)}
-.area b{display:block;font-size:18px}
-.area span{display:block;color:var(--dim);font-size:12.5px;margin-top:2px}
-.area.on{border-color:var(--acc);background:#1b2735}
-.area.on b{color:var(--acc)}
-.tools{list-style:none;margin:0;padding:0}
+/* ===== 地区タブ ===== */
+#tabs[hidden],#startbar[hidden]{display:none!important}
+#tabs{position:absolute;top:0;left:0;right:0;z-index:860;
+  background:linear-gradient(180deg,rgba(18,22,28,.97) 70%,rgba(18,22,28,0));
+  padding:calc(env(safe-area-inset-top) + 8px) 10px 16px;
+  display:flex;align-items:center;gap:9px}
+#tabs .tt{font-weight:700;font-size:14px;flex:none}
+.tabwrap{display:flex;gap:6px;flex:1;min-width:0}
+.tab{flex:1;min-width:0;appearance:none;font-family:inherit;cursor:pointer;
+  background:var(--panel);border:1px solid var(--line);border-radius:9px;
+  padding:7px 4px;color:var(--dim);font-size:13.5px;font-weight:700;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tab.on{color:#fff}
+.tab b{display:block;font-size:13.5px}
+.tab span{display:block;font-size:10.5px;font-weight:400;opacity:.75;margin-top:1px}
+
+/* ===== 出発バー ===== */
+#startbar{position:absolute;left:0;right:0;bottom:0;z-index:830;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:linear-gradient(0deg,rgba(18,22,28,.96) 60%,rgba(18,22,28,0))}
+#startbar button{width:100%;padding:15px;border:0;border-radius:12px;font-family:inherit;
+  font-size:16.5px;font-weight:700;background:var(--acc);color:#fff;cursor:pointer;
+  box-shadow:0 3px 14px rgba(0,0,0,.45)}
+#startbar button:disabled{background:#39414e;color:var(--dim);box-shadow:none}
+
+/* ===== 道具シート ===== */
+#sheet{position:absolute;left:0;right:0;bottom:0;z-index:940;background:var(--panel);
+  border-top:1px solid var(--line);border-radius:15px 15px 0 0;max-height:82%;
+  box-shadow:0 -8px 26px rgba(0,0,0,.55);display:flex;flex-direction:column}
+#sheet[hidden]{display:none!important}
+#sheet .sh{display:flex;align-items:center;padding:14px 15px 6px;flex:none}
+#sheet .sh b{font-size:17px;flex:1}
+#sheet .sh button{appearance:none;background:none;border:0;color:var(--dim);
+  font-size:19px;cursor:pointer;padding:2px 6px}
+.tools{list-style:none;margin:0;padding:0 15px;overflow:auto;-webkit-overflow-scrolling:touch}
 .tools li{display:flex;gap:11px;align-items:flex-start;padding:12px 11px;cursor:pointer;
   border:1px solid var(--line);border-radius:10px;margin-bottom:7px;font-size:15px}
 .tools li.ck{background:#1c2b22;border-color:#2f6a45;color:#9fdcb6;text-decoration:line-through}
 .tools li .bx{flex:none;width:20px;height:20px;border:2px solid #5c6675;border-radius:5px;margin-top:2px}
 .tools li.ck .bx{background:var(--done);border-color:var(--done)}
 .tools li b{color:var(--warn);font-weight:700}
-#go{position:fixed;left:0;right:0;bottom:0;z-index:910;background:var(--panel);
-  border-top:1px solid var(--line);padding:11px 14px calc(11px + env(safe-area-inset-bottom))}
-#go button{width:100%;padding:16px;border:0;border-radius:12px;font-family:inherit;
-  font-size:17px;font-weight:700;background:var(--acc);color:#fff;cursor:pointer}
-#go button:disabled{background:#39414e;color:var(--dim)}
-#go .note{color:var(--dim);font-size:12px;text-align:center;margin:8px 0 0}
+.shfoot{flex:none;padding:10px 15px calc(12px + env(safe-area-inset-bottom));
+  border-top:1px solid var(--line)}
+.shfoot button{width:100%;padding:15px;border:0;border-radius:12px;font-family:inherit;
+  font-size:16.5px;font-weight:700;background:var(--acc);color:#fff;cursor:pointer}
+.shfoot .note{color:var(--dim);font-size:12px;text-align:center;margin:8px 0 0}
 
 /* ===== 地図 ===== */
-#map{position:absolute;top:0;left:0;right:0;bottom:0;background:#20242b}
-body.pre #map{bottom:62%}
+#map{position:absolute;inset:0;background:#20242b}
 .leaflet-container{background:#20242b;font:inherit}
 .pin{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;
   background:var(--todo);color:#fff;font-weight:800;font-size:14px;border:2.5px solid #fff;
@@ -58,8 +72,8 @@ body.pre #map{bottom:62%}
 .pin.next{background:var(--next);width:38px;height:38px;font-size:16px;
   box-shadow:0 0 0 5px rgba(224,69,58,.28),0 2px 8px rgba(0,0,0,.6)}
 .pin.done{background:var(--done)}
-.pin.home{background:#1f6f4a;width:36px;height:36px;border-color:#eaf4ee}
-.pin small{font-size:11px;font-weight:700}
+.pin.home{background:#1f6f4a;width:40px;height:40px;border-color:#eaf4ee}
+.pin small{font-size:10.5px;font-weight:700;letter-spacing:-.04em;white-space:nowrap}
 
 /* ===== 案内バー ===== */
 #guide{position:absolute;left:8px;right:8px;z-index:795;top:calc(env(safe-area-inset-top) + 8px);
@@ -773,18 +787,28 @@ svg.leaflet-image-layer.leaflet-interactive path {
 </head>
 <body>
 
-<!-- ===== 出発前 ===== -->
-<div id="pre">
-  <h1>P所点検</h1>
-  <p class="lead">回る地区を選んで、道具を確認してから出発する。</p>
-  <div class="sec">地区</div>
-  <div class="areas" id="areas"></div>
-  <div class="sec">出発前に積むもの</div>
-  <ul class="tools" id="tools"></ul>
+<!-- ===== 地区タブ（常時） ===== -->
+<div id="tabs">
+  <span class="tt">P所点検</span>
+  <div class="tabwrap" id="areas"></div>
 </div>
-<div id="go">
+
+<!-- ===== 出発バー ===== -->
+<div id="startbar">
   <button id="goBtn" disabled>ナビ開始</button>
-  <p class="note" id="goNote"></p>
+</div>
+
+<!-- ===== 道具シート（ナビ開始で出る） ===== -->
+<div id="sheet" hidden>
+  <div class="sh">
+    <b>出発前に積むもの</b>
+    <button id="shClose" type="button">✕</button>
+  </div>
+  <ul class="tools" id="tools"></ul>
+  <div class="shfoot">
+    <button id="departBtn">この地区で出発</button>
+    <p class="note" id="goNote"></p>
+  </div>
 </div>
 
 <!-- ===== 走行中 ===== -->
@@ -808,7 +832,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
   <div id="cbody"></div>
 </div>
 
-<script src="photos.js?v=202609120733" defer></script>
+<script src="photos.js?v=202609120758" defer></script>
 <script>
 /* @preserve
  * Leaflet 1.9.4, a JS library for interactive maps. https://leafletjs.com
@@ -1255,8 +1279,8 @@ const DRIVE = {
 
 /* ========================= 画面 ========================= */
 const $ = id => document.getElementById(id);
-let di = 0, cur = 0, started = false;
-let markers = [], line = null, shadow = null, fitPts = null;
+let di = -1, cur = 0, started = false;
+let markers = [], mkIndex = [], layers = [], line = null, fitPts = null;
 let meDot = null, meRing = null, follow = false, watchId = null, wake = null;
 let toolCk = [];
 
@@ -1264,77 +1288,113 @@ const map = L.map('map', {zoomControl:false, attributionControl:true}).setView([
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19, attribution:'&copy; OpenStreetMap'}).addTo(map);
 
 function ll(p){ const a=p.ll.split(','); return [parseFloat(a[0]), parseFloat(a[1])]; }
+/* 地区ごとの色。出発前は4地区ぶん同時に描いて、選んでいる所だけ濃くする */
+const AREA_COLOR = {fukagawa:'#4a9eff', otoe:'#3ec98d', osamunai:'#e8a33d', tadoshi:'#b07ef0'};
 function label(p,i){ return p.kind==='帰着' ? '<small>発着</small>' : (p.n || (i+1)); }
 
-/* ---------- 出発前 ---------- */
+/* ---------- 地区タブと道具シート ---------- */
 function renderPre(){
   $('areas').innerHTML = D.map((d,i)=>
-    '<button class="area'+(i===di?' on':'')+'" data-i="'+i+'"><b>'+d.name+'</b><span>'+d.sub+'</span></button>').join('');
-  $('areas').querySelectorAll('.area').forEach(b=>{
-    b.onclick = ()=>{ di=+b.dataset.i; cur=0; closeCard(); renderPre();
-                      map.invalidateSize(); drawDistrict(true); };
+    '<button class="tab'+(i===di?' on':'')+'" data-i="'+i+'"'+
+    (i===di?' style="background:'+(AREA_COLOR[d.id]||'#4a9eff')+';border-color:'+(AREA_COLOR[d.id]||'#4a9eff')+'"':'')+
+    '><b>'+d.name+'</b><span>'+d.sub+'</span></button>').join('');
+  $('areas').querySelectorAll('.tab').forEach(b=>{
+    /* 地区を変えても地図は動かさない。その地区の道が出るだけ */
+    b.onclick = ()=>{ di=+b.dataset.i; cur=0; closeCard(); renderPre(); drawDistrict(false); };
   });
+  upGo();
+}
+function renderTools(){
   const d = D[di];
   if (!toolCk[di] || toolCk[di].length !== d.depart.length) toolCk[di] = d.depart.map(()=>false);
   $('tools').innerHTML = d.depart.map((t,k)=>
     '<li class="'+(toolCk[di][k]?'ck':'')+'" data-k="'+k+'"><span class="bx"></span><span>'+t+'</span></li>').join('');
   $('tools').querySelectorAll('li').forEach(li=>{
-    li.onclick = ()=>{ const k=+li.dataset.k; toolCk[di][k]=!toolCk[di][k]; li.classList.toggle('ck'); upGo(); };
+    li.onclick = ()=>{ const k=+li.dataset.k; toolCk[di][k]=!toolCk[di][k]; li.classList.toggle('ck'); upNote(); };
   });
-  upGo();
+  upNote();
+}
+function upNote(){
+  const n = toolCk[di].filter(Boolean).length, t = toolCk[di].length;
+  $('goNote').textContent = n<t ? ('確認 '+n+' / '+t+'（未確認でも出発できる）') : ('確認 '+t+' / '+t+' 完了');
 }
 function upGo(){
-  const n = toolCk[di].filter(Boolean).length, t = toolCk[di].length;
-  $('goBtn').disabled = false;
-  $('goNote').textContent = n<t ? ('道具の確認 '+n+' / '+t+'（未確認でも開始できる）') : ('道具の確認 '+t+' / '+t+' 完了');
+  $('goBtn').disabled = (di < 0);
+  $('goBtn').textContent = (di<0) ? '地区を選ぶ' : (D[di].name+' を点検する');
 }
 
 /* ---------- 地図 ---------- */
 function drawDistrict(fit){
+  layers.forEach(l=>map.removeLayer(l)); layers=[];
   markers.forEach(m=>map.removeLayer(m)); markers=[];
-  if (line){ map.removeLayer(line); line=null; }
-  if (shadow){ map.removeLayer(shadow); shadow=null; }
-  const d = D[di];
-  const pts = d.list.map(ll);
-  const last = d.list[d.list.length-1];
-  if (last && last.kind==='帰着') pts.unshift(ll(last));
-  const road = (typeof ROUTES!=='undefined') && ROUTES[d.id];
-  if (road && road.length){
-    shadow = L.polyline(road,{color:'#0d1b2c',weight:9,opacity:.35,lineJoin:'round',lineCap:'round'}).addTo(map);
-    shadow.bringToBack();
-    line = L.polyline(road,{color:'#4a9eff',weight:5,opacity:.85,lineJoin:'round',lineCap:'round'}).addTo(map);
-  } else {
-    line = L.polyline(pts,{color:'#4a9eff',weight:3,opacity:.75,dashArray:'7,7'}).addTo(map);
-  }
-  fitPts = L.latLngBounds(pts);
-  if (road && road.length) fitPts.extend(L.latLngBounds(road));
-  d.list.forEach((p,i)=>{
-    const m = L.marker(ll(p),{icon:pin(p,i),zIndexOffset:i===cur?1000:0}).addTo(map).on('click',()=>openCard(i));
-    markers.push(m);
+  mkIndex = []; line = null;
+  const all = L.latLngBounds([]);
+  D.forEach((d,ai)=>{
+    if (started && ai!==di) return;
+    const on = (ai===di);
+    /* 道は選んだ地区だけ。最初は印だけで、地区を押すと道が出る */
+    if (on){
+      const col = AREA_COLOR[d.id] || '#4a9eff';
+      const pts = d.list.map(ll);
+      const last= d.list[d.list.length-1];
+      if (last && last.kind==='帰着') pts.unshift(ll(last));
+      const road = (typeof ROUTES!=='undefined') && ROUTES[d.id];
+      const has  = !!(road && road.length);
+      const path = has ? road : pts;
+      const lo = {color:col, weight:5, opacity:.92, lineJoin:'round', lineCap:'round'};
+      if (!has) lo.dashArray = '7,7';
+      if (has){
+        const sh=L.polyline(path,{color:'#0d1b2c',weight:9,opacity:.35,lineJoin:'round',lineCap:'round'}).addTo(map);
+        sh.bringToBack(); layers.push(sh);
+      }
+      line = L.polyline(path, lo).addTo(map); layers.push(line);
+    }
+    d.list.forEach((p,i)=>{
+      /* 発着（深川浄化センター）は4地区とも同じ地点。重ねずに1つだけ出す */
+      if (p.kind==='帰着' && !started && ai!==0) { all.extend(ll(p)); return; }
+      all.extend(ll(p));
+      const m=L.marker(ll(p),{icon:pin(p,i,ai), opacity:on?1:.7,
+        zIndexOffset: on ? (i===cur?1000:400) : 0})
+        .addTo(map)
+        .on('click',()=>openCard(ai,i));
+      markers.push(m); mkIndex.push([ai,i]);
+    });
   });
+  fitPts = all;
   if (fit) fitAll();
   prog();
 }
-function pin(p,i){
-  const cls = p.kind==='帰着' ? 'home' : (i<cur ? 'done' : (i===cur ? 'next' : ''));
+function pin(p,i,ai){
+  const on = (ai===di);
+  const cls = p.kind==='帰着' ? 'home' : (on && i<cur ? 'done' : (on && i===cur ? 'next' : ''));
+  const st = on ? '' : ' style="background:'+(AREA_COLOR[D[ai].id]||'#78849a')+';width:24px;height:24px;font-size:12px;border-width:2px"';
   return L.divIcon({className:'',iconSize:[30,30],iconAnchor:[15,15],
-    html:'<div class="pin '+cls+'">'+label(p,i)+'</div>'});
+    html:'<div class="pin '+cls+'"'+st+'>'+label(p,i)+'</div>'});
 }
-function refreshPins(){ D[di].list.forEach((p,i)=>markers[i] && markers[i].setIcon(pin(p,i))); prog(); }
+function refreshPins(){
+  markers.forEach((m,k)=>{ const [ai,i]=mkIndex[k]; m.setIcon(pin(D[ai].list[i],i,ai)); });
+  prog();
+}
 function prog(){
+  if (di<0){ $('gProg').textContent=''; return; }
   const d=D[di], n=d.list.filter(p=>p.kind!=='帰着').length;
   $('gProg').textContent = Math.min(cur,n)+' / '+n;
 }
 function fitAll(){
   const b=fitPts||(line&&line.getBounds()); if(!b||!b.isValid()) return;
-  /* 出発前はパネルが下 57% を覆うので、見えている上側に収める */
-  const hidden = started ? 58 : Math.round(map.getSize().y*0.62);
-  map.fitBounds(b,{paddingTopLeft:[38, started?84:24], paddingBottomRight:[38, hidden+18]});
+  /* 地図コンテナ自体を出発前は上38%にしてあるので、余白は普通の値でいい。
+     fitBounds 任せだと1〜2段ズームが落ちたので、倍率を出して直接当てる */
+  const padX=22, padTop=started?80:64, padBot=started?54:86;
+  const z = map.getBoundsZoom(b, false, L.point(padX*2, padTop+padBot));
+  map.setView(b.getCenter(), z, {animate:false});
+  if (padTop !== padBot) map.panBy([0, (padTop-padBot)/2], {animate:false});
 }
 
 /* ---------- 所のカード（写真と特徴だけ） ---------- */
-function openCard(i){
-  const d=D[di], p=d.list[i];
+function openCard(ai, i){
+  if (i===undefined){ i=ai; ai=di; }        /* 内部からは番号だけで呼べる */
+  if (ai<0) return;
+  const d=D[ai], p=d.list[i];
   let h = '<h2><em>'+(p.n||(i+1))+'</em>'+p.name+'</h2>';
   h += '<p class="kind">'+p.kind+'</p>';
   const key = d.id+'/'+p.name;
@@ -1344,7 +1404,8 @@ function openCard(i){
             ((typeof PHOTOS==='undefined') ? '写真を読み込み中' : '写真はまだ入っていない')+'</div>';
   if (p.note) h += '<div class="note">'+p.note+'</div>';
   h += '<button class="navb" id="navBtn">Googleマップで案内</button>';
-  h += '<p class="hint">'+(started?'地図をタップで閉じる':'出発前でも見られる ／ 地図をタップで閉じる')+'</p>';
+  h += '<p class="hint">'+(started?'地図をタップで閉じる'
+        :(ai===di?'地図をタップで閉じる':D[ai].name+'　／　地図をタップで閉じる'))+'</p>';
   $('cbody').innerHTML = h;
   const wp = (typeof WP!=='undefined') && WP[d.id] && WP[d.id][i];
   $('navBtn').onclick = ()=>{
@@ -1422,12 +1483,17 @@ function toast(msg){
 const alertless = toast;
 
 /* ---------- 開始・終了 ---------- */
-$('goBtn').onclick = ()=>{
+$('goBtn').onclick = ()=>{      /* まず道具シートを出す */
+  if (di<0) return;
+  renderTools(); $('sheet').hidden=false; $('startbar').hidden=true;
+};
+$('shClose').onclick = ()=>{ $('sheet').hidden=true; $('startbar').hidden=false; };
+$('departBtn').onclick = ()=>{
+  $('sheet').hidden=true;
   started = true; cur = 0;
-  $('pre').hidden = true; $('go').hidden = true; $('fabs').hidden = false;
-  document.body.classList.remove('pre');
+  $('startbar').hidden = true; $('tabs').hidden = true; $('fabs').hidden = false;
   map.invalidateSize();
-  drawDistrict(true);
+  drawDistrict(true);        /* started が立っているので選んだ地区だけになる */
   NAV.set(di); NAV.target(0); NAV.on = true;
   SPK.on = true; SPK.init();
   SPK.say('案内を始めます');
@@ -1443,8 +1509,7 @@ $('backBtn').onclick = ()=>{
   follow=false; $('gpsBtn').classList.remove('on'); $('voiceBtn').classList.remove('on');
   if (wake){ try{ wake.release(); }catch(e){} wake=null; }
   $('guide').hidden=true; closeCard();
-  $('pre').hidden=false; $('go').hidden=false; $('fabs').hidden=true;
-  document.body.classList.add('pre');
+  $('startbar').hidden=false; $('tabs').hidden=false; $('fabs').hidden=true;
   map.invalidateSize();
   renderPre(); drawDistrict(true);
 };
@@ -1469,9 +1534,12 @@ $('vsel').onclick = ()=>{
   toast('声：'+SPK.label());
 };
 
-document.body.classList.add('pre');
 renderPre();
-setTimeout(()=>{ map.invalidateSize(); drawDistrict(true); }, 60);
+setTimeout(()=>{
+  map.invalidateSize();
+  drawDistrict(false);
+  requestAnimationFrame(()=>{ map.invalidateSize(); fitAll(); });
+}, 80);
 </script>
 </body>
 </html>
