@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#12161c">
 <title>P所点検</title>
-<meta name="build" content="202609120953">
+<meta name="build" content="20260912103610">
 <style>
 :root{
   --bg:#12161c; --panel:#1b2029; --line:#2b323d; --fg:#e8ecf2; --dim:#9aa5b4;
@@ -836,7 +836,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
   <div id="cbody"></div>
 </div>
 
-<script src="photos.js?v=202609120953" defer></script>
+<script src="photos.js?v=c3862c2e" defer></script>
 <script>
 /* @preserve
  * Leaflet 1.9.4, a JS library for interactive maps. https://leafletjs.com
@@ -952,18 +952,18 @@ const ROUTES = {"fukagawa":[[43.70791,142.03189],[43.70799,142.03253],[43.70806,
 const WP = {"fukagawa":["43.707990,142.032530|43.708140,142.032550|43.708090,142.030960|43.708730,142.031150|43.709590,142.030650|43.704840,142.015190","43.709460,142.012420|43.712010,142.020590|43.713180,142.019900","43.714300,142.023385|43.715011,142.022987|43.715309,142.023992|43.718105,142.022389","43.720420,142.029740|43.722630,142.036800|43.723520,142.039620","43.724330,142.041060|43.725670,142.045220","43.725000,142.045640|43.724590,142.044400","43.736050,142.037480|43.739160,142.035600|43.740480,142.034800","43.741640,142.038460","43.741640,142.038460|43.742500,142.041170","43.738830,142.043390|43.732710,142.047090","43.723698,142.052535","43.726160,142.060200|43.727510,142.064350|43.727790,142.065240","43.725850,142.066400|43.725030,142.066910","43.721989,142.068716|43.721614,142.065875","43.721590,142.065860|43.721120,142.062560|43.721302,142.061612","43.721310,142.061550|43.721840,142.061230|43.721460,142.061460|43.721370,142.061190|43.711680,142.030250|43.709810,142.031340|43.709590,142.030650|43.708730,142.031150|43.708130,142.030930"],"otoe":["43.708140,142.032550|43.708170,142.030910|43.709590,142.030650|43.709810,142.031340|43.711680,142.030250|43.716190,142.044570|43.711030,142.048930|43.708350,142.052860|43.705330,142.061380","43.702620,142.066380|43.695500,142.074740|43.697040,142.077340","43.696980,142.077230|43.696090,142.075740|43.694530,142.073120","43.686460,142.059180|43.685850,142.055760|43.691750,142.053540","43.704310,142.047580|43.709920,142.050500|43.716190,142.044570|43.711680,142.030250|43.709810,142.031340|43.709590,142.030650|43.708170,142.030910|43.708140,142.032550"],"osamunai":["43.708140,142.032550|43.708170,142.030910|43.709810,142.031340|43.711680,142.030250|43.721460,142.061460|43.724350,142.059720|43.729710,142.076490|43.729680,142.079020|43.725840,142.090700","43.727670,142.127700|43.727780,142.129160|43.726160,142.129440"],"tadoshi":["43.711680,142.030250|43.717440,142.048730|43.754250,142.029770|43.764260,142.014520|43.785930,142.002370|43.792450,142.018220|43.809040,142.022950","43.811930,142.031070|43.812140,142.031260|43.812260,142.031320","43.814360,142.032170|43.815450,142.030270"]}; const NOGUIDE = {"fukagawa":[[125.2,2285.4],[13385.8,13666.8]],"otoe":[[0.0,2507.4]],"osamunai":[[0.0,9501.3]],"tadoshi":[[0.0,13513.8]]};
 
 
-const CUES = {"fukagawa":[],"otoe":[],"osamunai":[[9162.1,"300メートル先を右折です",0],[9432.1,"30メートル先を右折。右にポンプ所があります",0]],"tadoshi":[]};
+const CUES = {"fukagawa":[],"otoe":[],"osamunai":[[8962.1,"500メートル先を右折です",0],[9407.1,"まもなく右折です、右にポンプ所です",0,1]],"tadoshi":[]};
 
 
 /* 読み上げ用のふりがな。漢字のままだと音声合成が地名を読み違える。
    ここに無い名前はそのまま読ませる。 */
 const YOMI = {
   "開西町":"かいせいちょう", "文光町":"ぶんこうちょう", "拓大":"たくだい",
-  "堺川雨水幹線":"さかいがわ うすいかんせん", "堺町":"さかいまち",
-  "北光町":"ほっこうちょう", "大鳳川1号雨水幹線":"たいほうがわ いちごう うすいかんせん",
+  "堺川雨水幹線":"さかいがわ", "堺町":"さかいまち",
+  "北光町":"ほっこうちょう", "大鳳川1号雨水幹線":"おおとりがわ",
   "あけぼの":"あけぼの", "桜坂":"さくらざか", "稲穂町":"いなほちょう",
   "蓬莱町":"ほうらいちょう", "二十四孝":"にじゅうしこう", "一已8丁目":"いちゃん はっちょうめ",
-  "陸上競技場":"りくじょうきょうぎじょう", "運動公園":"うんどうこうえん",
+  "陸上競技場":"きょうぎじょう", "運動公園":"うんどうこうえん",
   "広里橋ポンプ所":"ひろさとばし", "音江橋ポンプ所":"おとえばし",
   "新橋溜池ポンプ所":"しんばし ためいけ", "柳橋ポンプ所":"やなぎばし",
   "8区マンホールポンプ所":"おさむない はちく", "10区マンホールポンプ所":"おさむない じっく",
@@ -971,11 +971,11 @@ const YOMI = {
   "深川浄化センターへ戻る":"ふかがわじょうかせんたー"
 };
 /* 読み上げる名前。ポンプ所は「〜ぽんぷしょ」まで言う（幹線・帰着は付けない） */
+/* 読み上げ用の名前。「ぽんぷしょ」は付けない（普通の所は種別を言わない方針） */
 function sayName(p){
   const base = YOMI[p.name] || p.name;
   if (p.kind === "帰着") return base + "に もどります";
-  if (/幹線/.test(p.name) || /幹線/.test(p.kind)) return base;
-  return base + " ぽんぷしょ";
+  return base;
 }
 
 
@@ -1075,7 +1075,10 @@ function buildTurns(path){
     if (last && r.s - last.s <= 30){ last.d += r.d; last.i = r.i; last.s = r.s; }
     else turns.push({i:r.i, d:r.d, s:r.s});
   }
-  return {turns: turns.filter(t=>Math.abs(t.d)>=35), cum};
+  const out = turns.filter(t=>Math.abs(t.d)>=35);
+  /* 前の角との間隔。近い角は「50メートル先」と言う間が無いので、あとで言い方を変える */
+  for (let k=0;k<out.length;k++) out[k].gapPrev = (k===0) ? Infinity : (out[k].s - out[k-1].s);
+  return {turns: out, cum};
 }
 
 const NAV = {
@@ -1130,7 +1133,12 @@ const NAV = {
   },
   dirWord(d){ return d>0 ? "右" : "左"; },
   /* 「〜に もどります」のように文で終わる名前には「です」を付けない */
-  stopPhrase(){ return /ます$/.test(this.stopSay) ? this.stopSay : this.stopSay+"です"; },
+  /* 名前を読むのは SAYNAME に入れた地区だけ。ほかは種別だけ言う */
+  named(){ return (typeof SAYNAME!=='undefined') && !!SAYNAME[D[di].id]; },
+  stopPhrase(){
+    if (this.named()) return /ます$/.test(this.stopSay) ? this.stopSay : this.stopSay+"です";
+    return (this.stopKind || "到着")+"です";
+  },
   turnWord(d){ return d>0 ? "この先 右折" : "この先 左折"; },
   update(pos, speed){
     if (!this.on || !this.path) return;
@@ -1156,7 +1164,9 @@ const NAV = {
     let blockNear = false;
     for (let ci=0; ci<cues.length; ci++){
       if (loc.s >= cues[ci][0] && loc.s < cues[ci][0] + 250){
-        if (!this.said["cue"+ci]){ this.fire("cue"+ci, cues[ci][1]); this.nearSay[this.targetIdx]=1; }
+        if (!this.said["cue"+ci]){ this.fire("cue"+ci, cues[ci][1]); this.nearSay[this.targetIdx]=1;
+          /* 所の場所まで言う合図は到着も兼ねる */
+          if (cues[ci][3]) this.doneSay[this.targetIdx]=1; }
       } else if (loc.s < cues[ci][0] && cues[ci].length>2 && cues[ci][2] === this.targetIdx){
         blockNear = true;
       }
@@ -1171,7 +1181,13 @@ const NAV = {
 
     /* 次の角 */
     let nt=null;
-    if (!inYard) for (const t of this.turns){ if (t.s > loc.s + 3){ nt=t; break; } }
+    if (!inYard) for (const t of this.turns){
+      if (t.s <= loc.s + 3) continue;
+      /* 所に着いてから（または所の位置で）曲がる形の角は言わない。
+         音江橋がこれで、曲がるのは着いた後。手前にある角は曲がってから着くので言う（納内10区） */
+      if (this.stopS != null && t.s >= this.stopS - 3) continue;
+      nt=t; break;
+    }
     /* 目的地までの残り */
     const restStop = (this.stopS!=null) ? this.stopS - loc.s : null;
 
@@ -1190,30 +1206,37 @@ const NAV = {
     }
 
     /* 到着（15m以内）は曲がり角より優先する。直前に角があると到着を言い損ねていた */
-    if (restStop!=null && restStop <= 80 && restStop > -20 &&
+    if (restStop!=null && restStop <= 110 && restStop > -20 &&
         (restStop <= 15 || !nt || nt.s - loc.s > restStop)){
       arrow="◉";
       if (restStop <= 15){ main = this.stopName; sub="到着";
-        this.arrived(this.targetIdx, this.stopPhrase()); }
+        this.arrived(this.targetIdx,
+          this.named() ? (this.stopSay+"に 到着しました") : "到着しました"); }
       else { const r = Math.round(restStop/10)*10;
         main = r+"m先 "+this.stopName; sub="到着";
-        if (!blockNear) this.nearSaid(this.targetIdx, r+"メートル先、"+this.stopPhrase()); }
+        /* 読み上げは100mで固定。刻みによって80/90/100とブレるのを止める（画面は実距離） */
+        if (!blockNear) this.nearSaid(this.targetIdx, "100メートル先、"+this.stopPhrase()); }
     } else if (nt){
       const w = this.dirWord(nt.d);
       const gap = nt.s - loc.s;
       arrow = nt.d>0 ? "↱" : "↰";
-      if (gap <= 55){ turnish=true;
-        const r = Math.max(10, Math.round(gap/10)*10);
-        const tw = r+"メートル先を"+this.dirWord(nt.d)+"折";
-        main = r+"m先 "+this.dirWord(nt.d); sub="この角";
+      /* 前の角から100m未満の角は、50m先と言う間が無い。距離を付けず直前で「左折です」 */
+      const tight = (nt.gapPrev < 100);
+      const trig  = tight ? 30 : 55;
+      if (gap <= trig){ turnish=true;
+        const tw = tight ? (w+"折です") : ("まもなく"+w+"折です");
+        main = Math.max(10,Math.round(gap/10)*10)+"m先 "+w; sub="この角";
         /* 曲がってすぐ目的地なら、直前の合図にくっつけて言う（別々に言う間がない） */
         const soon = (restStop!=null && restStop-gap <= 90 && restStop > gap);
-        this.fire("t"+nt.i+"_now", soon ? (tw+"、その先 "+this.stopPhrase()) : tw);
-        if (soon){ this.nearSay[this.targetIdx]=1; sub = "その先 "+this.stopName; } }
-      else if (gap <= ahead){ turnish=true;
-        const r = Math.round(gap/50)*50;
-        main = r+"m先 "+w; sub="次の角";
-        this.fire("t"+nt.i+"_pre", r+"メートル先を"+w+"折です"); }
+        if (soon){
+          const sd = (typeof SIDE!=='undefined' && SIDE[this.stopKey]) || null;
+          this.fire("t"+nt.i+"_now",
+            tw + (sd ? ("、"+sd+"に"+(this.named()?this.stopSay:(this.stopKind||"ポンプ所"))+"です")
+                     : ("、その先 "+this.stopPhrase())));
+          /* ここで所の場所まで言っているので、予告も到着も言わない */
+          this.nearSay[this.targetIdx]=1; this.doneSay[this.targetIdx]=1;
+          sub = (sd ? (sd+"に"+(this.stopKind||"ポンプ所")) : ("その先 "+this.stopName));
+        } else this.fire("t"+nt.i+"_now", tw); }
       else { main = "直進"; sub = Math.round(gap/10)*10+"m先 "+w; }
     } else {
       main = "直進"; sub = this.stopName ? ("次は"+this.stopName) : "";
@@ -1239,6 +1262,10 @@ const NAV = {
   target(i){
     const d=D[di], p=d.list[i];
     this.stopName = (p.n||"")+p.name;
+    this.stopKey  = D[di].id+"/"+p.name;
+    /* 普通のポンプ所は言わない（「到着です」で足りる）。珍しい所だけ種別を言う */
+    this.stopKind = /雨水幹線/.test(p.kind||"") ? (YOMI[p.name] || p.name)
+                  : /ポンプ室/.test(p.kind||"")  ? (YOMI[p.name] || p.name) : null;
     this.stopSay = sayName(p);
     this.stopS = null;
     if (!this.path) return;
@@ -1337,6 +1364,21 @@ const AREA_COLOR = {fukagawa:'#4a9eff', otoe:'#3ec98d', osamunai:'#e8a33d', tado
 /* 出発前に、道具リストの頭へ赤く出す注意。地区ごとの落とし穴 */
 const WARN = {
   tadoshi: "豪雪地帯なので制御盤が高い位置にある。<b>3か所とも高い脚立が要る</b>。普通の脚立では届かない。"
+};
+/* 曲がってすぐ所がある時、所がどちら側にあるか。"地区id/名前" → '右' | '左'
+   入っていない所は「その先 ◯◯です」と言う（側は言わない） */
+/* 所の名前を読み上げる地区。音江は所の間隔が長く、橋の名前で分かるので名前を言う。
+   ほかは「ポンプ所です」「到着です」だけ（画面に名前も写真も出る） */
+const SAYNAME = { otoe: true };
+
+const SIDE = {
+  "fukagawa/文光町" : "左",
+  "fukagawa/拓大"  : "左",
+  "fukagawa/あけぼの": "左",
+  "fukagawa/桜坂"  : "右",
+  "fukagawa/運動公園": "右",
+  "osamunai/8区マンホールポンプ所": "右",   /* 納内は合図側で言っている */
+  "osamunai/10区マンホールポンプ所": "左",
 };
 const FIRST_SAY = {
   otoe:     "点検に向かいます。まずは深川橋を渡って下さい",
