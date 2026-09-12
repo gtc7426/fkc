@@ -790,6 +790,7 @@ a.plain{color:var(--acc);text-decoration:none}
   <button class="fab" id="gpsBtn" title="現在地">◎</button>
   <button class="fab" id="voiceBtn" title="音声案内">🔊</button>
   <button class="fab" id="driveBtn" title="試走（音声の確認）">▶</button>
+  <button class="fab" id="vsel" title="声を選ぶ">🗣</button>
   <button class="fab" id="fitBtn" title="全体">⤢</button>
   <button class="fab" id="listBtn" title="チェックリスト">☰</button>
 </div>
@@ -956,11 +957,38 @@ function sayName(p){
    距離は読み上げない（誤差が出るし、街区が詰まっていると噛み合わない）。 */
 const SPK = {
   on:false, voice:null, last:"", lastAt:0,
+  list:[], vi:0, picked:false,
   init(){
     try{
       const vs = speechSynthesis.getVoices();
-      this.voice = vs.find(v=>/ja[-_]JP/i.test(v.lang)) || vs.find(v=>/^ja/i.test(v.lang)) || null;
+      this.list = vs.filter(v=>/^ja/i.test(v.lang));
+      if (!this.list.length) this.list = vs.filter(v=>/japan/i.test(v.name));
+      if (this.list.length){
+        if (this.vi >= this.list.length) this.vi = 0;
+        /* 最初は女声を選んでおく（Haruka / Ayumi / Nanami / Sayaka / Kyoko / Google 日本語） */
+        if (!this.picked){
+          const F = /nanami|haruka|ayumi|sayaka|kyoko|mizuki|google|female|女/i;
+          const k = this.list.findIndex(v => F.test(v.name));
+          if (k >= 0) this.vi = k;
+          this.picked = true;
+        }
+        this.voice = this.list[this.vi];
+      } else this.voice = null;
     }catch(e){}
+  },
+  /* 端末に入っている日本語の声を順に切り替える */
+  cycle(){
+    this.init();
+    if (!this.list.length) return null;
+    this.vi = (this.vi + 1) % this.list.length;
+    this.voice = this.list[this.vi];
+    return this.voice;
+  },
+  label(){
+    if (!this.list.length) return "日本語の声が無い";
+    const n = (this.voice && this.voice.name) || "?";
+    return n.replace(/^Microsoft\s+/,"").replace(/\s*-\s*Japanese.*$/i,"")
+            .replace(/\s*\(.*\)$/,"") + "  ("+(this.vi+1)+"/"+this.list.length+")";
   },
   say(t){
     if (!this.on || !t) return;
@@ -1407,6 +1435,15 @@ $('voiceBtn').onclick = () => {
   try{ navigator.wakeLock && navigator.wakeLock.request('screen').then(w=>wake=w); }catch(e){}
 };
 let wake = null;
+
+$('vsel').onclick = () => {
+  const v = SPK.cycle();
+  if (!v){ alertless('この端末に日本語の音声が入っていない'); return; }
+  const was = SPK.on; SPK.on = true; SPK.last = "";
+  SPK.say('この声です。60メートルで左に曲がります');
+  SPK.on = was || SPK.on;
+  alertless('声：' + SPK.label());
+};
 
 $('driveBtn').onclick = () => { DRIVE.on ? DRIVE.stop() : DRIVE.start(); };
 
