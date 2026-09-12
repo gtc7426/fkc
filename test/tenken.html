@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#12161c">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <title>P所点検</title>
-<meta name="build" content="20260912104135">
+<meta name="build" content="20260912111226">
 <style>
 :root{
   --bg:#12161c; --panel:#1b2029; --line:#2b323d; --fg:#e8ecf2; --dim:#9aa5b4;
@@ -953,7 +953,7 @@ const ROUTES = {"fukagawa":[[43.70791,142.03189],[43.70799,142.03253],[43.70806,
 const WP = {"fukagawa":["43.707990,142.032530|43.708140,142.032550|43.708090,142.030960|43.708730,142.031150|43.709590,142.030650|43.704840,142.015190","43.709460,142.012420|43.712010,142.020590|43.713180,142.019900","43.714300,142.023385|43.715011,142.022987|43.715309,142.023992|43.718105,142.022389","43.720420,142.029740|43.722630,142.036800|43.723520,142.039620","43.724330,142.041060|43.725670,142.045220","43.725000,142.045640|43.724590,142.044400","43.736050,142.037480|43.739160,142.035600|43.740480,142.034800","43.741640,142.038460","43.741640,142.038460|43.742500,142.041170","43.738830,142.043390|43.732710,142.047090","43.723698,142.052535","43.726160,142.060200|43.727510,142.064350|43.727790,142.065240","43.725850,142.066400|43.725030,142.066910","43.721989,142.068716|43.721614,142.065875","43.721590,142.065860|43.721120,142.062560|43.721302,142.061612","43.721310,142.061550|43.721840,142.061230|43.721460,142.061460|43.721370,142.061190|43.711680,142.030250|43.709810,142.031340|43.709590,142.030650|43.708730,142.031150|43.708130,142.030930"],"otoe":["43.708140,142.032550|43.708170,142.030910|43.709590,142.030650|43.709810,142.031340|43.711680,142.030250|43.716190,142.044570|43.711030,142.048930|43.708350,142.052860|43.705330,142.061380","43.702620,142.066380|43.695500,142.074740|43.697040,142.077340","43.696980,142.077230|43.696090,142.075740|43.694530,142.073120","43.686460,142.059180|43.685850,142.055760|43.691750,142.053540","43.704310,142.047580|43.709920,142.050500|43.716190,142.044570|43.711680,142.030250|43.709810,142.031340|43.709590,142.030650|43.708170,142.030910|43.708140,142.032550"],"osamunai":["43.708140,142.032550|43.708170,142.030910|43.709810,142.031340|43.711680,142.030250|43.721460,142.061460|43.724350,142.059720|43.729710,142.076490|43.729680,142.079020|43.725840,142.090700","43.727670,142.127700|43.727780,142.129160|43.726160,142.129440"],"tadoshi":["43.711680,142.030250|43.717440,142.048730|43.754250,142.029770|43.764260,142.014520|43.785930,142.002370|43.792450,142.018220|43.809040,142.022950","43.811930,142.031070|43.812140,142.031260|43.812260,142.031320","43.814360,142.032170|43.815450,142.030270"]}; const NOGUIDE = {"fukagawa":[[125.2,2285.4],[13385.8,13666.8]],"otoe":[[0.0,2507.4]],"osamunai":[[0.0,9501.3]],"tadoshi":[[0.0,13513.8]]};
 
 
-const CUES = {"fukagawa":[],"otoe":[],"osamunai":[[8962.1,"500メートル先を右折です",0],[9407.1,"まもなく右折です、右にポンプ所です",0,1]],"tadoshi":[]};
+const CUES = {"fukagawa":[],"otoe":[],"osamunai":[[8962.1,"500メートル先を右折です",0],[9407.1,"まもなく右折です、右側にポンプ所です",0,1]],"tadoshi":[]}; const TSAY = {"fukagawa":[],"otoe":[],"osamunai":[],"tadoshi":[[14601.6,"信号を右折です"]]};
 
 
 /* 読み上げ用のふりがな。漢字のままだと音声合成が地名を読み違える。
@@ -1070,11 +1070,18 @@ function buildTurns(path){
     const d=GEO.diff(a,b);
     if (Math.abs(d) >= 25) raw.push({i, d, s:cum[i]});
   }
+  /* 行き止まりに入って戻る形（±180度の折り返し）は「曲がり角」ではない。
+     ここを境にして、またぐ形で角をまとめない。折り返し自体も角には入れない */
+  const wrap = a => ((a + 180) % 360 + 360) % 360 - 180;
   const turns=[];
+  let wall = false;                       /* 直前が折り返しだったか */
   for (const r of raw){
+    if (Math.abs(r.d) > 150){ wall = true; continue; }
     const last = turns[turns.length-1];
-    if (last && r.s - last.s <= 30){ last.d += r.d; last.i = r.i; last.s = r.s; }
-    else turns.push({i:r.i, d:r.d, s:r.s});
+    if (!wall && last && r.s - last.s <= 30){
+      last.d = wrap(last.d + r.d); last.i = r.i; last.s = r.s;
+    } else turns.push({i:r.i, d:wrap(r.d), s:r.s});
+    wall = false;
   }
   const out = turns.filter(t=>Math.abs(t.d)>=35);
   /* 前の角との間隔。近い角は「50メートル先」と言う間が無いので、あとで言い方を変える */
@@ -1140,6 +1147,14 @@ const NAV = {
     if (this.named()) return /ます$/.test(this.stopSay) ? this.stopSay : this.stopSay+"です";
     return (this.stopKind || "到着")+"です";
   },
+  /* 「右側にポンプ所です」。側が分かっていない所は「到着です」だけ */
+  sideWord(){ return (typeof SIDE!=='undefined' && SIDE[this.stopKey]) || null; },
+  stopPhraseSide(){
+    const sd = this.sideWord();
+    if (!sd) return this.stopPhrase();
+    const w = this.named() ? this.stopSay : (this.stopKind || "ポンプ所");
+    return sd+"側に"+w+"です";
+  },
   turnWord(d){ return d>0 ? "この先 右折" : "この先 左折"; },
   update(pos, speed){
     if (!this.on || !this.path) return;
@@ -1186,6 +1201,7 @@ const NAV = {
       if (t.s <= loc.s + 3) continue;
       /* 所に着いてから（または所の位置で）曲がる形の角は言わない。
          音江橋がこれで、曲がるのは着いた後。手前にある角は曲がってから着くので言う（納内10区） */
+      if (this.stopS != null && t.s >= this.stopS - 10 && t.s <= this.stopS + 40) continue;
       if (this.stopS != null && t.s >= this.stopS - 3) continue;
       nt=t; break;
     }
@@ -1215,8 +1231,22 @@ const NAV = {
           this.named() ? (this.stopSay+"に 到着しました") : "到着しました"); }
       else { const r = Math.round(restStop/10)*10;
         main = r+"m先 "+this.stopName; sub="到着";
+        /* 所が角の手前にある形（着いてすぐ曲がる）は、100mの予告に曲がりを混ぜる。
+           行き止まりの折り返し（180度付近）と、構内の角は混ぜない */
+        let ta = null;
+        if (this.stopS != null) for (const t of this.turns){
+          const dd = t.s - this.stopS;
+          if (dd < -10) continue;
+          if (dd > 40) break;
+          if (Math.abs(t.d) > 150) break;
+          if ((typeof NOGUIDE!=='undefined' && NOGUIDE[D[di].id] || [])
+                .some(rg => t.s >= rg[0] && t.s <= rg[1])) break;
+          ta = t; break;
+        }
         /* 読み上げは100mで固定。刻みによって80/90/100とブレるのを止める（画面は実距離） */
-        if (!blockNear) this.nearSaid(this.targetIdx, "100メートル先、"+this.stopPhrase()); }
+        if (!blockNear) this.nearSaid(this.targetIdx,
+          (ta ? ("100メートル先を"+this.dirWord(ta.d)+"折、") : "100メートル先、")
+          + this.stopPhraseSide()); }
     } else if (nt){
       const w = this.dirWord(nt.d);
       const gap = nt.s - loc.s;
@@ -1225,18 +1255,20 @@ const NAV = {
       const tight = (nt.gapPrev < 100);
       const trig  = tight ? 30 : 55;
       if (gap <= trig){ turnish=true;
-        const tw = tight ? (w+"折です") : ("まもなく"+w+"折です");
+        /* 目印で言い換える角（多度志の信号など） */
+        const tsay = ((typeof TSAY!=='undefined' && TSAY[D[di].id]) || [])
+                       .find(x => Math.abs(x[0] - nt.s) <= 20);
+        const tw = tsay ? tsay[1] : (tight ? (w+"折です") : ("まもなく"+w+"折です"));
         main = Math.max(10,Math.round(gap/10)*10)+"m先 "+w; sub="この角";
         /* 曲がってすぐ目的地なら、直前の合図にくっつけて言う（別々に言う間がない） */
         const soon = (restStop!=null && restStop-gap <= 90 && restStop > gap);
         if (soon){
-          const sd = (typeof SIDE!=='undefined' && SIDE[this.stopKey]) || null;
+          const sd = this.sideWord();
           this.fire("t"+nt.i+"_now",
-            tw + (sd ? ("、"+sd+"に"+(this.named()?this.stopSay:(this.stopKind||"ポンプ所"))+"です")
-                     : ("、その先 "+this.stopPhrase())));
+            tw + "、" + (sd ? this.stopPhraseSide() : ("その先 "+this.stopPhrase())));
           /* ここで所の場所まで言っているので、予告も到着も言わない */
           this.nearSay[this.targetIdx]=1; this.doneSay[this.targetIdx]=1;
-          sub = (sd ? (sd+"に"+(this.stopKind||"ポンプ所")) : ("その先 "+this.stopName));
+          sub = (sd ? (sd+"側に"+(this.stopKind||"ポンプ所")) : ("その先 "+this.stopName));
         } else this.fire("t"+nt.i+"_now", tw); }
       else { main = "直進"; sub = Math.round(gap/10)*10+"m先 "+w; }
     } else {
@@ -1373,13 +1405,30 @@ const WARN = {
 const SAYNAME = { otoe: true };
 
 const SIDE = {
-  "fukagawa/文光町" : "左",
-  "fukagawa/拓大"  : "左",
-  "fukagawa/あけぼの": "左",
-  "fukagawa/桜坂"  : "右",
-  "fukagawa/運動公園": "右",
-  "osamunai/8区マンホールポンプ所": "右",   /* 納内は合図側で言っている */
-  "osamunai/10区マンホールポンプ所": "左",
+  "fukagawa/開西町"          : "右",
+  "fukagawa/文光町"          : "左",
+  "fukagawa/拓大"            : "左",
+  "fukagawa/堺川雨水幹線"      : "右",
+  "fukagawa/堺町"            : "左",
+  "fukagawa/北光町"          : "左",
+  "fukagawa/大鳳川1号雨水幹線" : "左",
+  "fukagawa/あけぼの"         : "左",
+  "fukagawa/桜坂"            : "右",
+  "fukagawa/稲穂町"          : "左",
+  "fukagawa/蓬莱町"          : "左",
+  "fukagawa/二十四孝"         : "左",
+  "fukagawa/一已8丁目"        : "右",
+  /* ⑭陸上競技場は建物の中なので側を言わない（うさぎ 2026/9/12） */
+  "fukagawa/運動公園"         : "右",
+  "otoe/広里橋ポンプ所"        : "右",   /* 左折してすぐ右 */
+  "otoe/音江橋ポンプ所"        : "右",   /* 左折してすぐ右 */
+  "otoe/新橋溜池ポンプ所"      : "左",
+  "otoe/柳橋ポンプ所"          : "左",
+  "osamunai/8区マンホールポンプ所"  : "右",
+  "osamunai/10区マンホールポンプ所" : "左",
+  "tadoshi/中央ポンプ所"       : "左",
+  "tadoshi/弥栄ポンプ所"       : "左",
+  "tadoshi/下多度志ポンプ所"    : "左",
 };
 const FIRST_SAY = {
   otoe:     "点検に向かいます。まずは深川橋を渡って下さい",
