@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#12161c">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <title>P所点検</title>
-<meta name="build" content="20260912125249">
+<meta name="build" content="20260912131707">
 <style>
 :root{
   --bg:#12161c; --panel:#1b2029; --line:#2b323d; --fg:#e8ecf2; --dim:#9aa5b4;
@@ -801,7 +801,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 <!-- ===== 地区タブ（常時） ===== -->
 <div id="tabs">
-  <span class="tt">P所点検<span class="ver">Ver 1.9</span></span>
+  <span class="tt">P所点検<span class="ver">Ver 2.3</span></span>
   <div class="tabwrap" id="areas"></div>
   <a class="home" href="/fkc/" title="トップメニューへ">☰</a>
 </div>
@@ -1029,21 +1029,37 @@ const SPK = {
     return n.replace(/^Microsoft\s+/,"").replace(/\s*-\s*Japanese.*$/i,"")
             .replace(/\s*\(.*\)$/,"") + "  ("+(this.vi+1)+"/"+this.list.length+")";
   },
+  q:[],
   say(t){
     if (!this.on || !t) return;
     const now = Date.now();
     /* 角ごとの発話は NAV.fire がキーで1回に絞っているので、ここは取りこぼし防止の短い間隔だけ */
     if (t === this.last && now - this.lastAt < 2500) return;
     this.last = t; this.lastAt = now;
+    /* 喋っている最中なら待たせる。前を切ると両方 聞き取れなくなる。
+       ただし古くなった合図は捨てる（曲がった後に「まもなく右折」は害） */
+    if (this.busy || (window.speechSynthesis && speechSynthesis.speaking)){
+      this.q = [{t, at: now}];      /* 溜めるのは1つだけ。次々と溜めても意味がない */
+      return;
+    }
+    this._speak(t);
+  },
+  _speak(t){
     try{
       const u = new SpeechSynthesisUtterance(t);
       u.lang = "ja-JP"; u.rate = 1.05; u.pitch = 1.0;
       if (this.voice) u.voice = this.voice;
       this.busy = true;
-      u.onend = () => { this.busy = false; };
-      u.onerror = () => { this.busy = false; };
-      speechSynthesis.cancel(); speechSynthesis.speak(u);
-    }catch(e){}
+      const done = () => { this.busy = false; this._next(); };
+      u.onend = done; u.onerror = done;
+      speechSynthesis.speak(u);
+    }catch(e){ this.busy = false; }
+  },
+  _next(){
+    const n = this.q.shift();
+    if (!n) return;
+    if (Date.now() - n.at > 5000) return;   /* 5秒以上前のは もう役に立たない */
+    this._speak(n.t);
   }
 };
 try{ speechSynthesis.onvoiceschanged = () => SPK.init(); SPK.init(); }catch(e){}
@@ -1191,7 +1207,14 @@ const NAV = {
       }
       return;
     }
-    if (this.offRoute){ this.offRoute = false; this.said = {}; }
+    if (this.offRoute){
+      this.offRoute = false;
+      /* 経路に戻った時、角の記録を全部消すと「まもなく右折です」をもう一度言ってしまう
+         （GPSが数十m飛んだだけでも起きる）。まだ250m以上先にある角だけ言い直せるようにする */
+      for (const t of this.turns){
+        if (t.s > loc.s + 250){ delete this.said["t"+t.i+"_now"]; delete this.said["t"+t.i+"_pre"]; }
+      }
+    }
     this.autoTarget(loc.s);
 
     /* 黙っている区間の中でも、ここだけは言う（納内の入口の右折など） */
@@ -1370,7 +1393,7 @@ const DRIVE = {
       }
       return best.s;
     });
-    this.on=true; this.s=0; this.stopIdx=0; NAV.target(0);
+    this.on=true; this.s=0; this.stopIdx=0; NAV.target(0); NAV.targetIdx=0;
     $('driveBtn').classList.add('on'); $('driveBtn').textContent='■';
     if (!this.dot) this.dot=L.circleMarker(this.posAt(0),
       {radius:8,color:'#fff',weight:2.5,fillColor:'#e0453a',fillOpacity:1}).addTo(map);
@@ -1389,7 +1412,7 @@ const DRIVE = {
     if (SPK.busy || (window.speechSynthesis && speechSynthesis.speaking)){
       setTimeout(()=>this.tick(), 150); return;
     }
-    this.s += 25;
+    this.s += 10;      /* 実機のGPSと同じ細かさで進める。25mだと窓を跨いで合図を落とす */
     if (this.s >= this.total){
       SPK.say('試走を終わります');
       setTimeout(()=>this.stop(), 2500); return;
@@ -1397,11 +1420,8 @@ const DRIVE = {
     const pos=this.posAt(this.s);
     this.dot.setLatLng(pos); map.panTo(pos,{animate:false});
     NAV.update(pos, 11.1);
-    const d=D[di];
-    if (this.stopIdx < d.list.length-1 && this.s > this.stopS[this.stopIdx]+5){
-      this.stopIdx++; NAV.target(this.stopIdx);
-      cur=this.stopIdx; refreshPins();
-    }
+    /* 目的地の切り替えは NAV.autoTarget が持っている。ここで NAV.target を呼ぶと
+       目的地の番号と中身が食い違って、同じ合図がもう一度出ることがある */
     $('gSub').textContent = ($('gSub').textContent||'') + '   試走 '+Math.round(this.s)+'m';
     setTimeout(()=>this.tick(), 25);
   }
