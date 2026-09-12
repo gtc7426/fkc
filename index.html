@@ -128,6 +128,11 @@
        color:var(--ink-3);display:flex;align-items:center;gap:10px}
   .sec::after{content:"";flex:1;height:1px;background:var(--line)}
   .menu{gap:9px}
+  .m.test{border:1px dashed var(--go);background:#f2f8fb}
+  .m.test .mt{color:var(--go)}
+  .m.test .mt::after{content:"TEST";font-family:var(--num);font-size:11px;font-weight:700;
+    letter-spacing:.1em;color:#fff;background:var(--go);border-radius:5px;
+    padding:2px 6px;margin-left:9px;vertical-align:3px}
 </style>
 </head>
 <body>
@@ -151,6 +156,11 @@
     <a class="m" href="naibu/index.html"><div class="mt">P所マンホール内部</div><div class="ms">2人以上。所を選んで入る</div></a>
     <div class="m off"><div class="mt">※P</div><div class="ms">公園通の軽い点検</div></div>
     <a class="m" href="sougei/index.html"><div class="mt">送・迎</div><div class="ms">朝の送り・夕方の迎え・採水</div></a>
+  </div>
+
+  <div class="sec">テスト（開発中）</div>
+  <div class="menu">
+    <a class="m test" href="test/map.html"><div class="mt">巡回マップ</div><div class="ms">地図に順路とP所。まだ線は道路に乗っていない</div></a>
   </div>
 </div>
 
