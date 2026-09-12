@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#12161c">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <title>P所点検</title>
-<meta name="build" content="20260912131707">
+<meta name="build" content="20260912132052">
 <style>
 :root{
   --bg:#12161c; --panel:#1b2029; --line:#2b323d; --fg:#e8ecf2; --dim:#9aa5b4;
@@ -801,7 +801,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 <!-- ===== 地区タブ（常時） ===== -->
 <div id="tabs">
-  <span class="tt">P所点検<span class="ver">Ver 2.3</span></span>
+  <span class="tt">P所点検<span class="ver">Ver 2.4</span></span>
   <div class="tabwrap" id="areas"></div>
   <a class="home" href="/fkc/" title="トップメニューへ">☰</a>
 </div>
@@ -1393,6 +1393,11 @@ const DRIVE = {
       }
       return best.s;
     });
+    /* ★試走の間はGPSを止める。実機の現在地と試走の位置が交互に入ると
+       経路から外れた判定が出たり、合図が二度鳴ったりする（2026/9/12 うさぎが踏んだ） */
+    this.gpsWas = false;
+    try{ if (typeof watchId!=='undefined' && watchId!=null){
+      navigator.geolocation.clearWatch(watchId); watchId=null; this.gpsWas=true; } }catch(e){}
     this.on=true; this.s=0; this.stopIdx=0; NAV.target(0); NAV.targetIdx=0;
     $('driveBtn').classList.add('on'); $('driveBtn').textContent='■';
     if (!this.dot) this.dot=L.circleMarker(this.posAt(0),
@@ -1404,8 +1409,9 @@ const DRIVE = {
   stop(){
     this.on=false; $('driveBtn').classList.remove('on'); $('driveBtn').textContent='▶';
     try{ speechSynthesis.cancel(); }catch(e){}
-    SPK.busy=false; if (this.dot) map.removeLayer(this.dot);
+    SPK.busy=false; SPK.q=[]; if (this.dot) map.removeLayer(this.dot);
     NAV.on=false; SPK.on=false; $('guide').hidden=true;
+    if (this.gpsWas){ this.gpsWas=false; try{ startGps(); }catch(e){} }   /* 止めたGPSを戻す */
   },
   tick(){
     if (!this.on) return;
