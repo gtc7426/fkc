@@ -31,6 +31,8 @@
   /* ヘッダ */
   .bar{position:sticky;top:0;z-index:10;background:var(--paper);border-bottom:1px solid var(--line);
        padding:9px 10px;display:flex;align-items:center;gap:7px}
+  .bar .ver{font-size:11px;font-weight:600;color:#7a8f99;margin-left:8px;
+    letter-spacing:.02em;white-space:nowrap;font-variant-numeric:tabular-nums}
   .bar .ttl{font-size:15px;font-weight:700;letter-spacing:.02em;white-space:nowrap;
              min-width:0;overflow:hidden;text-overflow:ellipsis}
   .bar .prog{margin-left:auto;font-family:var(--num);font-size:15px;font-weight:700;
@@ -140,6 +142,7 @@
 
 <div class="bar">
   <span class="ttl">深川事業所</span>
+  <span class="ver">Ver 1.0</span>
 </div>
 
 <div class="wrap">
