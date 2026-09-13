@@ -105,32 +105,30 @@
   }catch(e){}
 })();
 
-/* 2026/9/7〜9/13。原本 job\schedule\20260907-0913_schedule.png
+/* 2026/9/14〜9/20。原本 job\schedule\20260914-0920_schedule.jpg
    ★同乗者の氏名は書かない（公開の GitHub に置くため）。行き先と時刻だけで足りる。 */
 const D = [
-{d:"9/7", w:"月",
- go:["音江"], back:["音江"], out:"15:40",
- mine:"送",
- samp:"音江は脱水・月例だけで<b>分析なし</b>。採水は無いはず"},
-{d:"9/8", w:"火",
+{d:"9/14", w:"月", iso:"2026-09-14",
  go:["音江"], back:["音江"], out:"15:40",
  mine:"",
- samp:"音江は脱水・月例だけで<b>分析なし</b>。採水は無いはず"},
-{d:"9/9", w:"水",
+ samp:"音江は脱水・月例だけで<b>分析なし</b>。採水は無い"},
+{d:"9/15", w:"火", iso:"2026-09-15",
+ off:"他事業所に作業なし"},
+{d:"9/16", w:"水", iso:"2026-09-16",
  go:["納内","多度志"], back:["多度志","納内"], out:"15:20",
- mine:"送迎",
- samp:"<b>納内・多度志とも水質中試験。</b>検水を採って深川へ持ち帰る"},
-{d:"9/10", w:"木",
- go:["音江"], back:["音江"], out:"15:40",
  mine:"",
- samp:"<b>音江が日常分析。</b>検水を採って深川へ持ち帰る"},
-{d:"9/11", w:"金",
- go:["音江","納内"], back:["納内","音江"], out:"15:30", pp:true,
- mine:"送迎",
- warn:"<b>予定表の書き落とし（2026/9/10 に職場で確認済み）。</b>社有車の行が「音→戻→納→音」で、<b>朝の納内が抜けている</b>。実際は朝も納内へ寄る",
- samp:"納内・音江とも脱水・月例・計装で<b>分析なし</b>。採水は無いはず"},
-{d:"9/12", w:"土", off:"指定休"},
-{d:"9/13", w:"日", off:"公休"}
+ samp:"<b>納内・多度志とも日常分析。</b>検水を採って深川へ持ち帰る"},
+{d:"9/17", w:"木", iso:"2026-09-17",
+ go:["音江"], back:["音江"], out:"15:40",
+ mine:"迎",
+ samp:"<b>音江が水質中試験②。</b>検水を採って深川へ持ち帰る。<br>"
+      + "<b>送りが出る前に、音江用のフラン瓶（硫酸銅スルファミン酸 5mL）を渡す。</b>"},
+{d:"9/18", w:"金", iso:"2026-09-18",
+ go:["音江","納内"], back:["納内","音江"], out:"15:30", pp:true, add:"帰りに<b>給油</b>",
+ mine:"",
+ samp:"納内・音江とも脱水・月例だけで<b>分析なし</b>。採水は無い"},
+{d:"9/19", w:"土", iso:"2026-09-19", off:"指定休"},
+{d:"9/20", w:"日", iso:"2026-09-20", off:"公休"}
 ];
 
 const tabs = document.getElementById("tabs");
@@ -158,6 +156,7 @@ function render(){
     ${p.out ? `<div class="out">${p.out} <span>出発</span></div>` : ""}
     <div class="route">${arrow(p.back)}<span class="x">→</span><span>戻る</span></div>
     ${p.pp ? `<div class="pp"><b>※P</b> 金曜は迎えのときに公園通ポンプ場の軽い点検</div>` : ""}
+    ${p.add ? `<div class="pp">${p.add}</div>` : ""}
     <div class="lock">戻ったら <b>ホッパー室の扉を施錠</b></div>
     ${p.warn ? `<div class="warn">${p.warn}</div>` : ""}
   </div>`;
@@ -166,6 +165,14 @@ tabs.addEventListener("click", e=>{
   const b = e.target.closest("[data-i]"); if(!b) return;
   cur = +b.dataset.i; render(); window.scrollTo(0,0);
 });
+(function(){
+  const t = new Date();
+  const today = t.getFullYear() + "-" + String(t.getMonth()+1).padStart(2,"0")
+              + "-" + String(t.getDate()).padStart(2,"0");
+  let i = D.findIndex(x => x.iso >= today);
+  if (i < 0) i = D.length - 1;
+  cur = i;
+})();
 render();
 </script>
 
