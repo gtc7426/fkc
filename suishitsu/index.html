@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>水質分析</title>
 <meta name="version" content="1.0">
-<meta name="build" content="20260913203258">
+<meta name="build" content="20260913204651">
 <meta name="theme-color" content="#0f6d8c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -158,6 +158,9 @@
   .crow .ck{flex:0 0 106px;display:block}
   .crow .ck i{white-space:nowrap;display:inline-block}
   .cv{flex:1;min-width:0;font-size:14.5px;line-height:1.55;padding-top:3px}
+  .ploc{flex:0 0 88px}
+  .ploc.px span{padding-left:19px}
+  .ploc b i.pfx{font-style:normal;display:inline-block;width:19px;color:var(--ink-3)}
   em.fn{font-style:normal;font-size:12px;font-weight:600;color:var(--ink-3);
            letter-spacing:0;display:block;line-height:1.45;margin:1px 0}
   .step.first{border:2px solid var(--warn);background:#fdf6f4}
@@ -826,7 +829,7 @@ const DAYS = [
      "@脱水分|脱水の担当者が処理して乾燥機へ入れる。分析担当は測るだけ。",
      [
       [
-       "投入1",
+       "|投入1",
        "投入汚泥",
        [
         [
@@ -837,7 +840,7 @@ const DAYS = [
        ""
       ],
       [
-       "投入2",
+       "|投入2",
        "投入汚泥",
        [
         [
@@ -848,7 +851,7 @@ const DAYS = [
        ""
       ],
       [
-       "ろ液",
+       "|ろ液",
        "",
        [
         [
@@ -859,7 +862,7 @@ const DAYS = [
        ""
       ],
       [
-       "ケーキ1",
+       "|ケーキ1",
        "",
        [
         [
@@ -870,7 +873,7 @@ const DAYS = [
        ""
       ],
       [
-       "ケーキ2",
+       "|ケーキ2",
        "",
        [
         [
@@ -881,7 +884,7 @@ const DAYS = [
        ""
       ],
       [
-       "音投入",
+       "音|投入",
        "投入汚泥",
        [
         [
@@ -892,7 +895,7 @@ const DAYS = [
        ""
       ],
       [
-       "音ろ液",
+       "音|ろ液",
        "",
        [
         [
@@ -903,7 +906,7 @@ const DAYS = [
        ""
       ],
       [
-       "音ケーキ1",
+       "音|ケーキ1",
        "",
        [
         [
@@ -914,7 +917,7 @@ const DAYS = [
        ""
       ],
       [
-       "音ケーキ2",
+       "音|ケーキ2",
        "",
        [
         [
@@ -1058,7 +1061,7 @@ const DAYS = [
      "@脱水分|脱水の担当者が処理して乾燥機へ入れる。分析担当は測るだけ。",
      [
       [
-       "投入1",
+       "|投入1",
        "投入汚泥",
        [
         [
@@ -1069,7 +1072,7 @@ const DAYS = [
        ""
       ],
       [
-       "投入2",
+       "|投入2",
        "投入汚泥",
        [
         [
@@ -1080,7 +1083,7 @@ const DAYS = [
        ""
       ],
       [
-       "ろ液",
+       "|ろ液",
        "",
        [
         [
@@ -1091,7 +1094,7 @@ const DAYS = [
        ""
       ],
       [
-       "ケーキ1",
+       "|ケーキ1",
        "",
        [
         [
@@ -1102,7 +1105,7 @@ const DAYS = [
        ""
       ],
       [
-       "ケーキ2",
+       "|ケーキ2",
        "",
        [
         [
@@ -1365,7 +1368,7 @@ const DAYS = [
      "@脱水分|脱水の担当者が処理して乾燥機へ入れる。分析担当は測るだけ。",
      [
       [
-       "投入1",
+       "|投入1",
        "投入汚泥",
        [
         [
@@ -1376,7 +1379,7 @@ const DAYS = [
        ""
       ],
       [
-       "投入2",
+       "|投入2",
        "投入汚泥",
        [
         [
@@ -1387,7 +1390,7 @@ const DAYS = [
        ""
       ],
       [
-       "ろ液",
+       "|ろ液",
        "",
        [
         [
@@ -1398,7 +1401,7 @@ const DAYS = [
        ""
       ],
       [
-       "ケーキ1",
+       "|ケーキ1",
        "",
        [
         [
@@ -1409,7 +1412,7 @@ const DAYS = [
        ""
       ],
       [
-       "ケーキ2",
+       "|ケーキ2",
        "",
        [
         [
@@ -1420,7 +1423,7 @@ const DAYS = [
        ""
       ],
       [
-       "納投入",
+       "納|投入",
        "投入汚泥",
        [
         [
@@ -1431,7 +1434,7 @@ const DAYS = [
        ""
       ],
       [
-       "納ろ液",
+       "納|ろ液",
        "",
        [
         [
@@ -1442,7 +1445,7 @@ const DAYS = [
        ""
       ],
       [
-       "納ケーキ1",
+       "納|ケーキ1",
        "",
        [
         [
@@ -1453,7 +1456,7 @@ const DAYS = [
        ""
       ],
       [
-       "納ケーキ2",
+       "納|ケーキ2",
        "",
        [
         [
@@ -1464,7 +1467,7 @@ const DAYS = [
        ""
       ],
       [
-       "多投入",
+       "多|投入",
        "投入汚泥",
        [
         [
@@ -1475,7 +1478,7 @@ const DAYS = [
        ""
       ],
       [
-       "多ろ液",
+       "多|ろ液",
        "",
        [
         [
@@ -1486,7 +1489,7 @@ const DAYS = [
        ""
       ],
       [
-       "多ケーキ",
+       "多|ケーキ",
        "",
        [
         [
@@ -1926,7 +1929,7 @@ const DAYS = [
      "@脱水分|脱水の担当者が処理して乾燥機へ入れる。分析担当は測るだけ。",
      [
       [
-       "投入1",
+       "|投入1",
        "投入汚泥",
        [
         [
@@ -1937,7 +1940,7 @@ const DAYS = [
        ""
       ],
       [
-       "投入2",
+       "|投入2",
        "投入汚泥",
        [
         [
@@ -1948,7 +1951,7 @@ const DAYS = [
        ""
       ],
       [
-       "ろ液",
+       "|ろ液",
        "",
        [
         [
@@ -1959,7 +1962,7 @@ const DAYS = [
        ""
       ],
       [
-       "ケーキ1",
+       "|ケーキ1",
        "",
        [
         [
@@ -1970,7 +1973,7 @@ const DAYS = [
        ""
       ],
       [
-       "ケーキ2",
+       "|ケーキ2",
        "",
        [
         [
@@ -1981,7 +1984,7 @@ const DAYS = [
        ""
       ],
       [
-       "音投入",
+       "音|投入",
        "投入汚泥",
        [
         [
@@ -1996,7 +1999,7 @@ const DAYS = [
        ""
       ],
       [
-       "音ろ液",
+       "音|ろ液",
        "",
        [
         [
@@ -2007,7 +2010,7 @@ const DAYS = [
        ""
       ],
       [
-       "音ケーキ1",
+       "音|ケーキ1",
        "",
        [
         [
@@ -2018,7 +2021,7 @@ const DAYS = [
        ""
       ],
       [
-       "音ケーキ2",
+       "音|ケーキ2",
        "",
        [
         [
@@ -2163,7 +2166,7 @@ const DAYS = [
      "@脱水分|脱水の担当者が処理して乾燥機へ入れる。分析担当は測るだけ。",
      [
       [
-       "納投入",
+       "納|投入",
        "投入汚泥",
        [
         [
@@ -2174,7 +2177,7 @@ const DAYS = [
        ""
       ],
       [
-       "納ろ液",
+       "納|ろ液",
        "",
        [
         [
@@ -2185,7 +2188,7 @@ const DAYS = [
        ""
       ],
       [
-       "納ケーキ1",
+       "納|ケーキ1",
        "",
        [
         [
@@ -2196,7 +2199,7 @@ const DAYS = [
        ""
       ],
       [
-       "納ケーキ2",
+       "納|ケーキ2",
        "",
        [
         [
@@ -2207,7 +2210,7 @@ const DAYS = [
        ""
       ],
       [
-       "音投入",
+       "音|投入",
        "投入汚泥",
        [
         [
@@ -2218,7 +2221,7 @@ const DAYS = [
        ""
       ],
       [
-       "音ろ液",
+       "音|ろ液",
        "",
        [
         [
@@ -2229,7 +2232,7 @@ const DAYS = [
        ""
       ],
       [
-       "音ケーキ1",
+       "音|ケーキ1",
        "",
        [
         [
@@ -2240,7 +2243,7 @@ const DAYS = [
        ""
       ],
       [
-       "音ケーキ2",
+       "音|ケーキ2",
        "",
        [
         [
@@ -2284,7 +2287,12 @@ function itemsHtml(it){
     if (note) h += '<div class="onote">' + note + '</div>';
     g[1].forEach(row => {
       const [pt, sub, tags, memo] = row;
-      h += '<div class="prow"><div class="ploc"><b>' + pt + '</b><span>' + sub + '</span></div>'
+      /* "納|ケーキ1" … "|" の前は事業所の印。固定幅の欄に入れて名前の頭を揃える */
+      const bar2 = pt.indexOf("|");
+      const nm = bar2 < 0 ? pt
+        : '<i class="pfx">' + pt.slice(0, bar2) + '</i>' + pt.slice(bar2 + 1);
+      h += '<div class="prow"><div class="ploc' + (bar2 < 0 ? '' : ' px') + '">'
+         + '<b>' + nm + '</b><span>' + sub + '</span></div>'
          + '<div class="pit">'
          + tags.map(t => '<i class="' + t[0] + '">' + t[1] + '</i>').join("")
          + (memo ? '<em>' + memo + '</em>' : '')
