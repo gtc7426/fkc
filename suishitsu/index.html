@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>水質分析</title>
 <meta name="version" content="1.0">
-<meta name="build" content="20260913153329">
+<meta name="build" content="20260913165311">
 <meta name="theme-color" content="#0f6d8c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -127,11 +127,6 @@
   .duty.warn{border-left-color:var(--warn);background:#fdf4f2}
   .duty.warn b{color:var(--warn)}
 
-  .kinds{display:flex;gap:7px;margin:13px 0 2px}
-  .kind2{flex:1;appearance:none;border:1px solid var(--line);background:var(--paper);
-         color:var(--ink-3);font-family:var(--font);font-weight:700;font-size:15px;
-         padding:11px 6px;border-radius:9px;cursor:pointer;line-height:1}
-  .kind2[aria-selected="true"]{background:var(--go);border-color:var(--go);color:#fff}
 
   .soon{padding:44px 14px;text-align:center;color:var(--ink-2);font-size:15px;line-height:1.7;
         border:1px dashed var(--line);border-radius:12px;margin-top:14px}
@@ -141,26 +136,29 @@
   .prep .ps{margin-top:3px;font-size:13px;color:var(--ink-2)}
   [hidden]{display:none!important}
 
-  /* 他事業所 */
-  .oth{margin-top:16px;border-top:2px solid var(--ink);padding-top:10px}
-  .oth h3{margin:0 0 2px;font-size:18px;font-weight:700;letter-spacing:.02em}
-  .oth .ocap{font-size:13px;color:var(--ink-2);margin-bottom:6px;line-height:1.5}
-  .oplant{margin-top:11px}
-  .oname{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:3px}
-  .oname b{font-size:18px;font-weight:700}
-  .oname span{font-size:13px;color:var(--ink-2)}
-  .orow{display:flex;gap:10px;align-items:flex-start;padding:7px 2px;
-        border-bottom:1px solid var(--line-2);font-size:15px;line-height:1.5}
-  .orow:last-child{border-bottom:0}
-  .orow .ok{flex:0 0 auto;width:70px;font-size:12.5px;font-weight:700;letter-spacing:.06em;
-            padding:3px 0;color:var(--ink-3)}
-  .orow.r .ok{color:#0f6d8c}
-  .orow.s .ok{color:#8a5a12}
-  .orow .ov{flex:1}
-  .onone{font-size:15px;color:var(--ink-3);padding:8px 0 2px}
   .todo{margin-top:11px;border:1px dashed var(--warn);border-radius:9px;
         padding:9px 12px;font-size:13.5px;line-height:1.6;color:var(--ink-2)}
   .todo b{color:var(--warn)}
+  .pit i.v{background:#a8341f;color:#fff}
+  /* 次回分の準備ボタン（手順の朝一の枠の中） */
+  .prepbtn{display:block;width:100%;text-align:center;text-decoration:none;
+     background:linear-gradient(#ffb31f,#f59300);color:#3a2400;font-weight:700;font-size:20px;
+     padding:17px 12px;border-radius:12px;margin-top:12px;letter-spacing:.03em;
+     border:2px solid #d97f00;box-shadow:0 3px 0 #c06f00}
+  .prepbtn span{display:block;font-size:13px;font-weight:700;opacity:.85;margin-top:4px;
+     letter-spacing:0}
+  .prepbtn:active{transform:translateY(2px);box-shadow:0 1px 0 #c06f00}
+  .pit i.x{background:#e8eaf0;color:#3a4657}
+
+  /* 他の作業者が採る／処理する分。表から離して、枠で囲む */
+  .obox{margin:26px 0 6px;padding:11px 13px 8px;background:#f5f7f8;
+        border:1px dashed #b9c6cd;border-radius:11px;position:relative}
+  .obox::before{content:"";position:absolute;left:13px;right:13px;top:-14px;
+        border-top:1px solid var(--line)}
+  .obox .gh{margin:0 0 3px;color:#5d6c77}
+  .onote{font-size:12px;color:var(--ink-3);line-height:1.55;margin:0 0 3px}
+  .obox .prow{border-bottom:1px solid #dfe6ea}
+  .obox .prow:last-child{border-bottom:0}
 
 </style>
 </head>
@@ -176,65 +174,44 @@
 <div class="wrap">
   <div id="dayhead"></div>
 
-  <div class="kinds" id="kinds">
-    <button class="kind2" type="button" data-k="kani">簡易</button>
-    <button class="kind2" type="button" data-k="nichijo">日常</button>
-    <button class="kind2" type="button" data-k="chu">中試験</button>
+  <div class="sec">朝一</div>
+
+  <div class="step">
+    <div class="no">1</div>
+    <div class="ttl2">8:30 — 前回の計量</div>
+    <div class="clock">8:30</div>
+    <div class="body">乾燥機とデシケーターに入っているものを測る。<b>1/1000 g（mg）まで。</b>測った値はその場でタブレットへ。</div>
+    <div class="fill"><b>乾燥機に入っているものは、深川の分だけとは限らない。</b><br>
+    納内・音江・多度志で作業してきた人が、持ち帰ったケーキやろ液を<b>自分で乾燥機に入れて帰る。</b>それを翌朝<b>最初に分析に入る人がまとめて測る</b>。<br>
+    <b>入っているものは全部測る</b>つもりで乾燥機を開ける。</div>
   </div>
 
-  <a class="prep" href="../bunseki/index.html">
-    <div class="pt">分析準備</div>
-    <div class="ps">次回分の磁皿・ろ紙の枚数</div>
-  </a>
+  <div class="step">
+    <div class="no">2</div>
+    <div class="ttl2">次回の準備</div>
+    <div class="body">次に分析がある日分の <b>ろ紙・磁皿</b> を用意する。1枚ずつ風袋を測って、その場でタブレットへ。</div>
+    <a class="prepbtn" href="../bunseki/index.html">次回の準備<span>磁皿・ろ紙が何枚いるか</span></a>
+  </div>
+
+  <div class="step">
+    <div class="no">3</div>
+    <div class="ttl2">DO用のフラン瓶</div>
+    <div class="body">300mL フラン瓶に <b>硫酸銅スルファミン酸 3mL</b>（青い液）を入れておく。<br>
+    採水<b>前</b>に入れるのが決まり。汲んだ瞬間に微生物が止まる。</div>
+    <div id="asaextra"></div>
+  </div>
+
+  <div id="items"></div>
 
   <div id="pane-kani" hidden>
-<div class="items">
-  <h2>この日 測る項目</h2>
-  <div class="cap">曝気槽が主役。水温と COD は簡易には無い。</div>
-  <div class="gh">水</div>
-  <div class="prow"><div class="ploc"><b>AT-3</b><span>曝気槽</span></div><div class="pit"><i class="p">pH</i><i class="sv">SV</i><i class="do">DO</i><i class="s">SS 磁皿</i></div></div>
-  <div class="prow"><div class="ploc"><b>AT-4</b><span>曝気槽</span></div><div class="pit"><i class="p">pH</i><i class="sv">SV</i><i class="do">DO</i><i class="s">SS 磁皿</i></div></div>
-  <div class="prow"><div class="ploc"><b>C</b><span>終沈</span></div><div class="pit"><i class="tr">透視度</i><em>SS は取らない</em></div></div>
-  <div class="prow"><div class="ploc"><b>D</b><span>放流</span></div><div class="pit"><i class="tr">透視度</i><em>SS は取らない</em></div></div>
-  <div class="prow"><div class="ploc"><b>E</b><span>中水</span></div><div class="pit"><i class="tr">透視度</i><i class="cl">残塩</i><em>SS は取らない</em></div></div>
-  <div class="gh">汚泥　※点検当番が採ってバスに入れる</div>
-  <div class="prow"><div class="ploc"><b>生1</b><span>生汚泥</span></div><div class="pit"><i class="s">SS 磁皿</i></div></div>
-  <div class="prow"><div class="ploc"><b>生2</b><span>生汚泥</span></div><div class="pit"><i class="s">SS 磁皿</i></div></div>
-  <div class="gh">脱水がある日だけ　※全部 脱水担当が処理して乾燥機へ</div>
-  <div class="prow"><div class="ploc"><b>投入1</b><span>投入汚泥</span></div><div class="pit"><i class="s">SS 磁皿</i></div></div>
-  <div class="prow"><div class="ploc"><b>投入2</b><span>投入汚泥</span></div><div class="pit"><i class="s">SS 磁皿</i></div></div>
-  <div class="prow"><div class="ploc"><b>ろ液</b><span></span></div><div class="pit"><i class="r">SS ろ紙</i><em>脱水担当がろ過して乾燥機へ</em></div></div>
-  <div class="prow"><div class="ploc"><b>ケーキ1</b><span></span></div><div class="pit"><i class="s">SS 磁皿</i></div></div>
-  <div class="prow"><div class="ploc"><b>ケーキ2</b><span></span></div><div class="pit"><i class="s">SS 磁皿</i></div></div>
-  <div class="ileg">
-    <span><b style="border:1.5px solid #a6c8d6"></b> SS ろ紙</span>
-    <span><b style="background:#8a5a12"></b> SS 磁皿</span>
-    <span>色分けは項目ごと（SV・DO・pH・COD…）</span>
-  </div>
-</div>
-
 <div class="lead">
   <h2>上から順になぞるだけ</h2>
   <p><b>SV の60分が律速。</b>採水から戻ったら一番先に仕掛ける。<br>
-  <b>COD が無いぶん、日常よりずっと軽い。</b>ろ過も自分ではやらない（脱水担当がやってくれる）。<br>
+  <b>COD が無い分、日常よりずっと軽い。</b>ろ過も自分ではやらない（脱水担当がやってくれる）。<br>
   値が出たら、その場でタブレットに入れる。</p>
   <p style="margin-top:9px">待ちのある工程は<b>茶色</b>。<br>
   タイマーを押すのは <b>SV（30分・60分）</b>と<b>遠心（20分）</b>だけ。<br>
   バス・乾燥機・デシケーターは「◯分<b>以上</b>」なので押さない＝時刻で動く。</p>
-</div>
-
-<div class="sec">朝</div>
-
-<div class="step">
-  <div class="no">0</div>
-  <div class="ttl2">8:30 — 計量と仕込み</div>
-  <div class="clock">8:30</div>
-  <div class="body">前日分の計量 → 次回分のろ紙・磁皿を用意（1枚ずつ風袋を測ってタブレットへ）→ 一服</div>
-  <div class="fill"><b>乾燥機に入っているものは、深川の分だけとは限らない。</b><br>
-  納内・音江・多度志で作業してきた人が、持ち帰ったケーキやろ液を<b>自分で乾燥機に入れて帰る。</b>それを翌朝<b>最初に分析に入る人がまとめて測る</b>。</div>
-  <div class="fill"><b>DO用：300mL フラン瓶に 硫酸銅スルファミン酸 3mL を入れておく</b>（青い液）。<br>
-  採水<b>前</b>に入れるのが決まり。汲んだ瞬間に微生物が止まる。</div>
-  <div class="fill">枚数は <b>水質分析 → 分析準備</b> の表で引く。</div>
 </div>
 
 <div class="sec">現場</div>
@@ -243,7 +220,7 @@
   <div class="no">1</div>
   <div class="ttl2">9:30 — 採水</div>
   <div class="clock">9:30</div>
-  <div class="body"><b>AT-3 / AT-4 / C / D / E</b>。曝気槽が主役で、C・D・E は透視度と残塩のぶん。</div>
+  <div class="body"><b>AT-3 / AT-4 / C / D / E</b>。曝気槽が主役で、C・D・E は透視度と残塩の分。</div>
   <div class="fill"><b>生汚泥は採らない。</b>点検当番の人が採って、そのままウォーターバスに入れてくれる。</div>
   <div class="fill"><b>DO の採水は やり方が決まっている。</b><br>
   ① <b>バケツに瓶ごと沈めて、底部の水を静かに採る</b>（表面の水を掬わない）<br>
@@ -337,34 +314,6 @@
   </div>
 
   <div id="pane-nichijo" hidden>
-<div class="items">
-  <h2>この日 測る項目</h2>
-  <div class="cap">採水しながら、この順で見る。水温はその場で測る。</div>
-  <div class="gh">水</div>
-  <div class="prow"><div class="ploc"><b>A</b><span>流入</span></div><div class="pit"><i class="t">水温</i><i class="p">pH</i><i class="tr">透視度</i><i class="cod">COD</i><i class="r">SS ろ紙</i></div></div>
-  <div class="prow"><div class="ploc"><b>B</b><span>初沈</span></div><div class="pit"><i class="t">水温</i><i class="p">pH</i><i class="tr">透視度</i><i class="cod">COD</i><i class="r">SS ろ紙</i></div></div>
-  <div class="prow"><div class="ploc"><b>AT-3</b><span>曝気槽</span></div><div class="pit"><i class="t">水温</i><i class="p">pH</i><i class="sv">SV</i><i class="do">DO</i><i class="s">SS 磁皿</i></div></div>
-  <div class="prow"><div class="ploc"><b>AT-4</b><span>曝気槽</span></div><div class="pit"><i class="t">水温</i><i class="p">pH</i><i class="sv">SV</i><i class="do">DO</i><i class="s">SS 磁皿</i></div></div>
-  <div class="prow"><div class="ploc"><b>C</b><span>終沈</span></div><div class="pit"><i class="t">水温</i><i class="p">pH</i><i class="tr">透視度</i><i class="cod">COD</i><i class="r">SS ろ紙</i></div></div>
-  <div class="prow"><div class="ploc"><b>D</b><span>放流</span></div><div class="pit"><i class="t">水温</i><i class="p">pH</i><i class="tr">透視度</i><i class="cod">COD</i><i class="cl">残塩 <b style="font-size:11px;color:#9c2a5c">木のみ</b></i><i class="r">SS ろ紙</i></div></div>
-  <div class="prow"><div class="ploc"><b>E</b><span>中水</span></div><div class="pit"><i class="t">水温</i><i class="p">pH</i><i class="tr">透視度</i><i class="cod">COD</i><i class="cl">残塩</i><i class="r">SS ろ紙</i></div></div>
-  <div class="prow"><div class="ploc"><b>RS</b><span>返送</span></div><div class="pit"><i class="p">pH</i><i class="s">SS 磁皿</i><em>水温・透視度は無し</em></div></div>
-  <div class="gh">汚泥　※点検当番が採ってバスに入れる</div>
-  <div class="prow"><div class="ploc"><b>生1</b><span>生汚泥</span></div><div class="pit"><i class="s">SS 磁皿</i></div></div>
-  <div class="prow"><div class="ploc"><b>生2</b><span>生汚泥</span></div><div class="pit"><i class="s">SS 磁皿</i></div></div>
-  <div class="gh">脱水がある日だけ　※全部 脱水担当が処理して乾燥機へ</div>
-  <div class="prow"><div class="ploc"><b>投入1</b><span>投入汚泥</span></div><div class="pit"><i class="s">SS 磁皿</i></div></div>
-  <div class="prow"><div class="ploc"><b>投入2</b><span>投入汚泥</span></div><div class="pit"><i class="s">SS 磁皿</i></div></div>
-  <div class="prow"><div class="ploc"><b>ろ液</b><span></span></div><div class="pit"><i class="r">SS ろ紙</i><em>ろ過も脱水担当がやる</em></div></div>
-  <div class="prow"><div class="ploc"><b>ケーキ1</b><span></span></div><div class="pit"><i class="s">SS 磁皿</i></div></div>
-  <div class="prow"><div class="ploc"><b>ケーキ2</b><span></span></div><div class="pit"><i class="s">SS 磁皿</i></div></div>
-  <div class="ileg">
-    <span><b style="border:1.5px solid #a6c8d6"></b> SS ろ紙</span>
-    <span><b style="background:#8a5a12"></b> SS 磁皿</span>
-    <span>色分けは項目ごと（SV・DO・pH・COD…）</span>
-  </div>
-</div>
-
 <div class="lead">
   <h2>上から順になぞるだけ</h2>
   <p>待ちのある工程は<b>茶色</b>。待っている間に何をやるかは、その枠の中に書いてある。<br>
@@ -379,26 +328,6 @@
   <p style="margin-top:9px"><b>タイマーを押すのは「ちょうど◯分」で戻る工程だけ。</b><br>
   ・押す … <b>SV（30分・60分）／ COD加熱（30分）／ 遠心（20分）</b><br>
   ・押さない … <b>ウォーターバス ／ 乾燥機 ／ デシケーター</b>（どれも「◯分<b>以上</b>」で、過ぎても構わない）</p>
-</div>
-
-<div class="sec">朝</div>
-
-<div class="step">
-  <div class="no">0</div>
-  <div class="ttl2">8:30 — 計量と仕込み</div>
-  <div class="clock">8:30</div>
-  <div class="body">分析の前にこれをやる。</div>
-  <ul class="list">
-    <li><b>前日分の計量</b>（ケーキなど）。すぐ終わる</li>
-    <li><b>次回分のろ紙・磁皿を用意する</b> … 1枚ずつ風袋を測って、その場でタブレットへ（1/1000 g まで）</li>
-    <li>一服</li>
-  </ul>
-  <div class="fill"><b>乾燥機に入っているものは、深川の分だけとは限らない。</b><br>
-  納内・音江・多度志で作業してきた人が、持ち帰ったケーキやろ液を<b>自分で乾燥機に入れて帰る。</b>それを翌朝<b>最初に分析に入る人がまとめて測る</b> … つまり自分の担当。<br>
-  <b>入っているものは全部測る</b>つもりで乾燥機を開ける。</div>
-  <div class="fill"><b>DO用：300mL フラン瓶に 硫酸銅スルファミン酸 3mL を入れておく</b>（青い液）。<br>
-  採水<b>前</b>に入れるのが決まり。汲んだ瞬間に微生物が止まる。</div>
-  <div class="fill">枚数は <b>水質分析 → 分析準備</b> の表で引く。</div>
 </div>
 
 <div class="sec">現場</div>
@@ -441,16 +370,16 @@
     <li><b>60分後にもう1回読む</b>（帳票の括弧の中が60分値）</li>
   </ul>
   <div class="push">▶ タイマー <b>30分</b> を押す</div>
-  <div class="fill">仕掛けたら放置ではない。<b>30分で鳴ったらいったん戻る。</b>読んだら、もう一度 30分 を押す。</div>
+  <div class="fill">仕掛けたら放置ではない。<b>30分で鳴ったら一旦戻る。</b>読んだら、もう一度 30分 を押す。</div>
 </div>
 
 <div class="step now">
   <div class="no">3</div>
   <div class="ttl2">透視度を測る</div>
   <div class="body">A / B / C / D / E の<b>5か所</b>。待ちなし。</div>
-  <div class="fill"><b>ここで COD の検水量が5本ぶん全部決まる。</b>目安は透視度 × 2。<br>
+  <div class="fill"><b>ここで COD の検水量が5本分全部決まる。</b>目安は透視度 × 2。<br>
   上限は 100mL なので、透視度50以上は頭打ち。</div>
-  <div class="ask"><b>迷ったら2本立てていい</b> — 外した時は再加熱30分。保険は滴定1回ぶん。バスは12穴で6本しか使わない</div>
+  <div class="ask"><b>迷ったら2本立てていい</b> — 外した時は再加熱30分。保険は滴定1回分。バスは12穴で6本しか使わない</div>
 </div>
 
 <div class="step wait">
@@ -498,9 +427,9 @@
   <div class="body"><b>色が動くのはここから。</b><br>
   <b>紫</b>（加熱が終わったフラスコ）<br>
   → <b>シュウ酸ナトリウム 10mL</b> を入れる → <b>透明</b><br>
-  → 過マンガン酸カリウムで滴下 → <b>うすい紫（ピンク）が出たら止める</b>。そこで目盛りを読む。</div>
+  → 過マンガン酸カリウムで滴下 → <b>薄い紫（ピンク）が出たら止める</b>。そこで目盛りを読む。</div>
   <ul class="list">
-    <li><b>6本ぶん繰り返す。</b>ここは手が塞がる</li>
+    <li><b>6本分繰り返す。</b>ここは手が塞がる</li>
     <li>滴定値が <b>3.5〜5.5 mL</b> に入っていれば OK</li>
     <li>ビュレットは2セットあるので2人なら分担できる</li>
   </ul>
@@ -541,7 +470,7 @@
   <div class="body">帳票では括弧の中に入れる値。</div>
 </div>
 
-<div class="sec">昼をはさむ</div>
+<div class="sec">昼を挟む</div>
 
 <div class="step end">
   <div class="no">11</div>
@@ -550,7 +479,7 @@
   <div class="body"><b>磁皿</b>（バスから上げたもの）と<b>ろ紙</b>を一緒に。乾燥機はスペースが足りる。<br>ここも<b>2時間以上</b>。</div>
   <div class="fill"><b>バス・乾燥機・デシケーターはタイマーで呼ばれない。</b>どれも<b>下限</b>で、長く入れておくのは構わないから。<br>
   この3つは<b>時刻で動く</b> … 12:55 に入れて、15:00 に出して、15:30 に測る。</div>
-  <div class="fill"><b>昼へ行く前に、乾燥機に入れる物を全部そろえておく。</b></div>
+  <div class="fill"><b>昼へ行く前に、乾燥機に入れる物を全部揃えておく。</b></div>
 </div>
 
 <div class="step end">
@@ -573,7 +502,7 @@
 <div class="step">
   <table>
     <tr><th>時刻</th><th>やること</th></tr>
-    <tr><td class="n">8:30</td><td>前日分の計量 → 次回分の仕込み → 一服</td></tr>
+    <tr><td class="n">8:30</td><td>前回の計量 → 次回の準備</td></tr>
     <tr><td class="n">9:30</td><td><b>採水に出る</b></td></tr>
     <tr><td class="n">戻ってすぐ</td><td>SV を仕掛ける（ここから60分）</td></tr>
     <tr><td class="n">10:55</td><td>磁皿をバスへ（<b>最低ライン</b>。早いほどいい）</td></tr>
@@ -637,120 +566,939 @@ const DAYS = [
   "iso": "2026-09-14",
   "d": "9/14(月)",
   "kind": "nichijo",
-  "warn": true,
-  "duty": "<b>午前は教わる側、午後から自分でやる。</b>うさぎにとって初めての日常分析。<br><b>加茂さんと組む</b> … 予定表は 加茂 <b>分｜(分)</b> ／ 徳田 <b>(分)｜分</b> の裏返し。<b>午前は加茂さんが本担当、午後は入れ替わる。</b>",
-  "notes": [
-   "<b>残留塩素は E だけ。</b>月曜＝1回目なので D は無し",
-   "<b>RS（返送）の採水が初めて。</b>pH と SS だけ。水温・透視度は無し",
-   "深川は<b>脱水あり</b>",
-   "作業内容欄に <b>※BOD5</b>（雪田さんが「送 BOD5」）。BOD は5日後に読む",
-   "ケーキ搬出 … <b>深川 9:00 ／ 音江 10:00</b>"
-  ],
-  "other": [
-   {
-    "name": "音江",
-    "kind": "分析なし・脱水のみ",
-    "take": null,
-    "here": [
+  "items": {
+   "title": "日常分析",
+   "cap": "水温は現場で測る。",
+   "groups": [
+    [
+     "深川 — 水",
      [
-      "投入 ／ ケーキ1・2",
-      "SS（磁皿）"
-     ],
-     [
-      "ろ液",
-      "SS（ろ紙）"
+      [
+       "A",
+       "流入",
+       [
+        [
+         "t",
+         "水温"
+        ],
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "tr",
+         "透視度"
+        ],
+        [
+         "cod",
+         "COD"
+        ],
+        [
+         "r",
+         "SS ろ紙"
+        ]
+       ],
+       ""
+      ],
+      [
+       "B",
+       "初沈",
+       [
+        [
+         "t",
+         "水温"
+        ],
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "tr",
+         "透視度"
+        ],
+        [
+         "cod",
+         "COD"
+        ],
+        [
+         "r",
+         "SS ろ紙"
+        ]
+       ],
+       ""
+      ],
+      [
+       "AT-3",
+       "曝気槽",
+       [
+        [
+         "t",
+         "水温"
+        ],
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "sv",
+         "SV"
+        ],
+        [
+         "do",
+         "DO"
+        ],
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "AT-4",
+       "曝気槽",
+       [
+        [
+         "t",
+         "水温"
+        ],
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "sv",
+         "SV"
+        ],
+        [
+         "do",
+         "DO"
+        ],
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "C",
+       "終沈",
+       [
+        [
+         "t",
+         "水温"
+        ],
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "tr",
+         "透視度"
+        ],
+        [
+         "cod",
+         "COD"
+        ],
+        [
+         "r",
+         "SS ろ紙"
+        ]
+       ],
+       ""
+      ],
+      [
+       "D",
+       "放流",
+       [
+        [
+         "t",
+         "水温"
+        ],
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "tr",
+         "透視度"
+        ],
+        [
+         "cod",
+         "COD"
+        ],
+        [
+         "r",
+         "SS ろ紙"
+        ]
+       ],
+       ""
+      ],
+      [
+       "E",
+       "中水",
+       [
+        [
+         "t",
+         "水温"
+        ],
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "tr",
+         "透視度"
+        ],
+        [
+         "cod",
+         "COD"
+        ],
+        [
+         "cl",
+         "残塩"
+        ],
+        [
+         "r",
+         "SS ろ紙"
+        ]
+       ],
+       ""
+      ],
+      [
+       "RS",
+       "返送",
+       [
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ]
      ]
     ],
-    "there": null,
-    "memo": "夕方の「迎」で、現地で作業した人が持ち帰って乾燥機に入れる。<b>測るのは翌朝</b>"
-   }
-  ]
+    [
+     "@深川 — 汚泥|採ってバスに入れるのは点検当番。分析担当は測るだけ。",
+     [
+      [
+       "生1",
+       "生汚泥",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "生2",
+       "生汚泥",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ]
+     ]
+    ],
+    [
+     "@脱水分|脱水の担当者が処理して乾燥機へ入れる。分析担当は測るだけ。",
+     [
+      [
+       "投入1",
+       "投入汚泥",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "投入2",
+       "投入汚泥",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "ろ液",
+       "",
+       [
+        [
+         "r",
+         "SS ろ紙"
+        ]
+       ],
+       ""
+      ],
+      [
+       "ケーキ1",
+       "",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "ケーキ2",
+       "",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "音投入",
+       "投入汚泥",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "音ろ液",
+       "",
+       [
+        [
+         "r",
+         "SS ろ紙"
+        ]
+       ],
+       ""
+      ],
+      [
+       "音ケーキ1",
+       "",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "音ケーキ2",
+       "",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ]
+     ]
+    ]
+   ]
+  },
+  "title": "日常分析"
  },
  {
   "tab": "9/15 火",
   "iso": "2026-09-15",
   "d": "9/15(火)",
-  "kind": "none",
-  "plant": "簡易分析",
-  "duty": "予定表は <b>点｜計装</b>。<b>この日うさぎは分析の当番ではない。</b>（深川の施設としては簡易分析がある）",
-  "notes": [],
-  "other": []
+  "kind": "kani",
+  "items": {
+   "title": "簡易分析",
+   "cap": "",
+   "groups": [
+    [
+     "深川 — 水",
+     [
+      [
+       "AT-3",
+       "曝気槽",
+       [
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "sv",
+         "SV"
+        ],
+        [
+         "do",
+         "DO"
+        ],
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "AT-4",
+       "曝気槽",
+       [
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "sv",
+         "SV"
+        ],
+        [
+         "do",
+         "DO"
+        ],
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "C",
+       "終沈",
+       [
+        [
+         "tr",
+         "透視度"
+        ]
+       ],
+       ""
+      ],
+      [
+       "D",
+       "放流",
+       [
+        [
+         "tr",
+         "透視度"
+        ]
+       ],
+       ""
+      ],
+      [
+       "E",
+       "中水",
+       [
+        [
+         "tr",
+         "透視度"
+        ],
+        [
+         "cl",
+         "残塩"
+        ]
+       ],
+       ""
+      ]
+     ]
+    ],
+    [
+     "@深川 — 汚泥|採ってバスに入れるのは点検当番。分析担当は測るだけ。",
+     [
+      [
+       "生1",
+       "生汚泥",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "生2",
+       "生汚泥",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ]
+     ]
+    ],
+    [
+     "@脱水分|脱水の担当者が処理して乾燥機へ入れる。分析担当は測るだけ。",
+     [
+      [
+       "投入1",
+       "投入汚泥",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "投入2",
+       "投入汚泥",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "ろ液",
+       "",
+       [
+        [
+         "r",
+         "SS ろ紙"
+        ]
+       ],
+       ""
+      ],
+      [
+       "ケーキ1",
+       "",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "ケーキ2",
+       "",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ]
+     ]
+    ]
+   ]
+  },
+  "title": "簡易分析"
  },
  {
   "tab": "9/16 水",
   "iso": "2026-09-16",
   "d": "9/16(水)",
   "kind": "kani",
-  "duty": "<b>午前・午後とも簡易。うさぎが本担当。</b><br><b>藤田さんが終日 補助に付く</b>（予定表は <b>(簡易)｜(簡易)</b>）。<b>＝教える側に回る日。</b>",
-  "notes": [
-   "<b>残留塩素は E。</b>簡易は E だけ",
-   "深川は<b>脱水あり</b>"
-  ],
-  "other": [
-   {
-    "name": "納内",
-    "take": "A・D（各3L）／ OD1・OD2（曝気槽）／ RSS（返送）",
-    "here": [
+  "items": {
+   "title": "簡易分析 ＋ 納内 日常 ＋ 多度志 日常",
+   "cap": "納内・多度志の分は朝の「送」で採ってきて、深川で測る。",
+   "groups": [
+    [
+     "深川 — 水",
      [
-      "A（流入）",
-      "透視度 ・ COD ・ SS（ろ紙）"
-     ],
-     [
-      "D（放流）",
-      "透視度 ・ COD ・ SS（ろ紙）"
-     ],
-     [
-      "OD1 / OD2",
-      "SS（磁皿）＝ MLSS 1・MLSS 2"
-     ],
-     [
-      "RSS（返送）",
-      "SS（磁皿）"
-     ],
-     [
-      "投入 ／ ケーキ1・2",
-      "SS（磁皿）"
-     ],
-     [
-      "ろ液",
-      "SS（ろ紙）"
+      [
+       "AT-3",
+       "曝気槽",
+       [
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "sv",
+         "SV"
+        ],
+        [
+         "do",
+         "DO"
+        ],
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "AT-4",
+       "曝気槽",
+       [
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "sv",
+         "SV"
+        ],
+        [
+         "do",
+         "DO"
+        ],
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "C",
+       "終沈",
+       [
+        [
+         "tr",
+         "透視度"
+        ]
+       ],
+       ""
+      ],
+      [
+       "D",
+       "放流",
+       [
+        [
+         "tr",
+         "透視度"
+        ]
+       ],
+       ""
+      ],
+      [
+       "E",
+       "中水",
+       [
+        [
+         "tr",
+         "透視度"
+        ],
+        [
+         "cl",
+         "残塩"
+        ]
+       ],
+       ""
+      ]
      ]
     ],
-    "there": "水温 ・ pH ・ 現場透視度 ・ DO ・ SV ・ 残留塩素",
-    "kind": "日常分析・脱水あり"
-   },
-   {
-    "name": "多度志",
-    "take": "A・D（各3L）",
-    "here": [
+    [
+     "@深川 — 汚泥|採ってバスに入れるのは点検当番。分析担当は測るだけ。",
      [
-      "A（流入）",
-      "透視度 ・ COD ・ SS（ろ紙）"
-     ],
-     [
-      "D（放流）",
-      "透視度 ・ COD ・ SS（ろ紙）"
-     ],
-     [
-      "投入 ／ ケーキ",
-      "SS（磁皿）※脱水時"
-     ],
-     [
-      "ろ液",
-      "SS（ろ紙）※脱水時"
+      [
+       "生1",
+       "生汚泥",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "生2",
+       "生汚泥",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ]
      ]
     ],
-    "there": "水温 ・ pH ・ 現場透視度 ・ DO ・ 残留塩素（SV は無い）",
-    "kind": "日常分析・脱水あり"
-   }
-  ]
+    [
+     "納内 日常分析　※深川で測る分",
+     [
+      [
+       "納A",
+       "流入",
+       [
+        [
+         "tr",
+         "透視度"
+        ],
+        [
+         "cod",
+         "COD"
+        ],
+        [
+         "r",
+         "SS ろ紙"
+        ]
+       ],
+       "3L 持ち帰り"
+      ],
+      [
+       "納D",
+       "放流",
+       [
+        [
+         "tr",
+         "透視度"
+        ],
+        [
+         "cod",
+         "COD"
+        ],
+        [
+         "r",
+         "SS ろ紙"
+        ]
+       ],
+       "3L 持ち帰り"
+      ],
+      [
+       "納OD1",
+       "曝気槽",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       "MLSS 1"
+      ],
+      [
+       "納OD2",
+       "曝気槽",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       "MLSS 2"
+      ],
+      [
+       "納RSS",
+       "返送",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ]
+     ]
+    ],
+    [
+     "多度志 日常分析　※深川で測る分",
+     [
+      [
+       "多A",
+       "流入",
+       [
+        [
+         "tr",
+         "透視度"
+        ],
+        [
+         "cod",
+         "COD"
+        ],
+        [
+         "r",
+         "SS ろ紙"
+        ]
+       ],
+       "3L 持ち帰り"
+      ],
+      [
+       "多D",
+       "放流",
+       [
+        [
+         "tr",
+         "透視度"
+        ],
+        [
+         "cod",
+         "COD"
+        ],
+        [
+         "r",
+         "SS ろ紙"
+        ]
+       ],
+       "3L 持ち帰り"
+      ]
+     ]
+    ],
+    [
+     "@脱水分|脱水の担当者が処理して乾燥機へ入れる。分析担当は測るだけ。",
+     [
+      [
+       "投入1",
+       "投入汚泥",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "投入2",
+       "投入汚泥",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "ろ液",
+       "",
+       [
+        [
+         "r",
+         "SS ろ紙"
+        ]
+       ],
+       ""
+      ],
+      [
+       "ケーキ1",
+       "",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "ケーキ2",
+       "",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "納投入",
+       "投入汚泥",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "納ろ液",
+       "",
+       [
+        [
+         "r",
+         "SS ろ紙"
+        ]
+       ],
+       ""
+      ],
+      [
+       "納ケーキ1",
+       "",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "納ケーキ2",
+       "",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "多投入",
+       "投入汚泥",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "多ろ液",
+       "",
+       [
+        [
+         "r",
+         "SS ろ紙"
+        ]
+       ],
+       ""
+      ],
+      [
+       "多ケーキ",
+       "",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ]
+     ]
+    ]
+   ]
+  },
+  "title": "簡易分析 ＋ 納内 日常 ＋ 多度志 日常"
  },
  {
   "tab": "9/17 木",
   "iso": "2026-09-17",
   "d": "9/17(木)",
-  "kind": "none",
-  "plant": "水質中試験②",
+  "kind": "chu",
+  "otoedo": true,
+  "notes": [
+   "<b>★この日の VSS は翌 9/18 にやる。磁皿を捨てない。</b>"
+  ],
   "chu": {
    "title": "深川 水質中試験②（2回目）",
    "rows": [
@@ -784,7 +1532,7 @@ const DAYS = [
     ],
     [
      "VSS",
-     "AT-3 ・ AT-4 　<span style='color:#8a949f'>（RS・生・OF・投入 は①だけなので今回は無し）</span>"
+     "AT-3 ・ AT-4"
     ],
     [
      "パックテスト",
@@ -804,7 +1552,7 @@ const DAYS = [
     ],
     [
      "大腸菌",
-     "A ・ C ・ D ・ E 　<span style='color:#8a949f'>（B は①だけ）</span>"
+     "A ・ C ・ D ・ E"
     ],
     [
      "n-ヘキサン",
@@ -812,110 +1560,775 @@ const DAYS = [
     ]
    ],
    "skip": "VSS の RS・生・OF・投入 ／ 亜硝酸性窒素(NO₂-N) ／ 硝酸性窒素(NO₃-N) ／ アンモニア性窒素(NH₄-N) ／ 全窒素(T-N) ／ 大腸菌の B",
-   "note": "<b>残留塩素は中試験では測らない</b>（表は全部 −）",
-   "vss": "<b>★ SS を測り終わった磁皿を、そのまま炉で焼くのが VSS。</b>SS（105℃で乾かして残った全部）から、焼いて飛んだ分＝有機物が VSS。<br><b>だから SS の秤量が済んでも、VSS が付く磁皿は捨てない。</b>捨てたらもう測れない（採り直しがきかない）。<br>VSS が付くのは<b>磁皿だけ</b>。ろ紙の A〜E には無いので、<b>同じ日でも「残す皿」と「捨てていい皿」が混ざる</b>。<br>炉は <b>MFP-400N（マッフル炉）</b>。分析室の中にある。",
+   "vss": "<b>★ SS を測り終わった磁皿を、そのまま炉で焼くのが VSS。</b>SS（105℃で乾かして残った全部）から、焼いて飛んだ分＝有機物が VSS。<br><b>だから SS の秤量が済んでも、VSS が付く磁皿は捨てない。</b>捨てたらもう測れない（採り直しが効かない）。<br>VSS が付くのは<b>磁皿だけ</b>。ろ紙の A〜E には無いので、<b>同じ日でも「残す皿」と「捨てていい皿」が混ざる</b>。<br>炉は <b>MFP-400N（マッフル炉）</b>。分析室の中にある。",
    "vsstodo": "<b>ここはまだ現場で確かめていない：</b>① 何度で何分焼くのか　② 朝の何時に入れて何時に測れるようになるか　③ ①の日は VSS が6枚あるが庫内に入り切るか　④ <b>秤量の済んだ磁皿をどこに置いて残すのか</b>（置き場が決まっていれば「捨てるな」と覚えなくて済む）"
   },
-  "duty": "予定表は <b>点｜草刈 迎</b>。<b>この日うさぎは分析の当番ではない。</b>（深川と音江が水質中試験②）",
-  "notes": [
-   "電気設備点検（電気保安協会） … <b>深川 9:30〜 ／ 音江 10:30〜</b>",
-   "安全衛生会議",
-   "<b>★この日の VSS は翌 9/18 にやる。</b>磁皿を捨てない"
-  ],
-  "other": [
-   {
-    "name": "音江",
-    "kind": "水質中試験②・脱水あり",
-    "take": "A ・ OD（曝気槽）・ D ・ RS（返送）",
-    "here": [
+  "items": {
+   "title": "水質中試験② ＋ 音江 中試験②",
+   "cap": "",
+   "groups": [
+    [
+     "深川 — 水",
      [
-      "pH",
-      "A ・ OD ・ D ・ RS ・ 投入"
-     ],
-     [
-      "COD",
-      "A ・ D"
-     ],
-     [
-      "SS",
-      "A ・ OD ・ D ・ RS ・ ろ液 ・ ケーキ"
-     ],
-     [
-      "BOD",
-      "A ・ D"
-     ],
-     [
-      "大腸菌",
-      "A ・ D"
-     ],
-     [
-      "n-ヘキサン",
-      "D"
-     ],
-     [
-      "パックテスト",
-      "D … 硝酸態 ・ 亜硝酸態 ・ アンモニウム態"
+      [
+       "A",
+       "流入",
+       [
+        [
+         "t",
+         "水温"
+        ],
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "tr",
+         "透視度"
+        ],
+        [
+         "cod",
+         "COD"
+        ],
+        [
+         "r",
+         "SS ろ紙"
+        ],
+        [
+         "x",
+         "BOD"
+        ],
+        [
+         "x",
+         "大腸菌"
+        ]
+       ],
+       ""
+      ],
+      [
+       "B",
+       "初沈",
+       [
+        [
+         "t",
+         "水温"
+        ],
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "tr",
+         "透視度"
+        ],
+        [
+         "cod",
+         "COD"
+        ],
+        [
+         "r",
+         "SS ろ紙"
+        ],
+        [
+         "x",
+         "BOD"
+        ]
+       ],
+       ""
+      ],
+      [
+       "AT-3",
+       "曝気槽",
+       [
+        [
+         "t",
+         "水温"
+        ],
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "sv",
+         "SV"
+        ],
+        [
+         "do",
+         "DO"
+        ],
+        [
+         "s",
+         "SS 磁皿"
+        ],
+        [
+         "v",
+         "VSS"
+        ]
+       ],
+       ""
+      ],
+      [
+       "AT-4",
+       "曝気槽",
+       [
+        [
+         "t",
+         "水温"
+        ],
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "sv",
+         "SV"
+        ],
+        [
+         "do",
+         "DO"
+        ],
+        [
+         "s",
+         "SS 磁皿"
+        ],
+        [
+         "v",
+         "VSS"
+        ]
+       ],
+       ""
+      ],
+      [
+       "C",
+       "終沈",
+       [
+        [
+         "t",
+         "水温"
+        ],
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "tr",
+         "透視度"
+        ],
+        [
+         "cod",
+         "COD"
+        ],
+        [
+         "r",
+         "SS ろ紙"
+        ],
+        [
+         "x",
+         "BOD"
+        ],
+        [
+         "x",
+         "大腸菌"
+        ]
+       ],
+       ""
+      ],
+      [
+       "D",
+       "放流",
+       [
+        [
+         "t",
+         "水温"
+        ],
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "tr",
+         "透視度"
+        ],
+        [
+         "cod",
+         "COD"
+        ],
+        [
+         "r",
+         "SS ろ紙"
+        ],
+        [
+         "x",
+         "BOD"
+        ],
+        [
+         "x",
+         "大腸菌"
+        ],
+        [
+         "x",
+         "n-ヘキサン"
+        ],
+        [
+         "x",
+         "パックテスト3種"
+        ]
+       ],
+       ""
+      ],
+      [
+       "E",
+       "中水",
+       [
+        [
+         "t",
+         "水温"
+        ],
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "tr",
+         "透視度"
+        ],
+        [
+         "cod",
+         "COD"
+        ],
+        [
+         "r",
+         "SS ろ紙"
+        ],
+        [
+         "x",
+         "BOD"
+        ],
+        [
+         "x",
+         "大腸菌"
+        ]
+       ],
+       ""
+      ],
+      [
+       "RS",
+       "返送",
+       [
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ]
      ]
     ],
-    "there": "水温 ・ 現場透視度 ・ SV ・ 残留塩素",
-    "memo": "<b>2回目なので ① の項目はやらない</b> … VSS ／ 硝酸性窒素 ／ 亜硝酸性窒素 ／ アンモニア性窒素 ／ 全窒素。<b>2回目は窒素系がパックテストに置き換わる。</b><br>※ここは<b>やる項目を並べただけ</b>。中身の手順はまだ書いていない"
-   }
-  ]
+    [
+     "@深川 — 汚泥・消化槽|生汚泥を採ってバスに入れるのは点検当番。分析担当は測るだけ。",
+     [
+      [
+       "生1",
+       "生汚泥",
+       [
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "生2",
+       "生汚泥",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "OF",
+       "消化槽",
+       [
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "s",
+         "SS 磁皿"
+        ],
+        [
+         "x",
+         "揮発性有機酸"
+        ],
+        [
+         "x",
+         "アルカリ度"
+        ]
+       ],
+       ""
+      ]
+     ]
+    ],
+    [
+     "音江 水質中試験②　※深川で測る分",
+     [
+      [
+       "音A",
+       "流入",
+       [
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "tr",
+         "透視度"
+        ],
+        [
+         "cod",
+         "COD"
+        ],
+        [
+         "r",
+         "SS ろ紙"
+        ],
+        [
+         "x",
+         "BOD"
+        ],
+        [
+         "x",
+         "大腸菌"
+        ]
+       ],
+       ""
+      ],
+      [
+       "音OD",
+       "曝気槽",
+       [
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "do",
+         "DO"
+        ],
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "音D",
+       "放流",
+       [
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "tr",
+         "透視度"
+        ],
+        [
+         "cod",
+         "COD"
+        ],
+        [
+         "r",
+         "SS ろ紙"
+        ],
+        [
+         "x",
+         "BOD"
+        ],
+        [
+         "x",
+         "大腸菌"
+        ],
+        [
+         "x",
+         "n-ヘキサン"
+        ],
+        [
+         "x",
+         "パックテスト3種"
+        ]
+       ],
+       ""
+      ],
+      [
+       "音RS",
+       "返送",
+       [
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ]
+     ]
+    ],
+    [
+     "@脱水分|脱水の担当者が処理して乾燥機へ入れる。分析担当は測るだけ。",
+     [
+      [
+       "投入1",
+       "投入汚泥",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "投入2",
+       "投入汚泥",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "ろ液",
+       "",
+       [
+        [
+         "r",
+         "SS ろ紙"
+        ]
+       ],
+       ""
+      ],
+      [
+       "ケーキ1",
+       "",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "ケーキ2",
+       "",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "音投入",
+       "投入汚泥",
+       [
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "音ろ液",
+       "",
+       [
+        [
+         "r",
+         "SS ろ紙"
+        ]
+       ],
+       ""
+      ],
+      [
+       "音ケーキ1",
+       "",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "音ケーキ2",
+       "",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ]
+     ]
+    ]
+   ]
+  },
+  "title": "水質中試験② ＋ 音江 中試験②"
  },
  {
   "tab": "9/18 金",
   "iso": "2026-09-18",
   "d": "9/18(金)",
   "kind": "kani",
-  "duty": "<b>午前が簡易、午後は P所巡回。</b>",
-  "notes": [
-   "<b>残留塩素は E。</b>",
-   "深川は<b>脱水なし</b>（作業内容欄に「1号脱水機運転」が無い）",
-   "ケーキ搬出 … <b>深川 9:00 ／ 音江 10:00</b>"
-  ],
-  "after": "<b>★この日の作業内容欄に「※大腸菌, VSS」がある</b>（藤田さんの行にも「大・VSS」）。<br><b>9/17 の水質中試験②でやった分を、翌日のこの日に測る。</b>VSS は SS の磁皿を炉で焼く／大腸菌は培養にかかるので、どちらも当日には出ない。<br>＝<b>中試験の日に磁皿を捨てていたら、この日に測るものが無い。</b>",
-  "other": [
-   {
-    "name": "納内",
-    "kind": "分析なし・脱水のみ",
-    "take": null,
-    "here": [
+  "after": "<b>★この日は「大腸菌・VSS」がある。</b><br><b>9/17 の水質中試験②でやった分を、翌日のこの日に測る。</b>VSS は SS の磁皿を炉で焼く／大腸菌は培養にかかるので、どちらも当日には出ない。<br>＝<b>中試験の日に磁皿を捨てていたら、この日に測るものが無い。</b>",
+  "items": {
+   "title": "簡易分析",
+   "cap": "",
+   "groups": [
+    [
+     "深川 — 水",
      [
-      "投入 ／ ケーキ1・2",
-      "SS（磁皿）"
-     ],
-     [
-      "ろ液",
-      "SS（ろ紙）"
+      [
+       "AT-3",
+       "曝気槽",
+       [
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "sv",
+         "SV"
+        ],
+        [
+         "do",
+         "DO"
+        ],
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "AT-4",
+       "曝気槽",
+       [
+        [
+         "p",
+         "pH"
+        ],
+        [
+         "sv",
+         "SV"
+        ],
+        [
+         "do",
+         "DO"
+        ],
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "C",
+       "終沈",
+       [
+        [
+         "tr",
+         "透視度"
+        ]
+       ],
+       ""
+      ],
+      [
+       "D",
+       "放流",
+       [
+        [
+         "tr",
+         "透視度"
+        ]
+       ],
+       ""
+      ],
+      [
+       "E",
+       "中水",
+       [
+        [
+         "tr",
+         "透視度"
+        ],
+        [
+         "cl",
+         "残塩"
+        ]
+       ],
+       ""
+      ]
      ]
     ],
-    "there": null,
-    "memo": "夕方の「迎」で、現地で作業した人が持ち帰って乾燥機に入れる。<b>測るのは翌朝</b>"
-   },
-   {
-    "name": "音江",
-    "kind": "分析なし・脱水のみ",
-    "take": null,
-    "here": [
+    [
+     "@深川 — 汚泥|採ってバスに入れるのは点検当番。分析担当は測るだけ。",
      [
-      "投入 ／ ケーキ1・2",
-      "SS（磁皿）"
-     ],
-     [
-      "ろ液",
-      "SS（ろ紙）"
+      [
+       "生1",
+       "生汚泥",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "生2",
+       "生汚泥",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ]
      ]
     ],
-    "there": null,
-    "memo": "夕方の「迎」で、現地で作業した人が持ち帰って乾燥機に入れる。<b>測るのは翌朝</b>"
-   }
-  ]
+    [
+     "@脱水分|脱水の担当者が処理して乾燥機へ入れる。分析担当は測るだけ。",
+     [
+      [
+       "納投入",
+       "投入汚泥",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "納ろ液",
+       "",
+       [
+        [
+         "r",
+         "SS ろ紙"
+        ]
+       ],
+       ""
+      ],
+      [
+       "納ケーキ1",
+       "",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "納ケーキ2",
+       "",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "音投入",
+       "投入汚泥",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "音ろ液",
+       "",
+       [
+        [
+         "r",
+         "SS ろ紙"
+        ]
+       ],
+       ""
+      ],
+      [
+       "音ケーキ1",
+       "",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ],
+      [
+       "音ケーキ2",
+       "",
+       [
+        [
+         "s",
+         "SS 磁皿"
+        ]
+       ],
+       ""
+      ]
+     ]
+    ]
+   ]
+  },
+  "title": "簡易分析"
  }
 ];
 const KNAME = {kani:"簡易分析", nichijo:"日常分析", chu:"水質中試験"};
 
 const tabs    = document.getElementById("tabs");
-const kinds   = document.getElementById("kinds");
 const dayhead = document.getElementById("dayhead");
 const panes   = {kani:    document.getElementById("pane-kani"),
                  nichijo: document.getElementById("pane-nichijo"),
@@ -923,53 +2336,47 @@ const panes   = {kani:    document.getElementById("pane-kani"),
 
 function showKind(k){
   for (const key in panes) panes[key].hidden = (key !== k);
-  [...kinds.children].forEach(b =>
-    b.setAttribute("aria-selected", b.dataset.k === k ? "true" : "false"));
 }
 
-/* その日 深川に来る他事業所ぶん。項目表の一番下に差し込む */
-function otherHtml(day){
-  const list = day.other || [];
-  let h = '<div class="oth"><h3>他の事業所ぶん</h3>'
-        + '<div class="ocap"><b>朝の「送」で検水を採ってきて、深川で測る。</b>'
-        + '脱水関係は夕方の「迎」で、現地で作業した人が持ち帰る。</div>';
-  if (!list.length){
-    h += '<div class="onone">この日は無し（深川の分だけ）</div></div>';
-    return h;
-  }
-  h += list.map(o => {
-    let b = '<div class="oplant"><div class="oname"><b>' + o.name + '</b><span>'
-          + o.kind + '</span></div>';
-    if (o.take) b += '<div class="orow"><div class="ok">持ち帰る</div><div class="ov">'
-                   + o.take + '</div></div>';
-    b += (o.here || []).map(x =>
-      '<div class="orow s"><div class="ok">' + x[0] + '</div><div class="ov">' + x[1] + '</div></div>'
-    ).join("");
-    if (o.there) b += '<div class="orow"><div class="ok">現地で</div><div class="ov" style="color:#8a949f">'
-                    + o.there + ' … こちらは向こうで済ませてある</div></div>';
-    if (o.memo) b += '<div class="duty" style="margin-top:8px">' + o.memo + '</div>';
-    return b + '</div>';
-  }).join("");
-  if (list.some(o => /分析|試験/.test(o.kind)))
-    h += '<div class="duty" style="margin-top:12px"><b>COD は深川のぶんと一緒に加熱する。</b>'
-       + 'フラスコに事業所名のラベルを貼る（BL ／ ◯◯流入 ／ ◯◯D …）。'
-       + '<b>ラベルを貼らないと、どの検水か分からなくなる。</b></div>';
+/* この日 深川で測る項目。深川も他事業所も同じ表に入れる */
+function itemsHtml(it){
+  let h = '<div class="items"><h2>この日 測る項目</h2>'
+        + (it.cap ? '<div class="cap">' + it.cap + '</div>' : '');
+  it.groups.forEach(g => {
+    /* 先頭が @ … 他の作業者が採る／処理する分。枠を分けて離す */
+    let head = g[0], other = false, note = "";
+    if (head.charAt(0) === "@"){ other = true; head = head.slice(1); }
+    const bar = head.indexOf("|");
+    if (bar >= 0){ note = head.slice(bar + 1); head = head.slice(0, bar); }
+    if (other) h += '<div class="obox">';
+    h += '<div class="gh' + (other ? ' o' : '') + '">' + head + '</div>';
+    if (note) h += '<div class="onote">' + note + '</div>';
+    g[1].forEach(row => {
+      const [pt, sub, tags, memo] = row;
+      h += '<div class="prow"><div class="ploc"><b>' + pt + '</b><span>' + sub + '</span></div>'
+         + '<div class="pit">'
+         + tags.map(t => '<i class="' + t[0] + '">' + t[1] + '</i>').join("")
+         + (memo ? '<em>' + memo + '</em>' : '')
+         + '</div></div>';
+    });
+    if (other) h += '</div>';
+  });
+  h += '<div class="ileg">'
+     + '<span><b style="border:1.5px solid #a6c8d6"></b> SS ろ紙</span>'
+     + '<span><b style="background:#8a5a12"></b> SS 磁皿</span>'
+     + '<span>納◯＝納内 ／ 多◯＝多度志 ／ 音◯＝音江</span></div>';
   return h + '</div>';
 }
 
-/* 深川の中試験。やる項目を並べるだけで、手順は書かない（うさぎ 2026/9/13） */
+/* 深川の中試験。やる項目を並べるだけで、手順は書かない */
 function chuHtml(c){
   let h = '<div class="items" style="margin-top:14px"><h2>' + c.title + '</h2>'
         + '<div class="cap">この日やる項目。<b>手順はまだ書いていない。</b></div>';
   h += c.rows.map(r =>
     '<div class="orow s"><div class="ok" style="width:92px">' + r[0] + '</div>'
     + '<div class="ov">' + r[1] + '</div></div>').join("");
-  if (c.note) h += '<div class="duty" style="margin-top:11px">' + c.note + '</div>';
   if (c.vss)  h += '<div class="fill" style="margin-top:11px">' + c.vss + '</div>';
   if (c.vsstodo) h += '<div class="todo">' + c.vsstodo + '</div>';
-  if (c.skip) h += '<div class="todo"><b>2回目なので今回は無し（①だけの項目）：</b>' + c.skip + '</div>';
-  h += '<div class="duty" style="margin-top:11px">中試験の <b>①②は「中試験の1回目・2回目」</b>。'
-     + '日常分析の表にも①②があるが、あちらは <b>「月曜・木曜」</b>。<b>同じ記号で意味が違う。</b></div>';
   return h + '</div>';
 }
 
@@ -977,18 +2384,22 @@ function render(i){
   const day = DAYS[i];
   [...tabs.children].forEach((t,x)=>t.setAttribute("aria-selected", x===i ? "true":"false"));
 
-  const none  = (day.kind === "none");
-  const label = none ? (day.plant ? ("分析なし（施設は " + day.plant + "）") : "分析なし")
-                     : KNAME[day.kind];
   let h = '<div class="dayhead"><div class="dd">' + day.d + '</div>'
-        + '<div class="kk' + (none ? ' non' : '') + '">' + label + '</div></div>';
+        + '<div class="kk">' + day.title + '</div></div>';
   if (day.duty) h += '<div class="duty' + (day.warn ? ' warn' : '') + '">' + day.duty + '</div>';
   if (day.notes) h += day.notes.map(n => '<div class="duty">' + n + '</div>').join("");
   if (day.after) h += '<div class="fill" style="margin-top:11px">' + day.after + '</div>';
   dayhead.innerHTML = h;
 
-  /* 他事業所ぶんは種別に依らない「その日の情報」なので、見出しの下に出す */
-  dayhead.insertAdjacentHTML("beforeend", otherHtml(day));
+  /* 音江の DO は深川で滴定する。瓶は朝、音江へ行く人に渡す */
+  document.getElementById("asaextra").innerHTML = day.otoedo
+    ? '<div class="ask"><b>音江用のフラン瓶も用意して、朝 音江へ行く人に渡す。</b><br>'
+      + '音江用は <b>硫酸銅スルファミン酸 5mL</b>（深川用の 3mL と量が違う）。<br>'
+      + '音江の DO（OD 曝気槽）は<b>深川で滴定する</b>。</div>'
+    : "";
+
+  /* この日 測る項目（事業所をまたいで1つの表） */
+  document.getElementById("items").innerHTML = itemsHtml(day.items);
 
   /* 中試験ペインは、その日が中試験なら項目を出す */
   panes.chu.innerHTML = day.chu ? chuHtml(day.chu)
@@ -996,9 +2407,7 @@ function render(i){
     + '中試験は①（1回目）と②（2回目）で中身が変わるので、<br>'
     + 'その日のタブで見る。</div>';
 
-  /* 分析の無い日は、施設側の種別を開いておく（見たい時に見られる） */
-  const k = none ? (day.plant === "水質中試験②" ? "chu" : "kani") : day.kind;
-  showKind(k);
+  showKind(day.kind);
 }
 
 DAYS.forEach((day,i)=>{
@@ -1008,8 +2417,6 @@ DAYS.forEach((day,i)=>{
   b.addEventListener("click", ()=>render(i));
   tabs.appendChild(b);
 });
-
-[...kinds.children].forEach(b => b.addEventListener("click", ()=>showKind(b.dataset.k)));
 
 /* 今日、または今日より後で一番近い日を開く */
 (function(){

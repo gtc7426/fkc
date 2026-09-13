@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>次回分の用意</title>
+<title>次回の準備</title>
 <meta name="theme-color" content="#9a5b12">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="仕込み">
+<meta name="apple-mobile-web-app-title" content="次回の準備">
 <link rel="apple-touch-icon" href="../icon.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
 <style>
@@ -130,7 +130,7 @@
 
 <div class="bar">
   <a class="home" href="../index.html">メニュー</a>
-  <span class="ttl">分析準備</span>
+  <span class="ttl">次回の準備</span>
 </div>
 
 <div class="tabs" id="tabs" role="tablist"></div>
@@ -140,7 +140,7 @@
 (function(){
   try{
     const icon = new URL("../icon.png", location.href).href;
-    const mf = {name:"次回分の用意", short_name:"仕込み", start_url:location.href, scope:"./",
+    const mf = {name:"次回の準備", short_name:"次回の準備", start_url:location.href, scope:"./",
       display:"standalone", background_color:"#ffffff", theme_color:"#9a5b12",
       icons:[{src:icon,sizes:"512x512",type:"image/png",purpose:"any"},
              {src:icon,sizes:"512x512",type:"image/png",purpose:"maskable"}]};
@@ -241,7 +241,7 @@ function render(i){
   [...tabs.children].forEach((t,k)=>t.setAttribute("aria-selected", k===i ? "true":"false"));
   if(day.none){
     view.innerHTML = `<div class="head"><div class="day">${esc(day.d)}の朝 に用意する次回分</div>
-      <div class="sub">＝ <b>${esc(day.target)}</b> の分析ぶん</div></div>
+      <div class="sub">＝ <b>${esc(day.target)}</b> の分析分</div></div>
       <div class="empty">予定表が無いため作成できません</div>`;
     return;
   }
@@ -250,7 +250,7 @@ function render(i){
   view.innerHTML = `
     <div class="head">
       <div class="day">${esc(day.d)}の朝 に用意する次回分</div>
-      <div class="sub">＝ <b>${esc(day.target)}</b> の分析ぶん</div>
+      <div class="sub">＝ <b>${esc(day.target)}</b> の分析分</div>
     </div>
     <div class="totals">
       <div class="tot r"><span class="lbl">ろ紙</span><span class="n">${R}<small>枚</small></span></div>
