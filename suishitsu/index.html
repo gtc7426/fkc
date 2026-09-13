@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>水質分析</title>
 <meta name="version" content="1.0">
-<meta name="build" content="20260913204651">
+<meta name="build" content="20260913205201">
 <meta name="theme-color" content="#0f6d8c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -161,6 +161,16 @@
   .ploc{flex:0 0 88px}
   .ploc.px span{padding-left:19px}
   .ploc b i.pfx{font-style:normal;display:inline-block;width:19px;color:var(--ink-3)}
+  /* 事業所ごとに色分け（うさぎ 2026/9/13）。名前より先に事業所が目に入る形 */
+  .ploc b i.pfx{width:22px;text-align:center;border-radius:5px;font-size:12.5px;
+                line-height:19px;vertical-align:1px}
+  .ploc b i.p納{background:#d4e7f5;color:#0f5286}
+  .ploc b i.p多{background:#d5edde;color:#12603a}
+  .ploc b i.p音{background:#ecdcf6;color:#6f2c92}
+  .ileg b.k納{background:#d4e7f5;color:#0f5286}
+  .ileg b.k多{background:#d5edde;color:#12603a}
+  .ileg b.k音{background:#ecdcf6;color:#6f2c92}
+  .ileg b[class^=k]{width:auto;height:auto;padding:1px 6px;border-radius:5px;font-size:12.5px}
   em.fn{font-style:normal;font-size:12px;font-weight:600;color:var(--ink-3);
            letter-spacing:0;display:block;line-height:1.45;margin:1px 0}
   .step.first{border:2px solid var(--warn);background:#fdf6f4}
@@ -2290,7 +2300,8 @@ function itemsHtml(it){
       /* "納|ケーキ1" … "|" の前は事業所の印。固定幅の欄に入れて名前の頭を揃える */
       const bar2 = pt.indexOf("|");
       const nm = bar2 < 0 ? pt
-        : '<i class="pfx">' + pt.slice(0, bar2) + '</i>' + pt.slice(bar2 + 1);
+        : '<i class="pfx p' + pt.slice(0, bar2) + '">' + pt.slice(0, bar2) + '</i>'
+          + pt.slice(bar2 + 1);
       h += '<div class="prow"><div class="ploc' + (bar2 < 0 ? '' : ' px') + '">'
          + '<b>' + nm + '</b><span>' + sub + '</span></div>'
          + '<div class="pit">'
@@ -2303,7 +2314,8 @@ function itemsHtml(it){
   h += '<div class="ileg">'
      + '<span><b style="border:1.5px solid #a6c8d6"></b> SS ろ紙</span>'
      + '<span><b style="background:#8a5a12"></b> SS 磁皿</span>'
-     + '<span>納◯＝納内 ／ 多◯＝多度志 ／ 音◯＝音江</span></div>';
+     + '<span><b class="k納">納</b>＝納内 ／ <b class="k多">多</b>＝多度志'
+     + ' ／ <b class="k音">音</b>＝音江</span></div>';
   return h + '</div>';
 }
 
