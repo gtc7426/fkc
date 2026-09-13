@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>水質分析</title>
 <meta name="version" content="1.0">
-<meta name="build" content="20260913165311">
+<meta name="build" content="20260913171530">
 <meta name="theme-color" content="#0f6d8c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -151,6 +151,9 @@
   .pit i.x{background:#e8eaf0;color:#3a4657}
 
   /* 他の作業者が採る／処理する分。表から離して、枠で囲む */
+  .step.first{border:2px solid var(--warn);background:#fdf6f4}
+  .step.first .no{color:var(--warn)}
+  .step.first .ttl2{color:var(--warn)}
   .obox{margin:26px 0 6px;padding:11px 13px 8px;background:#f5f7f8;
         border:1px dashed #b9c6cd;border-radius:11px;position:relative}
   .obox::before{content:"";position:absolute;left:13px;right:13px;top:-14px;
@@ -176,6 +179,8 @@
 
   <div class="sec">朝一</div>
 
+  <div id="asafirst"></div>
+
   <div class="step">
     <div class="no">1</div>
     <div class="ttl2">8:30 — 前回の計量</div>
@@ -198,7 +203,6 @@
     <div class="ttl2">DO用のフラン瓶</div>
     <div class="body">300mL フラン瓶に <b>硫酸銅スルファミン酸 3mL</b>（青い液）を入れておく。<br>
     採水<b>前</b>に入れるのが決まり。汲んだ瞬間に微生物が止まる。</div>
-    <div id="asaextra"></div>
   </div>
 
   <div id="items"></div>
@@ -2392,10 +2396,13 @@ function render(i){
   dayhead.innerHTML = h;
 
   /* 音江の DO は深川で滴定する。瓶は朝、音江へ行く人に渡す */
-  document.getElementById("asaextra").innerHTML = day.otoedo
-    ? '<div class="ask"><b>音江用のフラン瓶も用意して、朝 音江へ行く人に渡す。</b><br>'
-      + '音江用は <b>硫酸銅スルファミン酸 5mL</b>（深川用の 3mL と量が違う）。<br>'
-      + '音江の DO（OD 曝気槽）は<b>深川で滴定する</b>。</div>'
+  document.getElementById("asafirst").innerHTML = day.otoedo
+    ? '<div class="step first"><div class="no">先</div>'
+      + '<div class="ttl2">音江用のフラン瓶を渡す</div>'
+      + '<div class="body"><b>送りが出る前に渡す。</b>音江の検水は<b>朝の「送」で採ってくる</b>。'
+      + '出てしまうと間に合わない。</div>'
+      + '<div class="ask">音江用は <b>硫酸銅スルファミン酸 5mL</b>（深川用の 3mL と量が違う）。<br>'
+      + '音江の DO（OD 曝気槽）は<b>深川で滴定する</b>。</div></div>'
     : "";
 
   /* この日 測る項目（事業所をまたいで1つの表） */
