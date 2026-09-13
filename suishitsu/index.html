@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>水質分析</title>
 <meta name="version" content="1.0">
-<meta name="build" content="20260913171530">
+<meta name="build" content="20260913173435">
 <meta name="theme-color" content="#0f6d8c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -151,6 +151,13 @@
   .pit i.x{background:#e8eaf0;color:#3a4657}
 
   /* 他の作業者が採る／処理する分。表から離して、枠で囲む */
+  /* 中試験の項目行。上の「測る項目」と同じ色分けにする */
+  .crow{display:flex;gap:10px;align-items:flex-start;padding:9px 0;
+        border-bottom:1px solid var(--line-2)}
+  .crow:last-child{border-bottom:0}
+  .crow .ck{flex:0 0 106px;display:block}
+  .crow .ck i{white-space:nowrap;display:inline-block}
+  .cv{flex:1;min-width:0;font-size:14.5px;line-height:1.55;padding-top:3px}
   .step.first{border:2px solid var(--warn);background:#fdf6f4}
   .step.first .no{color:var(--warn)}
   .step.first .ttl2{color:var(--warn)}
@@ -402,8 +409,7 @@
     <ul class="list" style="margin-top:4px">
       <li><b>遠心を回す（20分）</b> — 4本×2台で AT-3・AT-4 を同時に。<b>ここもタイマー</b></li>
       <li>pH … A / B / AT-3 / AT-4 / C / D / E / RS の <b>8か所</b></li>
-      <li><b>残留塩素 … 月曜（1回目）は E だけ。</b>木曜（2回目）は D と E<br>
-      <span style="color:#4d5762">※項目表の ① が1回目（月）、② が2回目（木）。D は ② だけ、E は ①②</span></li>
+      <li><b>残留塩素 … 月曜は E だけ。</b>木曜は D と E</li>
     </ul>
   </div>
   <div class="fill"><b>色は バスに入れる前も、上げた時も 紫のまま。</b>加熱しても変わらないので、色で進み具合は分からない（だからタイマー）。</div>
@@ -1504,62 +1510,41 @@ const DAYS = [
    "<b>★この日の VSS は翌 9/18 にやる。磁皿を捨てない。</b>"
   ],
   "chu": {
-   "title": "深川 水質中試験②（2回目）",
+   "title": "深川 水質中試験② — VSS から先",
    "rows": [
     [
-     "水温",
-     "A ・ B ・ AT-3 ・ AT-4 ・ C ・ D ・ E"
-    ],
-    [
-     "pH",
-     "A ・ B ・ AT-3 ・ AT-4 ・ C ・ D ・ E ・ RS ・ 生 ・ OF(消化槽)"
-    ],
-    [
-     "透視度",
-     "A ・ B ・ C ・ D ・ E"
-    ],
-    [
-     "SV",
-     "AT-3 ・ AT-4"
-    ],
-    [
-     "DO",
-     "AT-3 ・ AT-4"
-    ],
-    [
-     "COD",
-     "A ・ B ・ C ・ D ・ E"
-    ],
-    [
-     "SS",
-     "A ・ B ・ AT-3 ・ AT-4 ・ C ・ D ・ E ・ RS ・ 生 ・ OF ・ 投入 ・ ろ液 ・ ケーキ"
-    ],
-    [
      "VSS",
+     "v",
      "AT-3 ・ AT-4"
     ],
     [
      "パックテスト",
+     "x",
      "D … 亜硝酸態 ・ 硝酸態 ・ アンモニウム態"
     ],
     [
      "揮発性有機酸",
+     "x",
      "OF(消化槽)"
     ],
     [
      "アルカリ度",
+     "x",
      "OF(消化槽)"
     ],
     [
      "BOD",
+     "x",
      "A ・ B ・ C ・ D ・ E"
     ],
     [
      "大腸菌",
+     "x",
      "A ・ C ・ D ・ E"
     ],
     [
      "n-ヘキサン",
+     "x",
      "D"
     ]
    ],
@@ -1597,14 +1582,6 @@ const DAYS = [
         [
          "r",
          "SS ろ紙"
-        ],
-        [
-         "x",
-         "BOD"
-        ],
-        [
-         "x",
-         "大腸菌"
         ]
        ],
        ""
@@ -1632,10 +1609,6 @@ const DAYS = [
         [
          "r",
          "SS ろ紙"
-        ],
-        [
-         "x",
-         "BOD"
         ]
        ],
        ""
@@ -1663,10 +1636,6 @@ const DAYS = [
         [
          "s",
          "SS 磁皿"
-        ],
-        [
-         "v",
-         "VSS"
         ]
        ],
        ""
@@ -1694,10 +1663,6 @@ const DAYS = [
         [
          "s",
          "SS 磁皿"
-        ],
-        [
-         "v",
-         "VSS"
         ]
        ],
        ""
@@ -1725,14 +1690,6 @@ const DAYS = [
         [
          "r",
          "SS ろ紙"
-        ],
-        [
-         "x",
-         "BOD"
-        ],
-        [
-         "x",
-         "大腸菌"
         ]
        ],
        ""
@@ -1760,22 +1717,6 @@ const DAYS = [
         [
          "r",
          "SS ろ紙"
-        ],
-        [
-         "x",
-         "BOD"
-        ],
-        [
-         "x",
-         "大腸菌"
-        ],
-        [
-         "x",
-         "n-ヘキサン"
-        ],
-        [
-         "x",
-         "パックテスト3種"
         ]
        ],
        ""
@@ -1803,14 +1744,6 @@ const DAYS = [
         [
          "r",
          "SS ろ紙"
-        ],
-        [
-         "x",
-         "BOD"
-        ],
-        [
-         "x",
-         "大腸菌"
         ]
        ],
        ""
@@ -1872,14 +1805,6 @@ const DAYS = [
         [
          "s",
          "SS 磁皿"
-        ],
-        [
-         "x",
-         "揮発性有機酸"
-        ],
-        [
-         "x",
-         "アルカリ度"
         ]
        ],
        ""
@@ -2375,10 +2300,10 @@ function itemsHtml(it){
 /* 深川の中試験。やる項目を並べるだけで、手順は書かない */
 function chuHtml(c){
   let h = '<div class="items" style="margin-top:14px"><h2>' + c.title + '</h2>'
-        + '<div class="cap">この日やる項目。<b>手順はまだ書いていない。</b></div>';
+        + '<div class="cap">上の表に無い分。<b>手順はまだ書いていない。</b></div>';
   h += c.rows.map(r =>
-    '<div class="orow s"><div class="ok" style="width:92px">' + r[0] + '</div>'
-    + '<div class="ov">' + r[1] + '</div></div>').join("");
+    '<div class="crow"><span class="pit ck"><i class="' + r[1] + '">' + r[0] + '</i></span>'
+    + '<div class="cv">' + r[2] + '</div></div>').join("");
   if (c.vss)  h += '<div class="fill" style="margin-top:11px">' + c.vss + '</div>';
   if (c.vsstodo) h += '<div class="todo">' + c.vsstodo + '</div>';
   return h + '</div>';
@@ -2410,9 +2335,7 @@ function render(i){
 
   /* 中試験ペインは、その日が中試験なら項目を出す */
   panes.chu.innerHTML = day.chu ? chuHtml(day.chu)
-    : '<div class="soon">この日は深川の中試験ではない。<br>'
-    + '中試験は①（1回目）と②（2回目）で中身が変わるので、<br>'
-    + 'その日のタブで見る。</div>';
+    : '<div class="soon">この日は深川の中試験ではない。</div>';
 
   showKind(day.kind);
 }
