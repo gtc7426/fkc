@@ -153,10 +153,10 @@ function render(){
     <div class="mine ${p.mine?'':'no'}">${p.mine ? "Tkd：" + p.mine : "Tkd：送迎なし"}</div>
     <h3>朝 ・ 送り</h3>
     <div class="route">${arrow(p.go)}<span class="x">→</span><span>深川へ戻る</span></div>
+    ${p.samp ? `<div class="samp">${p.samp}</div>` : ""}
     <h3>夕方 ・ 迎え</h3>
     ${p.out ? `<div class="out">${p.out} <span>出発</span></div>` : ""}
     <div class="route">${arrow(p.back)}<span class="x">→</span><span>戻る</span></div>
-    ${p.samp ? `<div class="samp">${p.samp}</div>` : ""}
     ${p.pp ? `<div class="pp"><b>※P</b> 金曜は迎えのときに公園通ポンプ場の軽い点検</div>` : ""}
     <div class="lock">戻ったら <b>ホッパー室の扉を施錠</b></div>
     ${p.warn ? `<div class="warn">${p.warn}</div>` : ""}
