@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>水質分析</title>
 <meta name="version" content="1.0">
-<meta name="build" content="20260913173435">
+<meta name="build" content="20260913202504">
 <meta name="theme-color" content="#0f6d8c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -158,6 +158,8 @@
   .crow .ck{flex:0 0 106px;display:block}
   .crow .ck i{white-space:nowrap;display:inline-block}
   .cv{flex:1;min-width:0;font-size:14.5px;line-height:1.55;padding-top:3px}
+  em.fn{font-style:normal;font-size:12px;font-weight:600;color:var(--ink-3);
+           letter-spacing:0;display:block;line-height:1.45;margin:1px 0}
   .step.first{border:2px solid var(--warn);background:#fdf6f4}
   .step.first .no{color:var(--warn)}
   .step.first .ttl2{color:var(--warn)}
@@ -242,7 +244,7 @@
 
 <div class="step wait">
   <div class="no">2</div>
-  <div class="ttl2">SV を仕掛ける</div>
+  <div class="ttl2">SV を仕掛ける <em class="fn">SV ＝ Sludge Volume ／ 活性汚泥沈殿率</em></div>
   <div class="timer">30分 <span>＋ さらに 30分</span></div>
   <div class="body">AT-3・AT-4 の2本。<b>戻ったら一番先にこれ。</b></div>
   <div class="push">▶ タイマー <b>30分</b> を押す</div>
@@ -268,7 +270,7 @@
 
 <div class="step now">
   <div class="no">3-B</div>
-  <div class="ttl2">MLDO</div>
+  <div class="ttl2">MLDO <em class="fn">Mixed Liquor Dissolved Oxygen ／ 活性汚泥混合液の溶存酸素</em></div>
   <ul class="list">
     <li>汚泥が沈殿したら、<b>上澄み液を 100mL フラン瓶へ移す</b></li>
     <li><b>硫酸マンガン</b> と <b>アルカリ性ヨウ化カリウム・アジ化ナトリウム</b> を<b>各 1mL</b> → <b>1分間よく混ぜる</b></li>
@@ -373,7 +375,7 @@
 
 <div class="step wait">
   <div class="no">2</div>
-  <div class="ttl2">SV を仕掛ける</div>
+  <div class="ttl2">SV を仕掛ける <em class="fn">SV ＝ Sludge Volume ／ 活性汚泥沈殿率</em></div>
   <div class="timer">30分 <span>＋ さらに 30分</span></div>
   <div class="body">AT-3・AT-4 の2本。<b>採水から戻ったら一番先にこれ。</b>一番長い待ちなので最初に走らせる。</div>
   <ul class="list">
@@ -395,7 +397,7 @@
 
 <div class="step wait">
   <div class="no">4</div>
-  <div class="ttl2">COD を仕込んで加熱</div>
+  <div class="ttl2">COD の加熱 <em class="fn">Chemical Oxygen Demand ／ 化学的酸素要求量</em></div>
   <div class="timer">30分</div>
   <div class="body">三角フラスコ <b>6本</b>（A・B・C・D・E ＋ BL）。</div>
   <ul class="list">
@@ -424,7 +426,7 @@
 
 <div class="step now">
   <div class="no">6</div>
-  <div class="ttl2">遠心が上がる → 磁皿へ</div>
+  <div class="ttl2">遠心が上がる → 磁皿へ <em class="fn">MLSS ＝ Mixed Liquor Suspended Solids ／ 活性汚泥浮遊物質</em></div>
   <div class="body">MLSS 3・MLSS 4 を磁皿に移して<b>ウォーターバスへ</b>。</div>
   <div class="fill"><b>バスに入れたら、そこで手は離れる。</b>あとは時間が経つだけ。<b>2時間以上</b>入っていればいい。<br>
   <b>早く入れるほど早く終わる。</b>10:55 は 12:55 の乾燥機に間に合う最低ライン。</div>
@@ -447,7 +449,7 @@
 
 <div class="step now">
   <div class="no">8</div>
-  <div class="ttl2">ろ過（ろ紙のSS）</div>
+  <div class="ttl2">ろ過（ろ紙のSS） <em class="fn">SS ＝ Suspended Solids ／ 浮遊物質</em></div>
   <div class="body">A / B / C / D / E の <b>5枚だけ</b>。</div>
   <div class="fill"><b>ろ液は自分でろ過しない。</b>脱水担当がろ過して乾燥機に入れてくれる。<b>分析は翌朝 測るだけ。</b></div>
   <ul class="list">
@@ -462,7 +464,7 @@
 
 <div class="step now">
   <div class="no">9</div>
-  <div class="ttl2">MLDO</div>
+  <div class="ttl2">MLDO <em class="fn">Mixed Liquor Dissolved Oxygen ／ 活性汚泥混合液の溶存酸素</em></div>
   <ul class="list">
     <li>汚泥が沈殿したら、<b>上澄み液を 100mL フラン瓶へ移す</b></li>
     <li><b>硫酸マンガン</b> と <b>アルカリ性ヨウ化カリウム・アジ化ナトリウム</b> を<b>各 1mL</b> → <b>1分間よく混ぜる</b></li>
