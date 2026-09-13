@@ -113,6 +113,17 @@
   .dz{flex:0 0 auto;font-size:12.5px;font-weight:700;letter-spacing:.06em;
       color:var(--dassui);border:1px solid currentColor;border-radius:4px;padding:2px 5px;line-height:1}
   .empty{padding:40px 0;text-align:center;color:var(--ink-2);font-size:15px}
+  /* VSS の注意 */
+  .vssbox{border:2px solid var(--dassui);border-radius:11px;padding:12px 13px;margin:0 0 14px;
+          background:#fdf4f2}
+  .vssbox .vt{font-size:17px;font-weight:700;color:var(--dassui);line-height:1.4}
+  .vssbox .vn{margin-top:8px;display:flex;flex-wrap:wrap;gap:7px}
+  .vssbox .vn b{font-family:var(--num);font-size:17px;font-weight:700;color:#fff;
+       background:var(--dassui);border-radius:7px;padding:5px 11px;letter-spacing:.02em}
+  .vssbox .vw{margin-top:9px;font-size:13.5px;color:var(--ink-2);line-height:1.6}
+  .vssbox .vw b{color:var(--dassui)}
+  .vtag{flex:0 0 auto;font-size:11.5px;font-weight:700;letter-spacing:.06em;color:#fff;
+        background:var(--dassui);border-radius:4px;padding:2px 6px;line-height:1.3}
 </style>
 </head>
 <body>
@@ -168,14 +179,17 @@ const D = [
    {name:"多度志", kind:"日常分析・脱水あり",
     r:["A","D",["ろ液",1]], s:[["投入汚泥",1],["ケーキ",1]]}]},
 
- {d:"9/16(水)", tab:"9/16 水", target:"9/17(木)", none:false, plants:[
+ {d:"9/16(水)", tab:"9/16 水", target:"9/17(木)", none:false,
+  vss:{plant:"深川", names:["MLSS 3","MLSS 4"],
+       why:"9/17 は水質中試験②。<b>この2枚は SS を測った後、そのまま炉で焼いて VSS を出す</b>（9/18 に測る）。"},
+  plants:[
    {name:"深川", kind:"水質中試験②・脱水あり",
     r:["A","B","C","D","E",["ろ液",1]],
     s:["MLSS 3","MLSS 4","RSSS","生汚泥1","生汚泥2","消化汚泥",["投入汚泥1",1],["投入汚泥2",1],["ケーキ1",1],["ケーキ2",1]]},
    {name:"納内", kind:"分析なし・脱水なし", r:[], s:[]},
    {name:"音江", kind:"水質中試験②・脱水あり",
     r:["A","D",["ろ液",1]],
-    s:["MLSS","RS","濃縮汚泥",["投入汚泥",1],["ケーキ1",1],["ケーキ2",1]]},
+    s:["MLSS","RS",["投入汚泥",1],["ケーキ1",1],["ケーキ2",1]]},
    {name:"多度志", kind:"分析なし・脱水なし", r:[], s:[]}]},
 
  {d:"9/17(木)", tab:"9/17 木", target:"9/18(金)", none:false, plants:[
@@ -197,7 +211,7 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":
 const nm = it => Array.isArray(it) ? it[0] : it;
 const dz = it => Array.isArray(it) && it[1];
 
-function items(list, cls, key, plant){
+function items(list, cls, key, plant, vss){
   if(!list.length) return "";
   const label = cls === "r" ? "ろ紙" : "磁皿";
   const tbl = (cls === "s" && VOL[plant]) ? VOL[plant] : null;
@@ -216,6 +230,7 @@ function items(list, cls, key, plant){
       <span class="nm">${esc(name)}</span>
       <span class="ml">${v ? v : ''}</span>
       <span class="sp"></span>
+      ${(vss && vss.plant===plant && vss.names.indexOf(name)>=0) ? '<span class="vtag">VSS 捨てない</span>' : ''}
       ${dz(it) ? '<span class="dz">脱水</span>' : ''}
     </label></li>`;
     }).join("")}</ul></div>`;
@@ -241,12 +256,19 @@ function render(i){
       <div class="tot r"><span class="lbl">ろ紙</span><span class="n">${R}<small>枚</small></span></div>
       <div class="tot s"><span class="lbl">磁皿</span><span class="n">${S}<small>枚</small></span></div>
     </div>
+    ${day.vss ? `<div class="vssbox">
+      <div class="vt">★ この磁皿は SS を測った後 捨てない</div>
+      <div class="vn">${day.vss.names.map(n=>`<b>${esc(day.vss.plant)} ${esc(n)}</b>`).join("")}</div>
+      <div class="vw">${day.vss.why}<br>
+        <b>捨てたら測れない。</b>採り直しがきかない。<br>
+        VSS が付くのは<b>磁皿だけ</b>。ろ紙と、上に出ていない磁皿は今まで通り。</div>
+    </div>` : ''}
     ${day.plants.map((p,pi)=>{
       const tot = p.r.length + p.s.length;
       return `<section class="plant">
         <div class="ptitle"><h2>${esc(p.name)}</h2><span class="kind">${esc(p.kind)}</span>
           ${tot ? `<span class="cnt">ろ紙 ${p.r.length} ／ 磁皿 ${p.s.length}</span>` : ''}</div>
-        ${tot ? items(p.r,"r",`d${i}p${pi}`,p.name) + items(p.s,"s",`d${i}p${pi}`,p.name)
+        ${tot ? items(p.r,"r",`d${i}p${pi}`,p.name,day.vss) + items(p.s,"s",`d${i}p${pi}`,p.name,day.vss)
               : '<div class="none">用意するものなし</div>'}
       </section>`;
     }).join("")}`;
