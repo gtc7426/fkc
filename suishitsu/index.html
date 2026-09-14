@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>水質分析</title>
 <meta name="version" content="1.0">
-<meta name="build" content="20260913214232">
+<meta name="build" content="20260915065821">
 <meta name="theme-color" content="#0f6d8c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -234,7 +234,7 @@
 <div class="lead">
   <h2>上から順になぞるだけ</h2>
   <p><b>SV の60分が律速。</b>採水から戻ったら一番先に仕掛ける。<br>
-  <b>COD が無い分、日常よりずっと軽い。</b>ろ過も自分ではやらない（脱水担当がやってくれる）。<br>
+  <span id="kanilead"></span><br>
   値が出たら、その場でタブレットに入れる。</p>
   <p style="margin-top:9px">待ちのある工程は<b>茶色</b>。<br>
   タイマーを押すのは <b>SV（30分・60分）</b>と<b>遠心（20分）</b>だけ。<br>
@@ -308,8 +308,10 @@
 <div class="step now">
   <div class="no">5</div>
   <div class="ttl2">SV 60分を読む</div>
-  <div class="body">これで午前の手作業は終わり。</div>
+  <div class="body" id="kanidone">これで午前の手作業は終わり。</div>
 </div>
+
+<div id="kaniextra"></div>
 
 <div class="sec">午後</div>
 
@@ -1137,6 +1139,10 @@ const DAYS = [
   "iso": "2026-09-16",
   "d": "9/16(水)",
   "kind": "kani",
+  "extra": {
+   "cod": "納A ・ 納D ・ 多A ・ 多D の <b>4本 ＋ BL</b>（三角フラスコ5本）",
+   "roshi": "納A ・ 納D ・ 多A ・ 多D の <b>4枚</b>"
+  },
   "items": {
    "title": "簡易分析 ＋ 納内 日常 ＋ 多度志 日常",
    "cap": "納内・多度志の分は朝の「送」で採ってきて、深川で測る。",
@@ -2346,6 +2352,40 @@ function render(i){
   if (day.notes) h += day.notes.map(n => '<div class="duty">' + n + '</div>').join("");
   if (day.after) h += '<div class="fill" style="margin-top:11px">' + day.after + '</div>';
   dayhead.innerHTML = h;
+
+  /* 簡易でも他事業所分の COD とろ過がある日 */
+  const kl = document.getElementById("kanilead");
+  if (kl) kl.innerHTML = day.extra
+    ? '<b>深川は簡易だが、この日は他事業所分の COD とろ過がある。</b>下の「＋」の枠がそれ。'
+    : '<b>COD が無い分、日常よりずっと軽い。</b>ろ過も自分ではやらない（脱水担当がやってくれる）。';
+  const kd = document.getElementById("kanidone");
+  if (kd) kd.textContent = day.extra
+    ? "深川分はここまで。この日は下の他事業所分が続く。"
+    : "これで午前の手作業は終わり。";
+  const kx = document.getElementById("kaniextra");
+  if (kx) kx.innerHTML = day.extra
+    ? '<div class="sec">他事業所分</div>'
+      + '<div class="step wait"><div class="no">＋</div>'
+      + '<div class="ttl2">COD の加熱 <em class="fn">納内・多度志分</em></div>'
+      + '<div class="timer">30分</div>'
+      + '<div class="body">' + day.extra.cod + '。<br>'
+      + '検水を量ってフラスコへ（足りない分は蒸留水で100mLにメスアップ）。'
+      + '硫酸(1+2) <b>10mL</b> ＋ 過マンガン酸カリウム <b>10mL</b>。</div>'
+      + '<div class="push">▶ タイマー <b>30分</b> を押す</div>'
+      + '<div class="fill">検水量の目安は<b>透視度 × 2</b>。上限 100mL。</div></div>'
+      + '<div class="step now"><div class="no">＋</div>'
+      + '<div class="ttl2">COD を滴定する</div>'
+      + '<div class="body"><b>紫</b> → シュウ酸ナトリウム 10mL → <b>透明</b>'
+      + ' → 過マンガン酸カリウムで滴下 → <b>薄い紫（ピンク）が出たら止める</b>。</div>'
+      + '<div class="fill">滴定値が <b>3.5〜5.5 mL</b> に入っていれば OK。'
+      + '<b>ビュレットは1セットだけ。</b>続けて1人で通す。</div></div>'
+      + '<div class="step now"><div class="no">＋</div>'
+      + '<div class="ttl2">ろ過（ろ紙のSS） <em class="fn">SS ＝ Suspended Solids ／ 浮遊物質</em></div>'
+      + '<div class="body">' + day.extra.roshi + '。<br>'
+      + '<b>4枚 ろ過し終わったら、まとめて乾燥機へ入れる。</b>ろ紙はウォーターバスを通らない。</div>'
+      + '<div class="ask">装置は1セット。<b>1枚ずつ差し替える直列作業。</b>'
+      + 'ここが遅れると乾燥機に間に合わない</div></div>'
+    : "";
 
   /* 音江の DO は深川で滴定する。瓶は朝、音江へ行く人に渡す */
   document.getElementById("asafirst").innerHTML = day.otoedo
