@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>水質分析</title>
 <meta name="version" content="1.0">
-<meta name="build" content="20260915065821">
+<meta name="build" content="20260915071802">
 <meta name="theme-color" content="#0f6d8c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -228,6 +228,8 @@
     採水<b>前</b>に入れるのが決まり。汲んだ瞬間に微生物が止まる。</div>
   </div>
 
+  <div id="asabl"></div>
+
   <div id="items"></div>
 
   <div id="pane-kani" hidden>
@@ -269,7 +271,7 @@
   <div class="no">3</div>
   <div class="ttl2">遠心を回す</div>
   <div class="timer">20分</div>
-  <div class="body">AT-3・AT-4 の水を <b>100mL</b> 量って遠心へ。4本×2台なので同時に回せる。</div>
+  <div class="body" id="kanienshin"></div>
   <div class="push">▶ タイマー <b>20分</b> を押す</div>
   <div class="fill">
     <b>この20分の間にやること</b>
@@ -278,6 +280,7 @@
       <li>透視度 … <b>C / D / E</b></li>
       <li>残留塩素 … <b>E</b></li>
       <li><b>MLDO</b>（下のステップ）</li>
+      <li id="kaniwait" hidden></li>
     </ul>
   </div>
 </div>
@@ -406,8 +409,7 @@
   <div class="no">3</div>
   <div class="ttl2">透視度を測る</div>
   <div class="body">A / B / C / D / E の<b>5か所</b>。待ちなし。</div>
-  <div class="fill"><b>ここで COD の検水量が5本分全部決まる。</b>目安は透視度 × 2。<br>
-  上限は 100mL なので、透視度50以上は頭打ち。</div>
+  <div class="fill"><b>ここで COD の検水量が5本分全部決まる。</b>目安は<b>透視度 × 2 ＋α</b>。×2 だけだと 3.5〜5.5 の下寄りに来るので少し足す。<br><b>朝に仕掛けた BL の値も見る。</b>BL が高い日は試料分の幅が狭い。<br>上限は 100mL なので、透視度50以上は頭打ち。</div>
   <div class="ask"><b>迷ったら2本立てていい</b> — 外した時は再加熱30分。保険は滴定1回分。バスは12穴で6本しか使わない</div>
 </div>
 
@@ -425,7 +427,7 @@
   <div class="fill">
     <b>この30分の間にやること</b>
     <ul class="list" style="margin-top:4px">
-      <li><b>遠心を回す（20分）</b> — 4本×2台で AT-3・AT-4 を同時に。<b>ここもタイマー</b></li>
+      <li><b>遠心を回す（20分）</b> — 遠心は3台あるので AT-3・AT-4 を同時に。<b>ここもタイマー</b></li>
       <li>pH … A / B / AT-3 / AT-4 / C / D / E / RS の <b>8か所</b></li>
       <li><b>残留塩素 … 月曜は E だけ。</b>木曜は D と E</li>
     </ul>
@@ -594,6 +596,7 @@ const DAYS = [
   "iso": "2026-09-14",
   "d": "9/14(月)",
   "kind": "nichijo",
+  "bl": true,
   "items": {
    "title": "日常分析",
    "cap": "水温は現場で測る。",
@@ -1139,6 +1142,7 @@ const DAYS = [
   "iso": "2026-09-16",
   "d": "9/16(水)",
   "kind": "kani",
+  "bl": true,
   "extra": {
    "cod": "納A ・ 納D ・ 多A ・ 多D の <b>4本 ＋ BL</b>（三角フラスコ5本）",
    "roshi": "納A ・ 納D ・ 多A ・ 多D の <b>4枚</b>"
@@ -1528,6 +1532,7 @@ const DAYS = [
   "d": "9/17(木)",
   "kind": "chu",
   "otoedo": true,
+  "bl": true,
   "notes": [
    "<b>★この日の VSS は翌 9/18 にやる。磁皿を捨てない。</b>"
   ],
@@ -2353,6 +2358,19 @@ function render(i){
   if (day.after) h += '<div class="fill" style="margin-top:11px">' + day.after + '</div>';
   dayhead.innerHTML = h;
 
+  /* COD がある日は、BL だけ朝のうちに仕掛けておく（2026/9/14 に現場で確認） */
+  document.getElementById("asabl").innerHTML = day.bl
+    ? '<div class="step wait"><div class="no">4</div>'
+      + '<div class="ttl2">BL（ブランク）を先に仕掛ける</div>'
+      + '<div class="timer">30分</div>'
+      + '<div class="body">三角フラスコに <b>蒸留水 100mL</b> ＋ <b>硫酸(1+2) 10mL</b> '
+      + '＋ <b>過マンガン酸カリウム 10mL</b>。ウォーターバスで <b>30分</b>。</div>'
+      + '<div class="push">▶ タイマー <b>30分</b> を押す</div>'
+      + '<div class="fill"><b>仕掛けたら手が離れる。</b>計量や次回の準備をやっている間に終わる。<br>'
+      + '<b>BL の値が先に出ていると、検水量を決めやすい。</b>判定の 3.5〜5.5 は '
+      + 'BL を含んだ滴定値なので、BL が高い日は試料分の幅が狭くなる。</div></div>'
+    : "";
+
   /* 簡易でも他事業所分の COD とろ過がある日 */
   const kl = document.getElementById("kanilead");
   if (kl) kl.innerHTML = day.extra
@@ -2362,27 +2380,65 @@ function render(i){
   if (kd) kd.textContent = day.extra
     ? "深川分はここまで。この日は下の他事業所分が続く。"
     : "これで午前の手作業は終わり。";
+  const ke = document.getElementById("kanienshin");
+  if (ke) ke.innerHTML = day.extra
+    ? 'AT-3・AT-4 ＋ <b>納OD1・納OD2・納RSS</b> の水を <b>各100mL</b> 量って遠心へ。'
+      + '<b>5本</b>。遠心は3台あるので同時に回せる。'
+    : 'AT-3・AT-4 の水を <b>100mL</b> 量って遠心へ。遠心は3台あるので同時に回せる。';
+  const kw = document.getElementById("kaniwait");
+  if (kw){ kw.hidden = !day.extra;
+    kw.innerHTML = '<b>透視度 … 納A / 納D / 多A / 多D</b>（ここで他事業所の COD の検水量が決まる）'; }
+
   const kx = document.getElementById("kaniextra");
   if (kx) kx.innerHTML = day.extra
     ? '<div class="sec">他事業所分</div>'
-      + '<div class="step wait"><div class="no">＋</div>'
-      + '<div class="ttl2">COD の加熱 <em class="fn">納内・多度志分</em></div>'
+      + '<div class="todo"><b>検水が届くのは 9:45 ごろ（推定。実際にやって確かめる）。</b><br>'
+      + '送りは他の人が行く。<b>自分の採水と深川分を先に済ませる。</b>'
+      + 'やっている間に検水が戻ってくる。</div>'
+
+      + '<div class="step wait"><div class="no">＋1</div>'
+      + '<div class="ttl2">COD を仕込んで加熱 <em class="fn">納内・多度志分</em></div>'
       + '<div class="timer">30分</div>'
-      + '<div class="body">' + day.extra.cod + '。<br>'
-      + '検水を量ってフラスコへ（足りない分は蒸留水で100mLにメスアップ）。'
-      + '硫酸(1+2) <b>10mL</b> ＋ 過マンガン酸カリウム <b>10mL</b>。</div>'
+      + '<div class="body">三角フラスコ <b>5本</b>（' + day.extra.cod + '）。</div>'
+      + '<ul class="list">'
+      + '<li>検水を量ってフラスコへ。<b>足りない分は蒸留水で100mLにメスアップ</b></li>'
+      + '<li>BL は蒸留水 100mL</li>'
+      + '<li>硫酸(1+2) <b>10mL</b> ＋ 過マンガン酸カリウム <b>10mL</b></li>'
+      + '<li>ウォーターバスで <b>30分</b> … <b>タイマー30分を押す</b></li></ul>'
       + '<div class="push">▶ タイマー <b>30分</b> を押す</div>'
-      + '<div class="fill">検水量の目安は<b>透視度 × 2</b>。上限 100mL。</div></div>'
-      + '<div class="step now"><div class="no">＋</div>'
+      + '<div class="fill"><b>検水量は透視度で決まる。目安は 透視度 × 2 ＋α。</b>'
+      + '<b>朝に仕掛けた BL の値も見る。</b>上限は 100mL なので、透視度50以上は頭打ち。</div>'
+      + '<div class="ask"><b>迷ったら2本立てていい</b> — 外した時は再加熱30分。'
+      + '保険は滴定1回分。バスは12穴で5本しか使わない</div>'
+      + '<div class="fill"><b>色は バスに入れる前も、上げた時も 紫のまま。</b>'
+      + '加熱しても変わらないので、色で進み具合は分からない（だからタイマー）。</div>'
+      + '<div class="ask"><b>上げた時に紫が消えていたら失敗。</b>過マンガン酸が足りなかった'
+      + '＝汚れが濃すぎる。<b>検水を減らしてやり直す</b>（再加熱30分）</div></div>'
+
+      + '<div class="step now"><div class="no">＋2</div>'
       + '<div class="ttl2">COD を滴定する</div>'
-      + '<div class="body"><b>紫</b> → シュウ酸ナトリウム 10mL → <b>透明</b>'
-      + ' → 過マンガン酸カリウムで滴下 → <b>薄い紫（ピンク）が出たら止める</b>。</div>'
-      + '<div class="fill">滴定値が <b>3.5〜5.5 mL</b> に入っていれば OK。'
-      + '<b>ビュレットは1セットだけ。</b>続けて1人で通す。</div></div>'
-      + '<div class="step now"><div class="no">＋</div>'
-      + '<div class="ttl2">ろ過（ろ紙のSS） <em class="fn">SS ＝ Suspended Solids ／ 浮遊物質</em></div>'
+      + '<div class="body"><b>色が動くのはここから。</b><br>'
+      + '<b>紫</b>（加熱が終わったフラスコ）<br>'
+      + '→ <b>シュウ酸ナトリウム 10mL</b> を入れる → <b>透明</b><br>'
+      + '→ 過マンガン酸カリウムで滴下 → <b>薄い紫（ピンク）が出たら止める</b>。'
+      + 'そこで目盛りを読む。</div>'
+      + '<ul class="list">'
+      + '<li><b>5本分繰り返す。</b>ここは手が塞がる</li>'
+      + '<li>滴定値が <b>3.5〜5.5 mL</b> に入っていれば OK</li>'
+      + '<li><b>ビュレットは1セットだけ。</b>分担できないので、続けて1人で通す</li></ul></div>'
+
+      + '<div class="step now"><div class="no">＋3</div>'
+      + '<div class="ttl2">ろ過（ろ紙のSS） '
+      + '<em class="fn">SS ＝ Suspended Solids ／ 浮遊物質</em></div>'
       + '<div class="body">' + day.extra.roshi + '。<br>'
-      + '<b>4枚 ろ過し終わったら、まとめて乾燥機へ入れる。</b>ろ紙はウォーターバスを通らない。</div>'
+      + '<b>4枚 ろ過し終わったら、まとめて乾燥機へ入れる。</b>'
+      + 'ろ紙は<b>ウォーターバスを通らない</b>ので、磁皿の 12:55 を待たない。</div>'
+      + '<ul class="list">'
+      + '<li>ろ紙をセット → ファンネル → クランプ</li>'
+      + '<li><b>先に蒸留水を通してから</b>試料を通す</li>'
+      + '<li>ろ紙に色が付くまで</li></ul>'
+      + '<div class="fill"><b>検水量は固定ではない。</b>その日の水で変わる。'
+      + '引けない時は量を減らす。</div>'
       + '<div class="ask">装置は1セット。<b>1枚ずつ差し替える直列作業。</b>'
       + 'ここが遅れると乾燥機に間に合わない</div></div>'
     : "";
