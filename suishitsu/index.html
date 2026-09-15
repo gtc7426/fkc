@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>水質分析</title>
 <meta name="version" content="1.0">
-<meta name="build" content="20260915193628">
+<meta name="build" content="20260915200444">
 <meta name="theme-color" content="#0f6d8c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -205,6 +205,22 @@
 
   <div class="step">
     <div class="no">1</div>
+    <div class="ttl2">当日の器具を出す</div>
+    <div class="body"><b>計量より先にこれ。</b>その日に使うものを一通り出しておく。</div>
+    <ul class="list">
+      <li><b>採水ボトル</b> … <b>日常と簡易で大きさもカゴも違う。</b>専用のがある</li>
+      <li><b>MLDO</b> … フラン瓶 ／ ガラス容器 ／ コニカルビーカー</li>
+      <li id="asacod" hidden><b>COD</b> … 三角フラスコ</li>
+      <li id="asaph" hidden><b>pH</b> … ビーカー</li>
+    </ul>
+    <div class="fill" id="asalabel" hidden><b>三角フラスコとビーカーにはラベルが書いてある</b>（BL・深A など）。
+    どれに何を入れるかは決まっている。</div>
+    <div class="ask"><b>フラン瓶は2種類。</b>採水用は <b>300mL</b>（青い薬品を入れる方）。
+    上澄みを入れるのは <b>100mL</b>。蓋の分で実容量が違うので<b>使う瓶が決まっている</b>（AT-3＝99 ／ AT-4＝98）</div>
+  </div>
+
+  <div class="step">
+    <div class="no">2</div>
     <div class="ttl2">8:30 — 前回の計量</div>
     <div class="clock">8:30</div>
     <div class="body">乾燥機とデシケーターに入っているものを測る。<b>1/1000 g（mg）まで。</b>測った値はその場でタブレットへ。</div>
@@ -214,7 +230,7 @@
   </div>
 
   <div class="step">
-    <div class="no">2</div>
+    <div class="no">3</div>
     <div class="ttl2">次回の準備</div>
     <div class="body">次に分析がある日分の <b>ろ紙・磁皿</b> を用意する。1枚ずつ風袋を測って、その場でタブレットへ。<br>
     <b>取り違えないよう、磁皿にラベルを入れておく。</b></div>
@@ -222,7 +238,7 @@
   </div>
 
   <div class="step">
-    <div class="no">3</div>
+    <div class="no">4</div>
     <div class="ttl2">DO用のフラン瓶</div>
     <div class="body">300mL フラン瓶に <b>硫酸銅スルファミン酸 3mL</b>（青い液）を入れておく。<br>
     採水<b>前</b>に入れるのが決まり。汲んだ瞬間に微生物が止まる。</div>
@@ -277,7 +293,7 @@
     <b>この20分の間にやること</b>
     <ul class="list" style="margin-top:4px">
       <li>pH … <b>AT-3 / AT-4</b></li>
-      <li>透視度 … <b>C / D / E</b></li>
+      <li>透視度 … <b>C / D / E</b>（<b>50cm</b> の透視度計）</li>
       <li>残留塩素 … <b>E</b></li>
       <li><b>MLDO</b>（下のステップ）</li>
       <li id="kaniwait" hidden></li>
@@ -408,7 +424,7 @@
 <div class="step now">
   <div class="no">3</div>
   <div class="ttl2">透視度を測る</div>
-  <div class="body">A / B / C / D / E の<b>5か所</b>。待ちなし。</div>
+  <div class="body">A / B / C / D / E の<b>5か所</b>。待ちなし。<br><b>A・B は 30cm の透視度計、C・D・E は 50cm。</b>使うものが違う。</div>
   <div class="fill"><b>ここで COD の検水量が5本分全部決まる。</b>目安は<b>透視度 × 2 ＋α</b>。×2 だけだと 3.5〜5.5 の下寄りに来るので少し足す。<br><b>朝に仕掛けた BL の値も見る。</b>BL が高い日は試料分の幅が狭い。<br>上限は 100mL なので、透視度50以上は頭打ち。</div>
   <div class="ask"><b>迷ったら2本立てていい</b> — 外した時は再加熱30分。保険は滴定1回分。バスは12穴で6本しか使わない</div>
 </div>
@@ -419,7 +435,7 @@
   <div class="timer">30分</div>
   <div class="body">三角フラスコ <b>6本</b>（A・B・C・D・E ＋ BL）。</div>
   <ul class="list">
-    <li>検水を量ってフラスコへ。<b>足りない分は蒸留水で100mLにメスアップ</b></li>
+    <li>検水を量ってフラスコへ。量るのは <b>COD専用の 100mL メスシリンダー</b>。<b>足りない分は蒸留水で100mLにメスアップ</b></li>
     <li>BL は蒸留水 100mL</li>
     <li>硫酸(1+2) <b>10mL</b> ＋ 過マンガン酸カリウム <b>10mL</b></li>
     <li>ウォーターバスで <b>30分</b> … <b>タイマー30分を押す</b></li>
@@ -427,7 +443,7 @@
   <div class="fill">
     <b>この30分の間にやること</b>
     <ul class="list" style="margin-top:4px">
-      <li><b>遠心を回す（20分）</b> — 遠心は3台あるので AT-3・AT-4 を同時に。<b>ここもタイマー</b></li>
+      <li><b>遠心を回す（20分）</b> — 遠心は3台あるので AT-3・AT-4 を同時に。<b>ここもタイマー</b><br>水を量るのは<b>遠心用の 100mL メスシリンダー</b>。<b>COD用とは別</b></li>
       <li>pH … A / B / AT-3 / AT-4 / C / D / E / RS の <b>8か所</b></li>
       <li><b>残留塩素 … 月曜は E だけ。</b>木曜は D と E</li>
     </ul>
@@ -532,7 +548,7 @@
 <div class="step">
   <table>
     <tr><th>時刻</th><th>やること</th></tr>
-    <tr><td class="n">8:30</td><td>前回の計量 → 次回の準備</td></tr>
+    <tr><td class="n">8:30</td><td>器具を出す → 前回の計量 → 次回の準備</td></tr>
     <tr><td class="n">9:30</td><td><b>採水に出る</b></td></tr>
     <tr><td class="n">戻ってすぐ</td><td>SV を仕掛ける（ここから60分）</td></tr>
     <tr><td class="n">10:55</td><td>磁皿をバスへ（<b>最低ライン</b>。早いほどいい）</td></tr>
@@ -2358,9 +2374,17 @@ function render(i){
   if (day.after) h += '<div class="fill" style="margin-top:11px">' + day.after + '</div>';
   dayhead.innerHTML = h;
 
+  /* 朝の器具出し：COD がある日だけ三角フラスコ、日常だけ pH のビーカー（うさぎ 2026/9/15） */
+  {
+    const cod = !!day.bl, ph = day.kind === "nichijo";
+    document.getElementById("asacod").hidden   = !cod;
+    document.getElementById("asaph").hidden    = !ph;
+    document.getElementById("asalabel").hidden = !(cod || ph);
+  }
+
   /* COD がある日は、BL だけ朝のうちに仕掛けておく（2026/9/14 に現場で確認） */
   document.getElementById("asabl").innerHTML = day.bl
-    ? '<div class="step wait"><div class="no">4</div>'
+    ? '<div class="step wait"><div class="no">5</div>'
       + '<div class="ttl2">BL（ブランク）を先に仕掛ける</div>'
       + '<div class="timer">30分</div>'
       + '<div class="body">三角フラスコに <b>蒸留水 100mL</b> ＋ <b>硫酸(1+2) 10mL</b> '
@@ -2384,7 +2408,9 @@ function render(i){
   if (ke) ke.innerHTML = day.extra
     ? 'AT-3・AT-4 ＋ <b>納OD1・納OD2・納RSS</b> の水を <b>各100mL</b> 量って遠心へ。'
       + '<b>5検水</b>。<b>1検水を2等分して2本に分ける。</b>遠心は1台に4か所＝<b>1台2検水</b>、<b>3台で6検水</b>。一度に回せる。'
-    : 'AT-3・AT-4 の水を <b>100mL</b> 量って遠心へ。<b>1検水を2等分して2本に。</b>1台4か所＝1台2検水、<b>3台で6検水</b>。';
+      + '<br>量るのは<b>遠心用の 100mL メスシリンダー</b>。<b>COD用とは別</b>。'
+    : 'AT-3・AT-4 の水を <b>100mL</b> 量って遠心へ。<b>1検水を2等分して2本に。</b>1台4か所＝1台2検水、<b>3台で6検水</b>。'
+      + '<br>量るのは<b>遠心用の 100mL メスシリンダー</b>。';
   const kw = document.getElementById("kaniwait");
   if (kw){ kw.hidden = !day.extra;
     kw.innerHTML = '<b>透視度 … 納A / 納D / 多A / 多D</b>（ここで他事業所の COD の検水量が決まる）'; }
@@ -2401,7 +2427,8 @@ function render(i){
       + '<div class="timer">30分</div>'
       + '<div class="body">三角フラスコ <b>5本</b>（' + day.extra.cod + '）。</div>'
       + '<ul class="list">'
-      + '<li>検水を量ってフラスコへ。<b>足りない分は蒸留水で100mLにメスアップ</b></li>'
+      + '<li>検水を量ってフラスコへ。量るのは <b>COD専用の 100mL メスシリンダー</b>'
+      + '（遠心用とは別）。<b>足りない分は蒸留水で100mLにメスアップ</b></li>'
       + '<li>BL は蒸留水 100mL</li>'
       + '<li>硫酸(1+2) <b>10mL</b> ＋ 過マンガン酸カリウム <b>10mL</b></li>'
       + '<li>ウォーターバスで <b>30分</b> … <b>タイマー30分を押す</b></li></ul>'
