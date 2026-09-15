@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>水質分析</title>
 <meta name="version" content="1.0">
-<meta name="build" content="20260915200444">
+<meta name="build" content="20260915201715">
 <meta name="theme-color" content="#0f6d8c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -201,22 +201,23 @@
 
   <div class="sec">朝一</div>
 
-  <div id="asafirst"></div>
-
   <div class="step">
     <div class="no">1</div>
     <div class="ttl2">当日の器具を出す</div>
-    <div class="body"><b>計量より先にこれ。</b>その日に使うものを一通り出しておく。</div>
     <ul class="list">
+      <li id="asaotoe" hidden><b>音江用のフラン瓶</b> … <b>硫酸銅スルファミン酸 5mL</b>（深川用の 3mL と量が違う）<br>
+      <b>送りが出る前に、音江へ行く人に渡す。</b>出てしまうと間に合わない</li>
       <li><b>採水ボトル</b> … <b>日常と簡易で大きさもカゴも違う。</b>専用のがある</li>
-      <li><b>MLDO</b> … フラン瓶 ／ ガラス容器 ／ コニカルビーカー</li>
+      <li><b>MLDO</b> … フラン瓶 ／ ガラス容器 ／ コニカルビーカー<br>
+      <b>300mL のフラン瓶には 硫酸銅スルファミン酸 3mL（青い液）を入れておく</b></li>
       <li id="asacod" hidden><b>COD</b> … 三角フラスコ</li>
       <li id="asaph" hidden><b>pH</b> … ビーカー</li>
     </ul>
     <div class="fill" id="asalabel" hidden><b>三角フラスコとビーカーにはラベルが書いてある</b>（BL・深A など）。
     どれに何を入れるかは決まっている。</div>
     <div class="ask"><b>フラン瓶は2種類。</b>採水用は <b>300mL</b>（青い薬品を入れる方）。
-    上澄みを入れるのは <b>100mL</b>。蓋の分で実容量が違うので<b>使う瓶が決まっている</b>（AT-3＝99 ／ AT-4＝98）</div>
+    上澄みを入れるのは <b>100mL</b>。蓋の分で実容量が違うので<b>使う瓶が決まっている</b>（AT-3＝99 ／ AT-4＝98）<br>
+    薬品は<b>採水前</b>に入れるのが決まり。汲んだ瞬間に微生物が止まる</div>
   </div>
 
   <div class="step">
@@ -235,13 +236,6 @@
     <div class="body">次に分析がある日分の <b>ろ紙・磁皿</b> を用意する。1枚ずつ風袋を測って、その場でタブレットへ。<br>
     <b>取り違えないよう、磁皿にラベルを入れておく。</b></div>
     <a class="prepbtn" href="../bunseki/index.html">次回の準備<span>磁皿・ろ紙が何枚いるか</span></a>
-  </div>
-
-  <div class="step">
-    <div class="no">4</div>
-    <div class="ttl2">DO用のフラン瓶</div>
-    <div class="body">300mL フラン瓶に <b>硫酸銅スルファミン酸 3mL</b>（青い液）を入れておく。<br>
-    採水<b>前</b>に入れるのが決まり。汲んだ瞬間に微生物が止まる。</div>
   </div>
 
   <div id="asabl"></div>
@@ -2377,6 +2371,7 @@ function render(i){
   /* 朝の器具出し：COD がある日だけ三角フラスコ、日常だけ pH のビーカー（うさぎ 2026/9/15） */
   {
     const cod = !!day.bl, ph = day.kind === "nichijo";
+    document.getElementById("asaotoe").hidden  = !day.otoedo;
     document.getElementById("asacod").hidden   = !cod;
     document.getElementById("asaph").hidden    = !ph;
     document.getElementById("asalabel").hidden = !(cod || ph);
@@ -2384,7 +2379,7 @@ function render(i){
 
   /* COD がある日は、BL だけ朝のうちに仕掛けておく（2026/9/14 に現場で確認） */
   document.getElementById("asabl").innerHTML = day.bl
-    ? '<div class="step wait"><div class="no">5</div>'
+    ? '<div class="step wait"><div class="no">4</div>'
       + '<div class="ttl2">BL（ブランク）を先に仕掛ける</div>'
       + '<div class="timer">30分</div>'
       + '<div class="body">三角フラスコに <b>蒸留水 100mL</b> ＋ <b>硫酸(1+2) 10mL</b> '
@@ -2468,16 +2463,6 @@ function render(i){
       + '引けない時は量を減らす。</div>'
       + '<div class="ask">装置は1セット。<b>1枚ずつ差し替える直列作業。</b>'
       + 'ここが遅れると乾燥機に間に合わない</div></div>'
-    : "";
-
-  /* 音江の DO は深川で滴定する。瓶は朝、音江へ行く人に渡す */
-  document.getElementById("asafirst").innerHTML = day.otoedo
-    ? '<div class="step first"><div class="no">先</div>'
-      + '<div class="ttl2">音江用のフラン瓶を渡す</div>'
-      + '<div class="body"><b>送りが出る前に渡す。</b>音江の検水は<b>朝の「送」で採ってくる</b>。'
-      + '出てしまうと間に合わない。</div>'
-      + '<div class="ask">音江用は <b>硫酸銅スルファミン酸 5mL</b>（深川用の 3mL と量が違う）。<br>'
-      + '音江の DO（OD 曝気槽）は<b>深川で滴定する</b>。</div></div>'
     : "";
 
   /* この日 測る項目（事業所をまたいで1つの表） */
