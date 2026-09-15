@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>水質分析</title>
 <meta name="version" content="1.0">
-<meta name="build" content="20260916060321">
+<meta name="build" content="20260916061812">
 <meta name="theme-color" content="#0f6d8c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1163,7 +1163,7 @@ const DAYS = [
   "dassui": true,
   "extra": {
    "cod": "納A ・ 納D ・ 多A ・ 多D",
-   "roshi": "納A ・ 納D ・ 多A ・ 多D の <b>4枚</b>"
+   "roshi": "<b>納A（100mL）／ 納D（500mL）／ 多A（100mL）／ 多D（500mL）</b> の <b>4枚</b>"
   },
   "items": {
    "title": "簡易分析 ＋ 納内 日常 ＋ 多度志 日常",
@@ -2441,7 +2441,8 @@ function render(i){
     : 'AT-3・AT-4 を磁皿に移して<b>ウォーターバスへ</b>。';
   const kw = document.getElementById("kaniwait");
   if (kw){ kw.hidden = !day.extra;
-    kw.innerHTML = '<b>透視度 … 納A / 納D / 多A / 多D</b>（ここで他事業所の COD の検水量が決まる）'; }
+    kw.innerHTML = '<b>透視度 … 納A / 納D / 多A / 多D</b>（ここで他事業所の COD の検水量が決まる）'
+      + '<br><b>A は 30cm、D は 50cm の透視度計</b>'; }
 
   const kx = document.getElementById("kaniextra");
   if (kx) kx.innerHTML = day.extra
@@ -2496,8 +2497,7 @@ function render(i){
       + '<li>ろ紙をセット → ファンネル → クランプ</li>'
       + '<li><b>先に蒸留水を通してから</b>試料を通す</li>'
       + '<li>ろ紙に色が付くまで</li></ul>'
-      + '<div class="fill"><b>検水量は固定ではない。</b>その日の水で変わる。'
-      + '引けない時は量を減らす。</div>'
+      + '<div class="fill"><b>よほどの事が無い限り、この量で決まり。</b>引けない時だけ量を減らす。</div>'
       + '<div class="ask">装置は1セット。<b>1枚ずつ差し替える直列作業。</b>'
       + 'ここが遅れると乾燥機に間に合わない</div></div>'
     : "";
