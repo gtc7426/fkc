@@ -1236,7 +1236,7 @@ const NAV = {
         blockNear = true;
       }
     }
-    /* 予告は速度の6秒ぶん。40〜150m で挟む */
+    /* 予告は速度の6秒分。40〜150m で挟む */
     const v = (speed && speed>0.5) ? speed : 5.6;
     const ahead = Math.max(80, Math.min(200, v*8));
 
@@ -1452,7 +1452,7 @@ const map = L.map('map', {zoomControl:false, attributionControl:true}).setView([
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19, attribution:'&copy; OpenStreetMap'}).addTo(map);
 
 function ll(p){ const a=p.ll.split(','); return [parseFloat(a[0]), parseFloat(a[1])]; }
-/* 地区ごとの色。出発前は4地区ぶん同時に描いて、選んでいる所だけ濃くする */
+/* 地区ごとの色。出発前は4地区分同時に描いて、選んでいる所だけ濃くする */
 const AREA_COLOR = {fukagawa:'#4a9eff', otoe:'#3ec98d', osamunai:'#e8a33d', tadoshi:'#b07ef0'};
 /* 出発の第一声。市街を抜けるまで道が決まりきっている地区は、細かく喋らずこれだけ言う */
 /* 出発前に、道具リストの頭へ赤く出す注意。地区ごとの落とし穴 */
