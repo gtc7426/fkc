@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>水質分析</title>
 <meta name="version" content="1.0">
-<meta name="build" content="20260916063031">
+<meta name="build" content="20260916065916">
 <meta name="theme-color" content="#0f6d8c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -295,7 +295,7 @@
     <b>この20分の間にやること</b>
     <ul class="list" style="margin-top:4px">
       <li>pH … <b>AT-3 / AT-4</b></li>
-      <li>透視度 … <b>A / B</b>（30cm の透視度計）<br>　　　　… <b>C / D / E</b>（50cm の透視度計）</li>
+      <li>透視度 … <b>A / B</b>（30cm の透視度計）<br>　　　… <b>C / D / E</b>（50cm の透視度計）</li>
       <li>残留塩素 … <b>E</b></li>
       <li><b>MLDO</b>（下のステップ）</li>
       <li id="kaniwait" hidden></li>
@@ -2441,7 +2441,7 @@ function render(i){
     : 'AT-3・AT-4 を磁皿に移して<b>ウォーターバスへ</b>。';
   const kw = document.getElementById("kaniwait");
   if (kw){ kw.hidden = !day.extra;
-    kw.innerHTML = '<span style="color:#4d5762">他事業所の透視度で、その COD の検水量が決まる</span>'; }
+    kw.innerHTML = '<b style="color:var(--warn)">透視度で COD の検水量が決まる</b>'; }
 
   const kx = document.getElementById("kaniextra");
   if (kx) kx.innerHTML = day.extra
