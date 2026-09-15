@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>水質分析</title>
 <meta name="version" content="1.0">
-<meta name="build" content="20260915205308">
+<meta name="build" content="20260916060321">
 <meta name="theme-color" content="#0f6d8c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -485,15 +485,14 @@
 <div class="step now">
   <div class="no">8</div>
   <div class="ttl2">ろ過（ろ紙のSS） <em class="fn">SS ＝ Suspended Solids ／ 浮遊物質</em></div>
-  <div class="body">A / B / C / D / E の <b>5枚だけ</b>。<br><b>5枚 ろ過し終わったら、まとめて乾燥機へ入れる。</b>ろ紙は<b>ウォーターバスを通らない</b>ので、磁皿の 12:55 を待たない。</div>
+  <div class="body"><b>A（100mL）／ B（100mL）／ C（500mL）／ D（500mL）／ <span style="white-space:nowrap">E（1,000mL）</span></b> の <b>5枚だけ</b>。<br><span id="roshidry"></span></div>
   <div class="fill"><b>ろ液は自分でろ過しない。</b>脱水担当がろ過して乾燥機に入れてくれる。<b>分析は翌朝 測るだけ。</b></div>
   <ul class="list">
     <li>ろ紙をセット → ファンネル → クランプ</li>
     <li><b>先に蒸留水を通してから</b>試料を通す</li>
     <li>ろ紙に色が付くまで</li>
   </ul>
-  <div class="fill"><b>検水量は固定ではない。</b>その日の水で変わる。引けない時は量を減らす。<br>
-  参考（水が綺麗な日）… A 100 / B 100 / C 400 / D 400 / E 1,000</div>
+  <div class="fill"><b>よほどの事が無い限り、この量で決まり。</b>引けない時だけ量を減らす。<br><b>ろ液は通常 100mL。</b>ただし<b>抜けきらない場合がある</b>ので、その時は<b>残った検水量を差し引く</b>。</div>
   <div class="ask">装置は1セット。<b>1枚ずつ差し替える直列作業。</b>ここが遅れると乾燥機に間に合わない</div>
 </div>
 
@@ -613,6 +612,7 @@ const DAYS = [
   "d": "9/14(月)",
   "kind": "nichijo",
   "bl": true,
+  "dassui": true,
   "items": {
    "title": "日常分析",
    "cap": "水温は現場で測る。",
@@ -970,6 +970,7 @@ const DAYS = [
   "iso": "2026-09-15",
   "d": "9/15(火)",
   "kind": "kani",
+  "dassui": true,
   "items": {
    "title": "簡易分析",
    "cap": "",
@@ -1159,6 +1160,7 @@ const DAYS = [
   "d": "9/16(水)",
   "kind": "kani",
   "bl": true,
+  "dassui": true,
   "extra": {
    "cod": "納A ・ 納D ・ 多A ・ 多D",
    "roshi": "納A ・ 納D ・ 多A ・ 多D の <b>4枚</b>"
@@ -1549,6 +1551,7 @@ const DAYS = [
   "kind": "chu",
   "otoedo": true,
   "bl": true,
+  "dassui": true,
   "notes": [
    "<b>★この日の VSS は翌 9/18 にやる。磁皿を捨てない。</b>"
   ],
@@ -2416,6 +2419,14 @@ function render(i){
       + '<br>量るのは<b>遠心用の 100mL メスシリンダー</b>。<b>COD用とは別</b>。'
     : 'AT-3・AT-4 の水を <b>100mL</b> 量って遠心へ。<b>1検水を2等分して2本に。</b>1台4か所＝1台2検水、<b>3台で6検水</b>。'
       + '<br>量るのは<b>遠心用の 100mL メスシリンダー</b>。';
+  {
+    const rd = document.getElementById("roshidry");
+    if (rd) rd.innerHTML = day.dassui
+      ? 'ろ過したろ紙は<b>吸引機の上に置いたまま</b>にする。'
+        + '<b>脱水担当が午前中にろ液を吸引するとき、一緒に乾燥機へ入れてくれる。</b>'
+      : '<b>5枚 ろ過し終わったら、まとめて自分で乾燥機へ入れる。</b>'
+        + 'ろ紙は<b>ウォーターバスを通らない</b>ので、磁皿の 12:55 を待たない。';
+  }
   const kt = document.getElementById("kanitimer");
   if (kt) kt.innerHTML = day.extra
     ? 'タイマーを押すのは <b>SV（30分・60分）</b>と<b>遠心（20分）</b>、<b>COD加熱（30分）</b>。'
@@ -2475,8 +2486,12 @@ function render(i){
       + '<div class="ttl2">ろ過（ろ紙のSS） '
       + '<em class="fn">SS ＝ Suspended Solids ／ 浮遊物質</em></div>'
       + '<div class="body">' + day.extra.roshi + '。<br>'
-      + '<b>4枚 ろ過し終わったら、まとめて乾燥機へ入れる。</b>'
-      + 'ろ紙は<b>ウォーターバスを通らない</b>ので、磁皿の 12:55 を待たない。</div>'
+      + (day.dassui
+          ? 'ろ過したろ紙は<b>吸引機の上に置いたまま</b>。'
+            + '<b>脱水担当がろ液を吸引するとき、一緒に乾燥機へ入れてくれる。</b>'
+          : '<b>4枚 ろ過し終わったら、まとめて自分で乾燥機へ入れる。</b>'
+            + 'ろ紙は<b>ウォーターバスを通らない</b>ので、磁皿の 12:55 を待たない。')
+      + '</div>'
       + '<ul class="list">'
       + '<li>ろ紙をセット → ファンネル → クランプ</li>'
       + '<li><b>先に蒸留水を通してから</b>試料を通す</li>'
