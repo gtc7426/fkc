@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>水質分析</title>
 <meta name="version" content="1.0">
-<meta name="build" content="20260915071802">
+<meta name="build" content="20260915193628">
 <meta name="theme-color" content="#0f6d8c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -2383,8 +2383,8 @@ function render(i){
   const ke = document.getElementById("kanienshin");
   if (ke) ke.innerHTML = day.extra
     ? 'AT-3・AT-4 ＋ <b>納OD1・納OD2・納RSS</b> の水を <b>各100mL</b> 量って遠心へ。'
-      + '<b>5本</b>。遠心は3台あるので同時に回せる。'
-    : 'AT-3・AT-4 の水を <b>100mL</b> 量って遠心へ。遠心は3台あるので同時に回せる。';
+      + '<b>5検水</b>。<b>1検水を2等分して2本に分ける。</b>遠心は1台に4か所＝<b>1台2検水</b>、<b>3台で6検水</b>。一度に回せる。'
+    : 'AT-3・AT-4 の水を <b>100mL</b> 量って遠心へ。<b>1検水を2等分して2本に。</b>1台4か所＝1台2検水、<b>3台で6検水</b>。';
   const kw = document.getElementById("kaniwait");
   if (kw){ kw.hidden = !day.extra;
     kw.innerHTML = '<b>透視度 … 納A / 納D / 多A / 多D</b>（ここで他事業所の COD の検水量が決まる）'; }
