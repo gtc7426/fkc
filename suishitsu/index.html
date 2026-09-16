@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>水質分析</title>
 <meta name="version" content="1.0">
-<meta name="build" content="20260916202348">
+<meta name="build" content="20260916204342">
 <meta name="theme-color" content="#0f6d8c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -272,7 +272,7 @@
   値が出たら、その場でタブレットに入れる。</p>
   <p style="margin-top:9px">待ちのある工程は<b>茶色</b>。<br>
   <span id="kanitimer"></span><br>
-  バス・乾燥機・デシケーターは「◯分<b>以上</b>」なので押さない＝時刻で動く。</p>
+  バス・乾燥機・デシケーターは「◯分<b>以上</b>」なので押さない＝時刻で動く。<br><b>SV ・ COD加熱 ・ 遠心 は同時に走っている。どれが先に終わるかはその日しだいなので、鳴った方から片付ける。</b>番号の順に縛られなくていい。</p>
 </div>
 
 <div class="sec">現場</div>
@@ -331,6 +331,8 @@
   <div class="fill"><b>瓶は系列固定。</b>DO3＝AT-3 ／ DO4＝AT-4。取り違えたら数値がそのまま狂う。</div>
 </div>
 
+<div id="kx1"></div>
+
 <div class="step now">
   <div class="no">4</div>
   <div class="ttl2">遠心が上がる → 磁皿へ</div>
@@ -340,13 +342,13 @@
   <div class="ask">ラベルは<b>磁皿の中に入っている</b>（前日の「次回の準備」で入れてある）。どの穴に置くかは決まっていない</div>
 </div>
 
+<div id="kx2"></div>
+
 <div class="step now">
   <div class="no">5</div>
   <div class="ttl2">SV 60分を読む</div>
   <div class="body" id="kanidone">これで午前の手作業は終わり。</div>
 </div>
-
-<div id="kaniextra"></div>
 
 <div class="sec">午後</div>
 
@@ -388,7 +390,7 @@
   バス・乾燥機・SV は<b>仕掛けた時点で手が離れる</b>。早く入れるほど早く終わる。<br>
   手が塞がるのは <b>COD滴定</b> と <b>ろ過</b>。<b>COD が一番のネック</b>（ろ過はそれほど時間がかからない）。<br>待ちの合間に <b>pH ・ 残留塩素 ・ 器具の洗い物</b>。<b>順番にやりつつ、やれる事は並列に。</b></p>
   <p style="margin-top:9px"><b>待ちのある工程は、その場でタイマーを押す。</b>機器にタイマーが付いていて、アラームで呼び戻してくれる。<br>
-  <b>時刻を覚えておく必要はない。</b>押したら次の作業に移っていい。</p>
+  <b>時刻を覚えておく必要はない。</b>押したら次の作業に移っていい。<br><b>SV ・ COD加熱 ・ 遠心 は同時に走っている。どれが先に終わるかはその日しだいなので、鳴った方から片付ける。</b>番号の順に縛られなくていい。</p>
   <p style="margin-top:9px"><b>タイマーを押すのは「ちょうど◯分」で戻る工程だけ。</b><br>
   ・押す … <b>SV（30分・60分）／ COD加熱（30分）／ 遠心（20分）</b><br>
   ・押さない … <b>ウォーターバス ／ 乾燥機 ／ デシケーター</b>（どれも「◯分<b>以上</b>」で、過ぎても構わない）</p>
@@ -510,11 +512,12 @@
 <div class="step now">
   <div class="no">9</div>
   <div class="ttl2">ろ過（ろ紙のSS） <em class="fn">SS ＝ Suspended Solids ／ 浮遊物質</em></div>
-  <div class="body"><b>A（100mL）／ B（100mL）／ C（500mL）／ D（500mL）／ <span style="white-space:nowrap">E（1,000mL）</span></b> の <b>5枚だけ</b>。<br><span id="roshidry"></span></div>
+  <div class="body"><b>5枚だけ。</b>検水は<b>通常</b> … A 100 ／ B 100 ／ C 500 ／ D 500 ／ <span style="white-space:nowrap">E 1,000</span>（mL）<br><span id="roshidry"></span></div>
   <div class="fill"><b>ろ液は自分でろ過しない。</b>脱水担当がろ過して乾燥機に入れてくれる。<b>分析は翌朝 測るだけ。</b></div>
   <ul class="list">
     <li>ろ紙をセット → ファンネル → クランプ</li>
     <li><b>先に<span class="rx rx-sui">蒸留水</span>を通してから</b>試料を通す</li>
+    <li><b>大きなゴミ・虫の死骸はピンセットで除く</b></li>
     <li>ろ紙に色が付くまで</li>
   </ul>
   <div class="fill"><b>よほどの事が無い限り、この量で決まり。</b>引けない時だけ量を減らす。<br><b>ろ液は通常 100mL。</b>ただし<b>抜けきらない場合がある</b>ので、その時は<b>残った検水量を差し引く</b>。</div>
@@ -1188,7 +1191,7 @@ const DAYS = [
   "dassui": true,
   "extra": {
    "cod": "納A ・ 納D ・ 多A ・ 多D",
-   "roshi": "<b>納A（100mL）／ 納D（500mL）／ 多A（100mL）／ 多D（500mL）</b> の <b>4枚</b>"
+   "roshi": "<b>4枚。</b>検水は<b>通常</b> … 納A 100 ／ 納D 500 ／ 多A 100 ／ 多D 500（mL）"
   },
   "items": {
    "title": "簡易分析 ＋ 納内 日常 ＋ 多度志 日常",
@@ -2414,12 +2417,10 @@ function render(i){
   /* 簡易でも他事業所分の COD とろ過がある日 */
   const kl = document.getElementById("kanilead");
   if (kl) kl.innerHTML = day.extra
-    ? '<b>深川は簡易だが、この日は他事業所分の COD とろ過がある。</b>下の「＋」の枠がそれ。'
+    ? '<b>深川は簡易だが、この日は他事業所分の COD とろ過がある。</b>下の流れに混ぜてある。'
     : '<b>COD が無い分、日常よりずっと軽い。</b>ろ過も自分ではやらない（脱水担当がやってくれる）。';
   const kd = document.getElementById("kanidone");
-  if (kd) kd.textContent = day.extra
-    ? "深川分はここまで。この日は下の他事業所分が続く。"
-    : "これで午前の手作業は終わり。";
+  if (kd) kd.textContent = "これで午前の手作業は終わり。";
   const ke = document.getElementById("kanienshin");
   if (ke) ke.innerHTML = day.extra
     ? '<b>MLSS 3・MLSS 4 ＋ 納MLSS 1・納MLSS 2・納RSS</b> の水を <b>各100mL</b> 量って遠心へ。'
@@ -2456,14 +2457,13 @@ function render(i){
   if (kw){ kw.hidden = !day.extra;
     kw.innerHTML = '<b style="color:var(--warn)">透視度で COD の検水量が決まる</b>'; }
 
-  const kx = document.getElementById("kaniextra");
-  if (kx) kx.innerHTML = day.extra
-    ? '<div class="sec">他事業所分</div>'
-      + '<div class="todo"><b>検水が届くのは、深川の採水が終わった 20分ほど後</b>（推定）。<br>'
-      + '送りは他の人が行く。<b>自分の採水と深川分を、できるだけ先に済ませる。</b><br>'
-      + '<b>深川の遠心が終わるころに戻ってくる。</b></div>'
+  /* 他事業所分は本流に混ぜる（うさぎ 2026/9/16「作業自体は同じだろ？」） */
+  const kx1 = document.getElementById("kx1");
+  if (kx1) kx1.innerHTML = day.extra
+    ? '<div class="todo">他事業所の検水は<b>少し遅れて届く</b>（深川の採水の20分ほど後）。'
+      + '<b>大きな時間差ではない。</b>届く前にやれる事を先に済ませておく。</div>'
 
-      + '<div class="step wait"><div class="no">＋1</div>'
+      + '<div class="step wait"><div class="no">-</div>'
       + '<div class="ttl2">COD を仕込んで加熱 <em class="fn">納内・多度志分</em></div>'
       + '<div class="timer">30分</div>'
       + '<div class="body">三角フラスコ <b>5本</b>（' + day.extra.cod + ' ＋ BL）。</div>'
@@ -2495,8 +2495,11 @@ function render(i){
       + '加熱しても変わらないので、色で進み具合は分からない（だからタイマー）。</div>'
       + '<div class="ask"><b>上げた時に紫が消えていたら失敗。</b>過マンガン酸が足りなかった'
       + '＝汚れが濃すぎる。<b>検水を減らしてやり直す</b>（再加熱30分）</div></div>'
+    : "";
 
-      + '<div class="step now"><div class="no">＋2</div>'
+  const kx2 = document.getElementById("kx2");
+  if (kx2) kx2.innerHTML = day.extra
+    ? '<div class="step now"><div class="no">-</div>'
       + '<div class="ttl2">COD を滴定する</div>'
       + '<div class="body"><b>色が動くのはここから。</b><br>'
       + '<b>紫</b>（加熱が終わったフラスコ）<br>'
@@ -2512,24 +2515,29 @@ function render(i){
       + '（2026/9/16 の BL は 1.86）</li>'
       + '<li><b>ビュレットは1セットだけ。</b>分担できないので、続けて1人で通す</li></ul></div>'
 
-      + '<div class="step now"><div class="no">＋3</div>'
+      + '<div class="step now"><div class="no">-</div>'
       + '<div class="ttl2">ろ過（ろ紙のSS） '
       + '<em class="fn">SS ＝ Suspended Solids ／ 浮遊物質</em></div>'
       + '<div class="body">' + day.extra.roshi + '。<br>'
       + (day.dassui
           ? 'ろ過したろ紙は<b>吸引機の上に置いたまま</b>。'
             + '<b>脱水担当がろ液を吸引するとき、一緒に乾燥機へ入れてくれる。</b>'
-          : '<b>4枚 ろ過し終わったら、まとめて自分で乾燥機へ入れる。</b>'
+          : '<b>ろ過し終わったら、まとめて自分で乾燥機へ入れる。</b>'
             + 'ろ紙は<b>ウォーターバスを通らない</b>ので、磁皿の 12:55 を待たない。')
       + '</div>'
       + '<ul class="list">'
       + '<li>ろ紙をセット → ファンネル → クランプ</li>'
       + '<li><b>先に<span class="rx rx-sui">蒸留水</span>を通してから</b>試料を通す</li>'
+      + '<li><b>大きなゴミ・虫の死骸はピンセットで除く</b></li>'
       + '<li>ろ紙に色が付くまで</li></ul>'
       + '<div class="fill"><b>よほどの事が無い限り、この量で決まり。</b>引けない時だけ量を減らす。</div>'
       + '<div class="ask">装置は1セット。<b>1枚ずつ差し替える直列作業</b>だが、'
       + '<b>それほど時間はかからない</b></div></div>'
     : "";
+
+  /* 番号は通しで振り直す */
+  { let n = 0;
+    document.querySelectorAll("#pane-kani .step .no").forEach(e => { e.textContent = ++n; }); }
 
   /* この日 測る項目（事業所をまたいで1つの表） */
   document.getElementById("items").innerHTML = itemsHtml(day.items);
