@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>水質分析</title>
 <meta name="version" content="1.0">
-<meta name="build" content="20260916072517">
+<meta name="build" content="20260916194212">
 <meta name="theme-color" content="#0f6d8c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -247,7 +247,8 @@
     <div class="no">3</div>
     <div class="ttl2">前回の計量</div>
     <div class="clock">朝礼後</div>
-    <div class="body"><b>デシケーターに入れて30分経ってから。</b><b>1/1000 g（mg）まで。</b>測った値はその場でタブレットへ。</div>
+    <div class="body"><b>デシケーターに入れて30分経ってから。</b><b>1/1000 g（mg）まで。</b></div>
+    <div class="body">値は <b>タブレットへ入力 → PCにも記録</b>。<b>2か所に入れる。</b></div>
     <div class="fill"><b>乾燥機に入っているものは、深川の分だけとは限らない。</b><br>
     納内・音江・多度志で作業してきた人が、持ち帰ったケーキやろ液を<b>自分で乾燥機に入れて帰る。</b>それを翌朝<b>最初に分析に入る人がまとめて測る</b>。<br>
     <b>入っているものは全部測る</b>つもりで乾燥機を開ける。</div>
@@ -260,8 +261,6 @@
     <b>取り違えないよう、磁皿にラベルを入れておく。</b></div>
     <a class="prepbtn" href="../bunseki/index.html">次回の準備<span>磁皿・ろ紙が何枚いるか</span></a>
   </div>
-
-  <div id="asabl"></div>
 
   <div id="items"></div>
 
@@ -387,7 +386,7 @@
   メモを取るのは<b>採水したときの水温</b>くらい。</p>
   <p style="margin-top:9px"><b>採水は 9:30 から。</b>戻ってすぐ SV を仕掛ける。<br><b>SV の60分がそのまま律速。</b>早い人は 11:00 に終わっている。遅くとも 11:40。<br>
   バス・乾燥機・SV は<b>仕掛けた時点で手が離れる</b>。早く入れるほど早く終わる。<br>
-  手が塞がるのは <b>COD滴定</b> と <b>ろ過</b> の2つだけ。</p>
+  手が塞がるのは <b>COD滴定</b> と <b>ろ過</b>。<b>COD が一番のネック</b>（ろ過はそれほど時間がかからない）。<br>待ちの合間に <b>pH ・ 残留塩素 ・ 器具の洗い物</b>。<b>順番にやりつつ、やれる事は並列に。</b></p>
   <p style="margin-top:9px"><b>待ちのある工程は、その場でタイマーを押す。</b>機器にタイマーが付いていて、アラームで呼び戻してくれる。<br>
   <b>時刻を覚えておく必要はない。</b>押したら次の作業に移っていい。</p>
   <p style="margin-top:9px"><b>タイマーを押すのは「ちょうど◯分」で戻る工程だけ。</b><br>
@@ -438,28 +437,36 @@
   <div class="fill">仕掛けたら放置ではない。<b>30分で鳴ったら一旦戻る。</b>読んだら、もう一度 30分 を押す。</div>
 </div>
 
-<div class="step now">
+<div class="step wait">
   <div class="no">3</div>
+  <div class="ttl2">遠心を回す</div>
+  <div class="timer">20分</div>
+  <div class="body">AT-3・AT-4 の水を <b>100mL</b> 量って遠心へ。<b>1検水を2等分して2本に。</b>遠心は3台あるので一度に回せる。<br>量るのは<b>遠心用の 100mL メスシリンダー</b>。<b>COD用とは別</b>。</div>
+  <div class="push">▶ タイマー <b>20分</b> を押す</div>
+</div>
+
+<div class="step now">
+  <div class="no">4</div>
   <div class="ttl2">透視度を測る</div>
   <div class="body">A / B（<b>30cm の透視度計</b>）<br>C / D / E（<b>50cm の透視度計</b>）<br>待ちなし。</div>
-  <div class="fill hot"><b>ここで COD の検水量が5本分全部決まる。</b>目安は<b>透視度 × 2 ＋α</b>。×2 だけだと 3.5〜5.5 の下寄りに来るので少し足す。<br><b>BL の値も参考に。</b>BL が高い日は試料分の幅が狭い。<br>上限は 100mL なので、透視度50以上は頭打ち。</div>
-  <div class="ask"><b>迷ったら2本立てていい</b> — 外した時は再加熱30分。保険は滴定1回分。バスは12穴で5本しか使わない</div>
+  <div class="fill hot"><b>COD の検水量は、ここで決める。</b>5本分全部。<br>目安は <b>透視度 × 2 ＋ 2〜4</b>。<br>上限は 100mL なので、透視度50以上は頭打ち。<br><b>目で見た汚れも入れる。</b>透視度が 50 あっても<b>普段と色が違うと思ったら 98 などに減らす</b>。</div>
+  <div class="ask"><b>自信が無ければ2本立てる。特に A（流入）と B（初沈）。</b>外した時は再加熱30分。<br><b>予備の三角フラスコは2本だけ</b>なので、掛けられる保険もそこまで</div>
 </div>
 
 <div class="step wait">
-  <div class="no">4</div>
+  <div class="no">5</div>
   <div class="ttl2">COD の加熱 <em class="fn">Chemical Oxygen Demand ／ 化学的酸素要求量</em></div>
   <div class="timer">30分</div>
-  <div class="body">三角フラスコ <b>5本</b>（A・B・C・D・E）。<b>BL は朝に仕掛けた分を使う</b>ので、ここでは作らない。<br>朝に BL をやっていない日は、ここで <b>BL も作る</b>（<span class="rx rx-sui">蒸留水</span> 100mL）。</div>
+  <div class="body">三角フラスコ <b>6本</b>（A・B・C・D・E ＋ BL）。</div>
   <ul class="list">
     <li>検水を量ってフラスコへ。量るのは <b>COD専用の 100mL メスシリンダー</b>。<b>足りない分は<span class="rx rx-sui">蒸留水</span>で100mLにメスアップ</b></li>
+    <li>BL は<b><span class="rx rx-sui">蒸留水</span> 100mL</b></li>
     <li>各フラスコへ <b><span class="rx rx-ryu">硫酸(1+2)</span> 10mL</b> ＋ <b><span class="rx rx-kman">過マンガン酸カリウム</span> 10mL</b> を入れる。<b>色は紫</b></li>
     <li>ウォーターバスに入れ、<b>30分タイマーを押す</b></li>
   </ul>
   <div class="fill">
     <b>この30分の間にやること</b>
     <ul class="list" style="margin-top:4px">
-      <li><b>遠心を回す（20分）</b> — 遠心は3台あるので AT-3・AT-4 を同時に。<b>ここもタイマー</b><br>水を量るのは<b>遠心用の 100mL メスシリンダー</b>。<b>COD用とは別</b></li>
       <li>pH … A / B / AT-3 / AT-4 / C / D / E / RS の <b>8か所</b></li>
       <li><b>残留塩素 … 月曜は E だけ。</b>木曜は D と E</li>
     </ul>
@@ -469,13 +476,13 @@
 </div>
 
 <div class="step now">
-  <div class="no">5</div>
+  <div class="no">6</div>
   <div class="ttl2">SV 30分を読む</div>
   <div class="body">AT-3・AT-4。読んだら<b>もう一度タイマー 30分</b> を押す。</div>
 </div>
 
 <div class="step now">
-  <div class="no">6</div>
+  <div class="no">7</div>
   <div class="ttl2">遠心が上がる → 磁皿へ <em class="fn">MLSS ＝ Mixed Liquor Suspended Solids ／ 活性汚泥浮遊物質</em></div>
   <div class="body">MLSS 3・MLSS 4 を磁皿に移して<b>ウォーターバスへ</b>。</div>
   <div class="fill"><b>バスに入れたら、そこで手は離れる。</b>あとは時間が経つだけ。<b>2時間以上</b>入っていればいい。<br>
@@ -484,21 +491,21 @@
 </div>
 
 <div class="step now">
-  <div class="no">7</div>
+  <div class="no">8</div>
   <div class="ttl2">COD を滴定する</div>
   <div class="body"><b>色が動くのはここから。</b><br>
   <b>紫</b>（加熱が終わったフラスコ）<br>
   → <b><span class="rx rx-shu">シュウ酸ナトリウム</span> 10mL</b> を入れる → <b>透明</b><br>
   → <span class="rx rx-kman">過マンガン酸カリウム</span>で滴下 → <b>薄い紫（ピンク）が出たら止める</b>。そこで目盛りを読む。</div>
   <ul class="list">
-    <li><b>5本分繰り返す。</b>ここは手が塞がる（<b>BL は朝に済んでいる</b>）</li>
+    <li><b>6本分繰り返す。</b>ここが一番のネック。手が塞がる</li>
     <li>滴定値が <b>3.5〜5.5 mL</b> に入っていれば OK</li>
-    <li><b>ビュレットは1セットだけ。</b>分担できないので、5本を続けて1人で通す</li>
+    <li><b>ビュレットは1セットだけ。</b>分担できないので、6本を続けて1人で通す</li>
   </ul>
 </div>
 
 <div class="step now">
-  <div class="no">8</div>
+  <div class="no">9</div>
   <div class="ttl2">ろ過（ろ紙のSS） <em class="fn">SS ＝ Suspended Solids ／ 浮遊物質</em></div>
   <div class="body"><b>A（100mL）／ B（100mL）／ C（500mL）／ D（500mL）／ <span style="white-space:nowrap">E（1,000mL）</span></b> の <b>5枚だけ</b>。<br><span id="roshidry"></span></div>
   <div class="fill"><b>ろ液は自分でろ過しない。</b>脱水担当がろ過して乾燥機に入れてくれる。<b>分析は翌朝 測るだけ。</b></div>
@@ -508,11 +515,11 @@
     <li>ろ紙に色が付くまで</li>
   </ul>
   <div class="fill"><b>よほどの事が無い限り、この量で決まり。</b>引けない時だけ量を減らす。<br><b>ろ液は通常 100mL。</b>ただし<b>抜けきらない場合がある</b>ので、その時は<b>残った検水量を差し引く</b>。</div>
-  <div class="ask">装置は1セット。<b>1枚ずつ差し替える直列作業。</b>ここが遅れると乾燥機に間に合わない</div>
+  <div class="ask">装置は1セット。<b>1枚ずつ差し替える直列作業</b>だが、<b>それほど時間はかからない</b></div>
 </div>
 
 <div class="step now">
-  <div class="no">9</div>
+  <div class="no">10</div>
   <div class="ttl2">MLDO <em class="fn">Mixed Liquor Dissolved Oxygen ／ 活性汚泥混合液の溶存酸素</em></div>
   <ul class="list">
     <li>汚泥が沈殿したら、<b>上澄み液を 100mL フラン瓶へ移す</b></li>
@@ -526,7 +533,7 @@
 </div>
 
 <div class="step now">
-  <div class="no">10</div>
+  <div class="no">11</div>
   <div class="ttl2">SV 60分を読む</div>
   <div class="body">帳票では括弧の中に入れる値。</div>
 </div>
@@ -534,7 +541,7 @@
 <div class="sec">昼を挟む</div>
 
 <div class="step end">
-  <div class="no">11</div>
+  <div class="no">12</div>
   <div class="ttl2">12:55 — 乾燥機へ入れる</div>
   <div class="clock">12:55</div>
   <div class="body">入れるのは<b>磁皿</b>（バスから上げたもの）。<b>ろ紙はろ過が済んだ時点で先に入っている。</b><br>ここも<b>2時間以上</b>。</div>
@@ -544,7 +551,7 @@
 </div>
 
 <div class="step end">
-  <div class="no">12</div>
+  <div class="no">13</div>
   <div class="ttl2">15:00 — 出してデシケーターへ</div>
   <div class="clock">15:00</div>
   <div class="body">磁皿もろ紙も同じ。<b>デシケーターで30分。</b></div>
@@ -552,7 +559,7 @@
 </div>
 
 <div class="step end">
-  <div class="no">13</div>
+  <div class="no">14</div>
   <div class="ttl2">15:30 — 秤量</div>
   <div class="clock">15:30</div>
   <div class="body">恒量になったら測る。<b>1/1000 g（mg）まで。</b>測った値はその場でタブレットへ。</div>
@@ -575,7 +582,7 @@
   </table>
   <div class="body" style="margin-top:10px">
     <b>仕掛けたら手が離れるもの</b> … SV / COD加熱 / 遠心 / バス / 乾燥機<br>
-    <b>手が塞がるもの</b> … COD滴定（5本）・ろ過（5枚）<br><br>
+    <b>手が塞がるもの</b> … COD滴定（6本）・ろ過（5枚）<br><b>合間に入れるもの</b> … pH ・ 残留塩素 ・ 器具の洗い物<br><br>
     午後は <b>12:55 に入れて、15:00 に出して、15:30 に測る</b> だけ。
   </div>
 </div>
@@ -2401,23 +2408,6 @@ function render(i){
     document.getElementById("asalabel").hidden = !(cod || ph);
   }
 
-  /* COD がある日は、BL だけ朝のうちに仕掛けておく（2026/9/14 に現場で確認） */
-  document.getElementById("asabl").innerHTML = day.bl
-    ? '<div class="step wait"><div class="no">5</div>'
-      + '<div class="ttl2">BL（ブランク）を先に仕掛ける</div>'
-      + '<div class="timer">30分</div>'
-      + '<div class="body">三角フラスコに <b><span class="rx rx-sui">蒸留水</span> 100mL</b> ＋ <b><span class="rx rx-ryu">硫酸(1+2)</span> 10mL</b> '
-      + '＋ <b><span class="rx rx-kman">過マンガン酸カリウム</span> 10mL</b>。ウォーターバスで <b>30分</b>。</div>'
-      + '<div class="push">▶ タイマー <b>30分</b> を押す</div>'
-      + '<div class="fill"><b>仕掛けたら手が離れる。</b>計量や次回の準備をやっている間に終わる。<br>'
-      + '<b>BL の値が先に出ていると、検水量を決めやすい。</b>判定の 3.5〜5.5 は '
-      + 'BL を含んだ滴定値なので、BL が高い日は試料分の幅が狭くなる。</div>'
-      + '<div class="todo"><b>30分で上がったら、その場で BL だけ滴定する。</b>'
-      + '滴定は<b>熱いうちにやる</b>もので、冷めると終点がぼやける。<br>'
-      + '採水に出る前に BL の値が出るので、戻ってから検水量を決められる。'
-      + '（<b>推定。実際にやって確かめる</b>）</div></div>'
-    : "";
-
   /* 簡易でも他事業所分の COD とろ過がある日 */
   const kl = document.getElementById("kanilead");
   if (kl) kl.innerHTML = day.extra
@@ -2461,27 +2451,31 @@ function render(i){
   const kx = document.getElementById("kaniextra");
   if (kx) kx.innerHTML = day.extra
     ? '<div class="sec">他事業所分</div>'
-      + '<div class="todo"><b>検水が届くのは 9:45 ごろ（推定。実際にやって確かめる）。</b><br>'
-      + '送りは他の人が行く。<b>自分の採水と深川分を、できるだけ先に済ませる。</b>'
-      + 'やっている間に検水が戻ってくる。</div>'
+      + '<div class="todo"><b>検水が届くのは、深川の採水が終わった 20分ほど後</b>（推定）。<br>'
+      + '送りは他の人が行く。<b>自分の採水と深川分を、できるだけ先に済ませる。</b><br>'
+      + '<b>深川の遠心が終わるころに戻ってくる。</b></div>'
 
       + '<div class="step wait"><div class="no">＋1</div>'
       + '<div class="ttl2">COD を仕込んで加熱 <em class="fn">納内・多度志分</em></div>'
       + '<div class="timer">30分</div>'
-      + '<div class="body">三角フラスコ <b>4本</b>（' + day.extra.cod + '）。'
-      + '<b>BL は朝に仕掛けた分を使う</b>ので、ここでは作らない。<br>'
-      + '朝に BL をやっていない日は、ここで <b>BL も作る</b>（<span class="rx rx-sui">蒸留水</span> 100mL）。</div>'
+      + '<div class="body">三角フラスコ <b>5本</b>（' + day.extra.cod + ' ＋ BL）。</div>'
       + '<ul class="list">'
       + '<li>検水を量ってフラスコへ。量るのは <b>COD専用の 100mL メスシリンダー</b>'
       + '（遠心用とは別）。<b>足りない分は<span class="rx rx-sui">蒸留水</span>で100mLにメスアップ</b></li>'
+      + '<li>BL は<b><span class="rx rx-sui">蒸留水</span> 100mL</b></li>'
       + '<li>各フラスコへ <b><span class="rx rx-ryu">硫酸(1+2)</span> 10mL</b> ＋ <b><span class="rx rx-kman">過マンガン酸カリウム</span> 10mL</b> を入れる。'
       + '<b>色は紫</b></li>'
       + '<li>ウォーターバスに入れ、<b>30分タイマーを押す</b></li></ul>'
       + '<div class="push">▶ タイマー <b>30分</b> を押す</div>'
-      + '<div class="fill hot"><b>検水量は透視度で決まる。目安は 透視度 × 2 ＋α。</b>'
-      + '<b>BL の値も参考に。</b>上限は 100mL なので、透視度50以上は頭打ち。</div>'
-      + '<div class="ask"><b>迷ったら2本立てていい</b> — 外した時は再加熱30分。'
-      + '保険は滴定1回分。バスは12穴で4本しか使わない</div>'
+      + '<div class="fill hot"><b>検水量はここで決める。'
+      + '目安は 透視度 × 2 ＋ 2〜4。</b>'
+      + '上限は 100mL なので、透視度50以上は頭打ち。<br>'
+      + '<b>目で見た汚れも入れる。</b>透視度が 50 あっても'
+      + '<b>普段と色が違うと思ったら 98 などに減らす</b>。<br>'
+      + '<b>多A は透視度が 3cm 前後。</b>検水は一桁になる</div>'
+      + '<div class="ask"><b>多度志は保険を掛けた方が無難。</b>'
+      + '自信が無ければ2本立てる。外した時は再加熱30分。<br>'
+      + '<b>予備の三角フラスコは2本だけ。</b></div>'
       + '<div class="fill"><b>上げた時も 紫のまま。</b>'
       + '加熱しても変わらないので、色で進み具合は分からない（だからタイマー）。</div>'
       + '<div class="ask"><b>上げた時に紫が消えていたら失敗。</b>過マンガン酸が足りなかった'
@@ -2495,7 +2489,7 @@ function render(i){
       + '→ <span class="rx rx-kman">過マンガン酸カリウム</span>で滴下 → <b>薄い紫（ピンク）が出たら止める</b>。'
       + 'そこで目盛りを読む。</div>'
       + '<ul class="list">'
-      + '<li><b>4本分繰り返す。</b>ここは手が塞がる（<b>BL は朝に済んでいる</b>）</li>'
+      + '<li><b>5本分繰り返す。</b>ここが一番のネック。手が塞がる</li>'
       + '<li>滴定値が <b>3.5〜5.5 mL</b> に入っていれば OK</li>'
       + '<li><b>ビュレットは1セットだけ。</b>分担できないので、続けて1人で通す</li></ul></div>'
 
@@ -2514,8 +2508,8 @@ function render(i){
       + '<li><b>先に<span class="rx rx-sui">蒸留水</span>を通してから</b>試料を通す</li>'
       + '<li>ろ紙に色が付くまで</li></ul>'
       + '<div class="fill"><b>よほどの事が無い限り、この量で決まり。</b>引けない時だけ量を減らす。</div>'
-      + '<div class="ask">装置は1セット。<b>1枚ずつ差し替える直列作業。</b>'
-      + 'ここが遅れると乾燥機に間に合わない</div></div>'
+      + '<div class="ask">装置は1セット。<b>1枚ずつ差し替える直列作業</b>だが、'
+      + '<b>それほど時間はかからない</b></div></div>'
     : "";
 
   /* この日 測る項目（事業所をまたいで1つの表） */
