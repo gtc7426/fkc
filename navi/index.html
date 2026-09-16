@@ -107,6 +107,10 @@ body{background:var(--bg);color:var(--fg);
 .pin.next{background:var(--next);width:38px;height:38px;font-size:16px;
   box-shadow:0 0 0 5px rgba(224,69,58,.28),0 2px 8px rgba(0,0,0,.6)}
 .pin.done{background:var(--done)}
+/* 内部点検で選んだ所。ほかの印は普通のまま */
+.pin.sel{background:#ffd400;color:#241804;width:44px;height:44px;font-size:18px;
+  border-width:3.5px;border-color:#fff;
+  box-shadow:0 0 0 7px rgba(255,212,0,.32),0 2px 9px rgba(0,0,0,.65)}
 .pin.home{background:#1f6f4a;width:40px;height:40px;border-color:#eaf4ee}
 .pin small{font-size:10.5px;font-weight:700;letter-spacing:-.04em;white-space:nowrap}
 
@@ -825,7 +829,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 <!-- ===== 地区タブ（常時） ===== -->
 <div id="tabs">
-  <span class="tt">P所点検<span class="ver">Ver 3.0</span></span>
+  <span class="tt">P所点検<span class="ver">Ver 3.1</span></span>
   <div class="tabwrap" id="areas"></div>
   <a class="home" href="/fkc/" title="トップメニューへ">☰</a>
 </div>
@@ -1671,6 +1675,7 @@ function renderTools(){
   const d = D[di], TL = toolList();
   $('shTtl').textContent  = '出発前に積むもの';
   $('departBtn').textContent = 'この地区で出発';
+  $('departBtn').disabled = false;      /* 内部点検から戻ったとき押せないままになる */
   if (!toolCk[di] || toolCk[di].length !== TL.length) toolCk[di] = TL.map(()=>false);
   const w = WARN[d.id] ? '<li class="warn"><span>⚠</span><span>'+WARN[d.id]+'</span></li>' : '';
   $('tools').innerHTML = w + TL.map((t,k)=>
@@ -1725,8 +1730,9 @@ function drawDistrict(fit){
   mkIndex = []; line = null;
   const all = L.latLngBounds([]);
   const sel = L.latLngBounds([]);   /* 選んだ地区だけの範囲。地区を押したらここに寄せる */
+  const nai = (mode==='naibu');
   D.forEach((d,ai)=>{
-    if (started && ai!==di) return;
+    if (started && ai!==di && !nai) return;   /* 内部点検は全地区を出したままにする */
     const on = (ai===di);
     /* 道は選んだ地区だけ。最初は印だけで、地区を押すと道が出る */
     if (on){
@@ -1747,18 +1753,19 @@ function drawDistrict(fit){
     }
     d.list.forEach((p,i)=>{
       /* 発着（深川浄化センター）は4地区とも同じ地点。重ねずに1つだけ出す */
-      if (p.kind==='帰着' && !started && ai!==0) { all.extend(ll(p)); return; }
+      if (p.kind==='帰着' && (!started || nai) && ai!==0) { all.extend(ll(p)); return; }
       all.extend(ll(p));
       if (on && p.kind!=='帰着') sel.extend(ll(p));   /* 寄せるのは所だけ */
-      const m=L.marker(ll(p),{icon:pin(p,i,ai), opacity:on?1:.7,
-        zIndexOffset: on ? (i===cur?1000:400) : 0})
+      const m=L.marker(ll(p),{icon:pin(p,i,ai), opacity:(on||nai)?1:.7,
+        zIndexOffset: nai ? (NPICK.indexOf(npKey(ai,i))>=0 ? (on&&i===cur?1000:900) : 300)
+                          : (on ? (i===cur?1000:400) : 0)})
         .addTo(map)
         .on('click',()=>openCard(ai,i));
       markers.push(m); mkIndex.push([ai,i]);
     });
   });
-  /* 地区を選んでいる間はその地区だけに寄せる。選ぶ前（di<0）は全地区 */
-  fitPts = (di>=0 && sel.isValid()) ? sel : all;
+  /* 地区を選んでいる間はその地区だけに寄せる。選ぶ前（di<0）と内部点検は全地区 */
+  fitPts = (!nai && di>=0 && sel.isValid()) ? sel : all;
   if (fit) fitAll();
   prog();
 }
@@ -1766,20 +1773,28 @@ function pin(p,i,ai){
   const on = (ai===di);
   let cls = p.kind==='帰着' ? 'home' : (on && i<cur ? 'done' : (on && i===cur ? 'next' : ''));
   let st = on ? '' : ' style="background:'+(AREA_COLOR[D[ai].id]||'#78849a')+';width:24px;height:24px;font-size:12px;border-width:2px"';
-  /* 内部点検は、選んだ所だけを立てる。選ばなかった所は小さく落とす */
-  if (mode==='naibu' && on && p.kind!=='帰着'){
-    if (picked().indexOf(i) < 0){
-      cls = '';
-      st = ' style="background:#4a5462;width:22px;height:22px;font-size:11px;border-width:2px;opacity:.5"';
-    } else {
-      cls = naiDone[npKey(ai,i)] ? 'done' : (i===cur ? 'next' : '');
-    }
+  /* 内部点検は地区で分けない。全地区を普通の大きさで出し（色で地区が分かる）、
+     選んだ所だけ大きく黄色にする */
+  if (mode==='naibu' && p.kind!=='帰着'){
+    const k = npKey(ai,i);
+    st = '';
+    if (NPICK.indexOf(k) < 0){ cls = '';
+      st = ' style="background:'+(AREA_COLOR[D[ai].id]||'#78849a')+'"'; }
+    else if (naiDone[k])                       cls = 'done';
+    else if (started && on && i===cur)         cls = 'next';
+    else                                       cls = 'sel';
   }
   return L.divIcon({className:'',iconSize:[30,30],iconAnchor:[15,15],
     html:'<div class="pin '+cls+'"'+st+'>'+label(p,i)+'</div>'});
 }
 function refreshPins(){
-  markers.forEach((m,k)=>{ const [ai,i]=mkIndex[k]; m.setIcon(pin(D[ai].list[i],i,ai)); });
+  markers.forEach((m,k)=>{ const [ai,i]=mkIndex[k]; m.setIcon(pin(D[ai].list[i],i,ai));
+    /* 選んだ所が、隣の印の下に隠れないように上へ出す */
+    if (mode==='naibu'){
+      const sel = NPICK.indexOf(npKey(ai,i)) >= 0;
+      m.setZIndexOffset(sel ? (ai===di && i===cur ? 1000 : 900) : 0);
+    }
+  });
   prog();
 }
 function prog(){
