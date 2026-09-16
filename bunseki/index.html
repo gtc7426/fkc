@@ -281,7 +281,24 @@ D.forEach((day,i)=>{
   b.addEventListener("click", ()=>render(i));
   tabs.appendChild(b);
 });
-render(0);
+/* 水質分析から ?d=9/16 の形で日付を渡されたら、そのタブを開く（2026/9/16 うさぎ） */
+(function(){
+  let i = 0;
+  try{
+    /* まず 今日か 今日より後で一番近い日 */
+    const t = new Date(), now = (t.getMonth()+1)*100 + t.getDate();
+    const md = x => { const a = x.tab.split(" ")[0].split("/"); return (+a[0])*100 + (+a[1]); };
+    const n = D.findIndex(x => md(x) >= now);
+    i = (n >= 0) ? n : D.length - 1;
+    /* 水質分析から日付を渡されていれば、その日 */
+    const q = new URLSearchParams(location.search).get("d");
+    if (q){
+      const k = D.findIndex(x => x.tab.split(" ")[0] === q);
+      if (k >= 0) i = k;
+    }
+  }catch(e){}
+  render(i);
+})();
 </script>
 
 </body>
