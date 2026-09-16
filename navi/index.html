@@ -48,6 +48,20 @@ body{background:var(--bg);color:var(--fg);
   font-size:16.5px;font-weight:700;background:var(--acc);color:#fff;cursor:pointer;
   box-shadow:0 3px 14px rgba(0,0,0,.45)}
 #startbar button:disabled{background:#39414e;color:var(--dim);box-shadow:none}
+#modebar{display:flex;gap:8px;margin-bottom:9px}
+#modebar button{flex:1;padding:11px 8px;font-size:14.5px;font-weight:700;border-radius:11px;
+  background:#2b323d;color:var(--dim);box-shadow:none}
+#modebar button.on{background:#e8eef7;color:#12161c}
+.tools li.pk{background:#152535;border-color:#2f6aa0;color:#bcd9f5}
+.tools li.pk .bx{background:#4a9eff;border-color:#4a9eff}
+.tools li.hd{cursor:default;background:none;border:0;padding:12px 2px 4px;
+  color:var(--dim);font-size:12.5px;font-weight:700;letter-spacing:.08em}
+.steps{list-style:none;margin:10px 0 0;padding:0}
+.steps li{display:flex;gap:9px;padding:8px 10px;border:1px solid var(--line);
+  border-radius:9px;margin-bottom:6px;font-size:14.5px;line-height:1.5}
+.steps li i{flex:none;font-style:normal;font-size:11px;font-weight:700;
+  padding:2px 6px;border-radius:5px;background:#2b323d;color:#cfd7e3}
+.steps li.dn i{background:#8a4b12;color:#ffe2bb}
 
 /* ===== 道具シート ===== */
 #sheet{position:absolute;left:0;right:0;bottom:0;z-index:940;background:var(--panel);
@@ -802,20 +816,24 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 <!-- ===== 地区タブ（常時） ===== -->
 <div id="tabs">
-  <span class="tt">P所点検<span class="ver">Ver 2.9</span></span>
+  <span class="tt">P所点検<span class="ver">Ver 3.0</span></span>
   <div class="tabwrap" id="areas"></div>
   <a class="home" href="/fkc/" title="トップメニューへ">☰</a>
 </div>
 
 <!-- ===== 出発バー ===== -->
 <div id="startbar">
+  <div id="modebar">
+    <button type="button" id="mJun" class="on">巡回（全部回る）</button>
+    <button type="button" id="mNai">内部点検（選ぶ）</button>
+  </div>
   <button id="goBtn" disabled>ナビ開始</button>
 </div>
 
 <!-- ===== 道具シート（ナビ開始で出る） ===== -->
 <div id="sheet" hidden>
   <div class="sh">
-    <b>出発前に積むもの</b>
+    <b id="shTtl">出発前に積むもの</b>
     <button id="shClose" type="button">✕</button>
   </div>
   <ul class="tools" id="tools"></ul>
@@ -1119,6 +1137,21 @@ function buildTurns(path){
   return {turns: out, cum};
 }
 
+/* ===== 内部点検（マンホール内。オイル交換が主）===== */
+const NAIBU_LOAD = ["発電機の燃料が入っているか（現地で足せない）","発電機","送風機とダクト",
+  "ガス検知器（酸素・硫化水素／電池）","三脚","チェーンブロック","安全ブロック","板・毛布（養生）",
+  "マンホールを開ける道具（バール／フック）","オイル交換の用具とオイル","車の鍵","制御盤のカギ","タブレット"];
+const NAIBU_STEPS = [["上","車を停める・周囲の安全確保"],["上","蓋を開ける"],["上","開口部を板・毛布で養生"],
+  ["上","三脚を立てる（地面の傾きを見る）"],["上","発電機を始動 → 送風機で換気"],
+  ["上","ガス検知器のセンサーを下へ降ろす"],["上","酸素と硫化水素を見て、降りられるか判断する"],
+  ["上","安全ブロックを装着"],["下","下の人が降りる"],["下","フロートの確認と清掃"],
+  ["下","ポンプの状態を確認（吊るならチェーンブロック）"],["下","異常が無いか目視"],
+  ["下","オイル交換"],["下","下の人が上がる"],["上","三脚・安全ブロックを撤収"],
+  ["上","送風機・発電機を止める"],["上","養生を外す"],["上","蓋を閉める"]];
+let mode = 'junkai';          /* 'junkai' | 'naibu' */
+const pick = {};              /* 地区id → 選んだ番号の配列 */
+function picked(){ return pick[D[di] ? D[di].id : ''] || []; }
+
 const NAV = {
   on:false, path:null, turns:null, cum:null, stopS:null, stopName:"", stopSay:"",
   said:{},        /* 角ごと：予告した/直前を言った（経路に復帰すると消える＝言い直す） */
@@ -1143,6 +1176,11 @@ const NAV = {
       }
       return best.s;
     }) : [];
+    /* 内部点検は、選んだ所だけを目的地にする。ほかは素通り */
+    if (mode === 'naibu'){
+      const ok = picked();
+      this.stopSAll = this.stopSAll.map((v,i)=> ok.indexOf(i)>=0 ? v : Infinity);
+    }
   },
   /* 現在地から、経路上の進行距離と最寄りの区間を出す */
   locate(pos){
@@ -1204,9 +1242,49 @@ const NAV = {
 
     /* 経路から離れている間は何も言わない。戻ったところで、その先の最初のP所から再開する */
     if (loc.dist > 80){
-      if (!this.offRoute){
-        this.offRoute = true;
-        const g=$('guide'); g.hidden=false; g.classList.remove('turn');
+      this.offRoute = true;
+      const g=$('guide'); g.hidden=false; g.classList.remove('turn');
+      /* 内部点検は道順が決まっていない。経路の外でも、選んだ所のうち
+         まだ済んでいない近い方を目的地にする。済んだ所は 60m 離れるまで残す */
+      if (mode === 'naibu'){
+        const cu = this.targetIdx;
+        let keep = false;
+        if (cu>=0 && picked().indexOf(cu)>=0){
+          if (!this.doneSay[cu]) keep = true;
+          else { const q0=ll(D[di].list[cu]);
+                 keep = Math.hypot((q0[1]-pos[1])*80500,(q0[0]-pos[0])*111000) < 60; }
+        }
+        if (!keep){
+          let bi=-1, bm=Infinity;
+          for (const i of picked()){
+            if (this.doneSay[i]) continue;
+            const q0=ll(D[di].list[i]);
+            const m0=Math.hypot((q0[1]-pos[1])*80500,(q0[0]-pos[0])*111000);
+            if (m0<bm){ bm=m0; bi=i; }
+          }
+          if (bi>=0 && bi!==cu){ this.targetIdx=bi; this.target(bi); cur=bi; refreshPins(); }
+        }
+      }
+      const tg = this.targetIdx>=0 ? D[di].list[this.targetIdx] : null;
+      if (tg){
+        const q = ll(tg);
+        const dx=(q[1]-pos[1])*80500, dy=(q[0]-pos[0])*111000;
+        const m = Math.hypot(dx,dy);
+        if (m <= 40){
+          /* 経路の外でも到着は言う */
+          $('gArrow').textContent = "◉";
+          $('gMain').textContent = (tg.n||'')+tg.name;
+          $('gSub').textContent = "到着";
+          this.arrived(this.targetIdx,
+            this.named() ? (this.stopSay+"に 到着しました") : "到着しました");
+          return;
+        }
+        const dirs=["北","北東","東","南東","南","南西","西","北西"];
+        const w = dirs[(Math.round(Math.atan2(dx,dy)/(Math.PI/4))+8)%8];
+        $('gArrow').textContent = w;
+        $('gMain').textContent = (tg.n||'')+tg.name;
+        $('gSub').textContent = (m>=1000 ? (m/1000).toFixed(1)+"km" : Math.round(m/10)*10+"m")+"　直線距離";
+      } else {
         $('gArrow').textContent="…"; $('gMain').textContent="経路から外れています";
         $('gSub').textContent="戻ると再開";
       }
@@ -1221,6 +1299,19 @@ const NAV = {
       }
     }
     this.autoTarget(loc.s);
+
+    /* 内部点検は道順が適当なので、経路の上の距離ではなく直線距離で到着を言う。
+       経路の脇に停めても、通り過ぎた形になっても、到着だけは言う */
+    if (mode === 'naibu' && this.targetIdx >= 0){
+      const q0 = ll(D[di].list[this.targetIdx]);
+      if (Math.hypot((q0[1]-pos[1])*80500,(q0[0]-pos[0])*111000) <= 40){
+        const g=$('guide'); g.hidden=false; g.classList.remove('turn');
+        $('gArrow').textContent="◉"; $('gMain').textContent=this.stopName; $('gSub').textContent="到着";
+        this.arrived(this.targetIdx,
+          this.named() ? (this.stopSay+"に 到着しました") : "到着しました");
+        return;
+      }
+    }
 
     /* 黙っている区間の中でも、ここだけは言う（納内の入口の右折など） */
     const cues = (typeof CUES!=='undefined' && CUES[D[di].id]) || [];
@@ -1523,24 +1614,60 @@ function renderPre(){
   });
   upGo();
 }
+function toolList(){ return mode==='naibu' ? NAIBU_LOAD : D[di].depart; }
 function renderTools(){
-  const d = D[di];
-  if (!toolCk[di] || toolCk[di].length !== d.depart.length) toolCk[di] = d.depart.map(()=>false);
-  const w = WARN[d.id] ? '<li class="warn"><span>⚠</span><span>'+WARN[d.id]+'</span></li>' : '';
-  $('tools').innerHTML = w + d.depart.map((t,k)=>
+  const d = D[di], TL = toolList();
+  $('shTtl').textContent  = (mode==='naibu') ? '内部点検の支度' : '出発前に積むもの';
+  $('departBtn').textContent = (mode==='naibu') ? '選んだ所へ出発' : 'この地区で出発';
+  if (!toolCk[di] || toolCk[di].length !== TL.length) toolCk[di] = TL.map(()=>false);
+  const w = (mode!=='naibu' && WARN[d.id]) ? '<li class="warn"><span>⚠</span><span>'+WARN[d.id]+'</span></li>' : '';
+  let head = '';
+  if (mode==='naibu'){
+    const ok = picked();
+    head = '<li class="hd">今日やる所を選ぶ</li>' + d.list.map((p,i)=>{
+      if (p.kind==='帰着') return '';
+      return '<li class="'+(ok.indexOf(i)>=0?'pk':'')+'" data-p="'+i+'">'+
+             '<span class="bx"></span><span>'+(p.n||'')+' '+p.name+'</span></li>';
+    }).join('') + '<li class="hd">積むもの</li>';
+  }
+  $('tools').innerHTML = head + w + TL.map((t,k)=>
     '<li class="'+(toolCk[di][k]?'ck':'')+'" data-k="'+k+'"><span class="bx"></span><span>'+t+'</span></li>').join('');
   $('tools').querySelectorAll('li[data-k]').forEach(li=>{
     li.onclick = ()=>{ const k=+li.dataset.k; toolCk[di][k]=!toolCk[di][k]; li.classList.toggle('ck'); upNote(); };
+  });
+  $('tools').querySelectorAll('li[data-p]').forEach(li=>{
+    li.onclick = ()=>{
+      const i=+li.dataset.p, id=D[di].id;
+      if (!pick[id]) pick[id]=[];
+      const k=pick[id].indexOf(i);
+      if (k>=0) pick[id].splice(k,1); else pick[id].push(i);
+      pick[id].sort((a,b)=>a-b);
+      li.classList.toggle('pk'); upNote(); refreshPins();
+    };
   });
   upNote();
 }
 function upNote(){
   const n = toolCk[di].filter(Boolean).length, t = toolCk[di].length;
-  $('goNote').textContent = n<t ? ('確認 '+n+' / '+t+'（未確認でも出発できる）') : ('確認 '+t+' / '+t+' 完了');
+  let s = n<t ? ('確認 '+n+' / '+t+'（未確認でも出発できる）') : ('確認 '+t+' / '+t+' 完了');
+  if (mode==='naibu'){
+    const k = picked().length;
+    s = (k===0 ? '★点検する所を選んでいない' : ('選んだ所 '+k+' か所')) + '　／　' + s;
+  }
+  $('goNote').textContent = s;
+  $('departBtn').disabled = (mode==='naibu' && picked().length===0);
 }
 function upGo(){
   $('goBtn').disabled = (di < 0);
-  $('goBtn').textContent = (di<0) ? '地区を選ぶ' : (D[di].name+' を点検する');
+  const w = (mode==='naibu') ? ' の内部点検' : ' を点検する';
+  $('goBtn').textContent = (di<0) ? '地区を選ぶ' : (D[di].name+w);
+}
+function setMode(m){
+  mode = m;
+  $('mJun').classList.toggle('on', m==='junkai');
+  $('mNai').classList.toggle('on', m==='naibu');
+  toolCk = {};                  /* 積み込みリストが変わるので作り直す */
+  upGo();
 }
 
 /* ---------- 地図 ---------- */
@@ -1589,8 +1716,17 @@ function drawDistrict(fit){
 }
 function pin(p,i,ai){
   const on = (ai===di);
-  const cls = p.kind==='帰着' ? 'home' : (on && i<cur ? 'done' : (on && i===cur ? 'next' : ''));
-  const st = on ? '' : ' style="background:'+(AREA_COLOR[D[ai].id]||'#78849a')+';width:24px;height:24px;font-size:12px;border-width:2px"';
+  let cls = p.kind==='帰着' ? 'home' : (on && i<cur ? 'done' : (on && i===cur ? 'next' : ''));
+  let st = on ? '' : ' style="background:'+(AREA_COLOR[D[ai].id]||'#78849a')+';width:24px;height:24px;font-size:12px;border-width:2px"';
+  /* 内部点検は、選んだ所だけを立てる。選ばなかった所は小さく落とす */
+  if (mode==='naibu' && on && p.kind!=='帰着'){
+    if (picked().indexOf(i) < 0){
+      cls = '';
+      st = ' style="background:#4a5462;width:22px;height:22px;font-size:11px;border-width:2px;opacity:.5"';
+    } else {
+      cls = NAV.doneSay[i] ? 'done' : (i===cur ? 'next' : '');
+    }
+  }
   return L.divIcon({className:'',iconSize:[30,30],iconAnchor:[15,15],
     html:'<div class="pin '+cls+'"'+st+'>'+label(p,i)+'</div>'});
 }
@@ -1600,6 +1736,11 @@ function refreshPins(){
 }
 function prog(){
   if (di<0){ $('gProg').textContent=''; return; }
+  if (mode==='naibu'){
+    const ok = picked();
+    $('gProg').textContent = ok.filter(i=>NAV.doneSay[i]).length+' / '+ok.length;
+    return;
+  }
   const d=D[di], n=d.list.filter(p=>p.kind!=='帰着').length;
   $('gProg').textContent = Math.min(cur,n)+' / '+n;
 }
@@ -1627,16 +1768,26 @@ function openCard(ai, i){
           : '<div class="noshot" data-key="'+key+'">'+
             ((typeof PHOTOS==='undefined') ? '写真を読み込み中' : '写真はまだ入っていない')+'</div>';
   if (p.note) h += '<div class="note">'+p.note+'</div>';
-  h += '<button class="navb" id="navBtn">Googleマップで案内</button>';
+  if (mode==='naibu'){
+    h += '<ul class="steps">' + NAIBU_STEPS.map(t=>
+      '<li><i>'+t[0]+'</i><span>'+t[1]+'</span></li>').join('') + '</ul>';
+  } else {
+    h += '<button class="navb" id="navBtn">Googleマップで案内</button>';
+  }
   h += '<p class="hint">'+(started?'地図をタップで閉じる'
         :(ai===di?'地図をタップで閉じる':D[ai].name+'　／　地図をタップで閉じる'))+'</p>';
   $('cbody').innerHTML = h;
   const wp = (typeof WP!=='undefined') && WP[d.id] && WP[d.id][i];
-  $('navBtn').onclick = ()=>{
+  if ($('navBtn')) $('navBtn').onclick = ()=>{
     let u='https://www.google.com/maps/dir/?api=1&destination='+p.ll+'&travelmode=driving';
     if (wp) u+='&waypoints='+encodeURIComponent(wp);
     location.href=u;
   };
+  if (mode==='naibu'){
+    $('cbody').querySelectorAll('.steps li').forEach(li=>{
+      li.onclick = ()=>li.classList.toggle('dn');
+    });
+  }
   $('card').classList.add('open');
   requestAnimationFrame(()=>{
     const ch=$('card').offsetHeight, sz=map.getSize();
@@ -1718,9 +1869,13 @@ $('departBtn').onclick = ()=>{
   $('startbar').hidden = true; $('tabs').hidden = true; $('fabs').hidden = false;
   map.invalidateSize();
   drawDistrict(true);        /* started が立っているので選んだ地区だけになる */
-  NAV.set(di); NAV.target(0); NAV.on = true;
+  const first = (mode==='naibu' && picked().length) ? picked()[0] : 0;
+  cur = first;
+  NAV.set(di); NAV.target(first); NAV.targetIdx = first; NAV.on = true;
+  refreshPins();
   SPK.on = true; SPK.init();
-  SPK.say(FIRST_SAY[D[di].id] || '点検に向かいます');
+  SPK.say(mode==='naibu' ? '内部点検に向かいます'
+                         : (FIRST_SAY[D[di].id] || '点検に向かいます'));
   $('voiceBtn').classList.add('on');
   $('guide').hidden = false;
   startGps();
@@ -1742,11 +1897,13 @@ $('gpsBtn').onclick = ()=>{
   else { follow=true; $('gpsBtn').classList.add('on'); startGps(); }
 };
 $('voiceBtn').onclick = ()=>{
-  SPK.on = !SPK.on; NAV.on = SPK.on;
+  SPK.on = !SPK.on;            /* 画面の案内は消さない。音だけ切る */
   $('voiceBtn').classList.toggle('on', SPK.on);
   if (!SPK.on){ try{ speechSynthesis.cancel(); }catch(e){} }
   else { SPK.init(); SPK.say('音声を入れました'); }
 };
+$('mJun').onclick = ()=>setMode('junkai');
+$('mNai').onclick = ()=>setMode('naibu');
 $('fitBtn').onclick = ()=>{ closeCard(); fitAll(); };
 $('driveBtn').onclick = ()=>{ DRIVE.on ? DRIVE.stop() : DRIVE.start(); };
 $('vsel').onclick = ()=>{
