@@ -54,6 +54,14 @@ body{background:var(--bg);color:var(--fg);
 #modebar button.on{background:#e8eef7;color:#12161c}
 .tools li.pk{background:#152535;border-color:#2f6aa0;color:#bcd9f5}
 .tools li.pk .bx{background:#4a9eff;border-color:#4a9eff}
+.tools li.pl{cursor:default;background:#171c24;border-color:#242b35;color:#dbe3ee}
+.tools li.pl:before{content:"・";flex:none;color:#7f8b9c;font-weight:700}
+.tools li.pl.hi{background:#2a1f15;border-color:#7a5a24;color:#f0c98a}
+.tools li.pl.hi:before{content:"・";color:#d2a24c}
+.tools li.pl.go{background:#152535;border-color:#2f6aa0;color:#bcd9f5}
+.tools li.pl.go:before{content:"▸";color:#4a9eff}
+.tools li.bk{justify-content:center;background:none;border:0;color:#8fa6c0;
+  font-size:13.5px;padding:8px 0 2px}
 .tools li.hd.sub{padding:14px 2px 4px;color:#9fb3cc;font-size:13px;letter-spacing:0}
 .tools li.hd{cursor:default;background:none;border:0;padding:12px 2px 4px;
   color:var(--dim);font-size:12.5px;font-weight:700;letter-spacing:.08em}
@@ -1139,9 +1147,16 @@ function buildTurns(path){
 }
 
 /* ===== 内部点検（マンホール内。オイル交換が主）===== */
-const NAIBU_LOAD = ["発電機の燃料が入っているか（現地で足せない）","発電機","送風機とダクト",
-  "ガス検知器（酸素・硫化水素／電池）","三脚","チェーンブロック","安全ブロック","板・毛布（養生）",
-  "マンホールを開ける道具（バール／フック）","オイル交換の用具とオイル","車の鍵","制御盤のカギ","タブレット"];
+const NAIBU_LOAD = ["発電機（燃料を入れてから。現地で足せない）","送風機とダクト",
+  "ガス検知器（酸素・硫化水素／電池）","脚立","三脚","チェーンブロック","安全ブロック",
+  "板・毛布（養生）","マンホールを開ける道具（バール／フック）","オイル交換の用具とオイル",
+  "車の鍵","制御盤のカギ","タブレット"];
+/* 多度志を選んだ日は高い方を積む */
+function naiLoad(){
+  const tado = NPICK.some(k => D[+k.split(':')[0]].id === 'tadoshi');
+  return NAIBU_LOAD.map(t => (t === '脚立' && tado) ? '高い脚立（多度志）' : t);
+}
+let naiStep = 1;              /* 1＝所を選ぶ　2＝持って行くものを見て出発 */
 const NAIBU_STEPS = [["上","車を停める・周囲の安全確保"],["上","蓋を開ける"],["上","開口部を板・毛布で養生"],
   ["上","三脚を立てる（地面の傾きを見る）"],["上","発電機を始動 → 送風機で換気"],
   ["上","ガス検知器のセンサーを下へ降ろす"],["上","酸素と硫化水素を見て、降りられるか判断する"],
@@ -1613,49 +1628,71 @@ function renderPre(){
   upGo();
 }
 function toolList(){ return mode==='naibu' ? NAIBU_LOAD : D[di].depart; }
-function renderTools(){
-  const d = D[di], TL = toolList();
-  $('shTtl').textContent  = (mode==='naibu') ? '内部点検の支度' : '出発前に積むもの';
-  $('departBtn').textContent = (mode==='naibu') ? '選んだ所へ出発' : 'この地区で出発';
-  if (!toolCk[di] || toolCk[di].length !== TL.length) toolCk[di] = TL.map(()=>false);
-  const w = (mode!=='naibu' && WARN[d.id]) ? '<li class="warn"><span>⚠</span><span>'+WARN[d.id]+'</span></li>' : '';
-  let head = '';
-  if (mode==='naibu'){
-    head = '<li class="hd">今日やる所を選ぶ（地区はまたいでいい）</li>';
+function npName(k){ const a=k.split(':').map(Number); const p=D[a[0]].list[a[1]];
+  return D[a[0]].name+'　'+(p.n||'')+p.name; }
+function renderNaibu(){
+  if (naiStep === 1){
+    $('shTtl').textContent = '内部点検　所を選ぶ';
+    let h = '<li class="hd">今日やる所を選ぶ（地区はまたいでいい）</li>';
     D.forEach((dd,ai)=>{
-      head += '<li class="hd sub">'+dd.name+'</li>' + dd.list.map((p,i)=>{
+      h += '<li class="hd sub">'+dd.name+'</li>' + dd.list.map((p,i)=>{
         if (p.kind==='帰着') return '';
         const k = npKey(ai,i);
         return '<li class="'+(NPICK.indexOf(k)>=0?'pk':'')+'" data-p="'+k+'">'+
                '<span class="bx"></span><span>'+(p.n||'')+' '+p.name+'</span></li>';
       }).join('');
     });
-    head += '<li class="hd">積むもの</li>';
+    $('tools').innerHTML = h;
+    $('tools').querySelectorAll('li[data-p]').forEach(li=>{
+      li.onclick = ()=>{
+        const k = li.dataset.p, j = NPICK.indexOf(k);
+        if (j>=0) NPICK.splice(j,1); else NPICK.push(k);
+        li.classList.toggle('pk'); upNote(); refreshPins();
+      };
+    });
+    $('departBtn').textContent = '選んだ所で進む';
+    $('departBtn').disabled = (NPICK.length === 0);
+  } else {
+    $('shTtl').textContent = '内部点検　持って行くもの';
+    let h = '<li class="hd">今日やる所</li>' +
+      NPICK.map(k=>'<li class="pl go">'+npName(k)+'</li>').join('') +
+      '<li class="bk" data-back="1">← 所を選び直す</li>' +
+      '<li class="hd">持って行くもの</li>' +
+      naiLoad().map(t=>'<li class="pl'+(/^高い脚立/.test(t)?' hi':'')+'">'+t+'</li>').join('');
+    $('tools').innerHTML = h;
+    $('tools').querySelector('li[data-back]').onclick = ()=>{ naiStep=1; renderTools(); $('tools').scrollTop=0; };
+    $('departBtn').textContent = '出発';
+    $('departBtn').disabled = false;
   }
-  $('tools').innerHTML = head + w + TL.map((t,k)=>
+  upNote();
+}
+function renderTools(){
+  if (mode === 'naibu'){ renderNaibu(); return; }
+  const d = D[di], TL = toolList();
+  $('shTtl').textContent  = '出発前に積むもの';
+  $('departBtn').textContent = 'この地区で出発';
+  if (!toolCk[di] || toolCk[di].length !== TL.length) toolCk[di] = TL.map(()=>false);
+  const w = WARN[d.id] ? '<li class="warn"><span>⚠</span><span>'+WARN[d.id]+'</span></li>' : '';
+  $('tools').innerHTML = w + TL.map((t,k)=>
     '<li class="'+(toolCk[di][k]?'ck':'')+'" data-k="'+k+'"><span class="bx"></span><span>'+t+'</span></li>').join('');
   $('tools').querySelectorAll('li[data-k]').forEach(li=>{
     li.onclick = ()=>{ const k=+li.dataset.k; toolCk[di][k]=!toolCk[di][k]; li.classList.toggle('ck'); upNote(); };
   });
-  $('tools').querySelectorAll('li[data-p]').forEach(li=>{
-    li.onclick = ()=>{
-      const k = li.dataset.p, j = NPICK.indexOf(k);
-      if (j>=0) NPICK.splice(j,1); else NPICK.push(k);
-      li.classList.toggle('pk'); upNote(); refreshPins();
-    };
-  });
   upNote();
 }
 function upNote(){
-  const n = toolCk[di].filter(Boolean).length, t = toolCk[di].length;
-  let s = n<t ? ('確認 '+n+' / '+t+'（未確認でも出発できる）') : ('確認 '+t+' / '+t+' 完了');
   if (mode==='naibu'){
     const nm = NPICK.map(k=>{ const a=k.split(':').map(Number);
       return (D[a[0]].list[a[1]].n||'')+D[a[0]].list[a[1]].name; }).join('・');
-    s = (NPICK.length===0 ? '★点検する所を選んでいない' : ('選んだ所 '+nm)) + '　／　' + s;
+    /* 2段目は画面に出ているので、帯では繰り返さない */
+    $('goNote').textContent = (naiStep===2) ? ''
+      : (NPICK.length ? ('今日やる所　'+nm) : '★点検する所を選んでいない');
+    $('departBtn').disabled = (naiStep===1 && NPICK.length===0);
+    return;
   }
-  $('goNote').textContent = s;
-  $('departBtn').disabled = (mode==='naibu' && NPICK.length===0);
+  const n = toolCk[di].filter(Boolean).length, t = toolCk[di].length;
+  $('goNote').textContent = n<t ? ('確認 '+n+' / '+t+'（未確認でも出発できる）')
+                                : ('確認 '+t+' / '+t+' 完了');
 }
 function upGo(){
   if (mode==='naibu'){
@@ -1673,6 +1710,7 @@ function setMode(m){
   toolCk = {};                  /* 積み込みリストが変わるので作り直す */
   upGo();
   if (m==='naibu'){
+    naiStep = 1;
     if (di<0){ di=0; renderPre(); drawDistrict(true); }
     renderTools(); $('sheet').hidden=false; $('startbar').hidden=true;
   } else {
@@ -1874,6 +1912,10 @@ $('goBtn').onclick = ()=>{      /* まず道具シートを出す */
 };
 $('shClose').onclick = ()=>{ $('sheet').hidden=true; $('startbar').hidden=false; };
 $('departBtn').onclick = ()=>{
+  if (mode==='naibu' && naiStep===1){        /* まだ出発しない。持って行くものを見せる */
+    if (!NPICK.length) return;
+    naiStep = 2; renderTools(); $('tools').scrollTop = 0; return;
+  }
   if (mode==='naibu'){
     if (!NPICK.length) return;
     di = +NPICK[0].split(':')[0];       /* 1つ目の所がある地区から始める */
