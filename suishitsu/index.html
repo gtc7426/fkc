@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>水質分析</title>
 <meta name="version" content="1.0">
-<meta name="build" content="20260916194212">
+<meta name="build" content="20260916200305">
 <meta name="theme-color" content="#0f6d8c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -448,9 +448,9 @@
 <div class="step now">
   <div class="no">4</div>
   <div class="ttl2">透視度を測る</div>
-  <div class="body">A / B（<b>30cm の透視度計</b>）<br>C / D / E（<b>50cm の透視度計</b>）<br>待ちなし。</div>
-  <div class="fill hot"><b>COD の検水量は、ここで決める。</b>5本分全部。<br>目安は <b>透視度 × 2 ＋ 2〜4</b>。<br>上限は 100mL なので、透視度50以上は頭打ち。<br><b>目で見た汚れも入れる。</b>透視度が 50 あっても<b>普段と色が違うと思ったら 98 などに減らす</b>。</div>
-  <div class="ask"><b>自信が無ければ2本立てる。特に A（流入）と B（初沈）。</b>外した時は再加熱30分。<br><b>予備の三角フラスコは2本だけ</b>なので、掛けられる保険もそこまで</div>
+  <div class="body">A / B（<b>30cm の透視度計</b>）<br>C / D / E（<b>50cm の透視度計</b>）<br>待ちなし。</div><div class="fill hot"><b>底の二重線が「うすぼんやり」見えた所で読む。</b><br>マニュアルは「はっきり見える」と書いてあるが、実際はこの読み方。<br><b>下の目安は、この読み方が前提。</b><br><b>A・B は透視度が 3〜4cm しかない。ここは真剣に読む。</b>1cm ずれると検水が 2mL 動く。<br><b>ここは急がない。</b>時間を掛けても<b>1回で通れば結果的に早い</b>（外すと再加熱30分＋滴定やり直し）。</div>
+  <div class="fill hot"><b>COD の検水量は、ここで決める。</b>5本分全部。<br>目安は <b>透視度 × 2 ＋ 2〜4</b>。この読み方なら大抵これで通る。<br>上限は 100mL なので、透視度50以上は頭打ち。<br><b>目で見た汚れも入れる。</b>透視度が 50 あっても<b>普段と色が違うと思ったら 98 などに減らす</b>。<br><b>読み方は毎回そろえる。</b>ブレなければ当て方も安定する。</div>
+  <div class="ask"><b>自信が無いなら保険は必ず掛ける。</b>2本立てるのは特に <b>A（流入）と B（初沈）</b>。外した時は再加熱30分。<br><b>予備の三角フラスコは2本だけ</b>なので、掛けられる保険もそこまで</div>
 </div>
 
 <div class="step wait">
@@ -459,6 +459,7 @@
   <div class="timer">30分</div>
   <div class="body">三角フラスコ <b>6本</b>（A・B・C・D・E ＋ BL）。</div>
   <ul class="list">
+    <li><b>先に メスシリンダーと三角フラスコを <span class="rx rx-sui">蒸留水</span>でしっかり洗う。</b>前に使った人がきちんと洗っているとは限らない</li>
     <li>検水を量ってフラスコへ。量るのは <b>COD専用の 100mL メスシリンダー</b>。<b>足りない分は<span class="rx rx-sui">蒸留水</span>で100mLにメスアップ</b></li>
     <li>BL は<b><span class="rx rx-sui">蒸留水</span> 100mL</b></li>
     <li>各フラスコへ <b><span class="rx rx-ryu">硫酸(1+2)</span> 10mL</b> ＋ <b><span class="rx rx-kman">過マンガン酸カリウム</span> 10mL</b> を入れる。<b>色は紫</b></li>
@@ -499,7 +500,9 @@
   → <span class="rx rx-kman">過マンガン酸カリウム</span>で滴下 → <b>薄い紫（ピンク）が出たら止める</b>。そこで目盛りを読む。</div>
   <ul class="list">
     <li><b>6本分繰り返す。</b>ここが一番のネック。手が塞がる</li>
-    <li>滴定値が <b>3.5〜5.5 mL</b> に入っていれば OK</li>
+    <li><b>BL を引いた値（a − BL）が 3.5〜5.5 mL</b> なら OK</li>
+    <li><b>検水が 100mL なら、3.5 を割っても（マイナスでも）それで合格。</b>それ以上は増やせない</li>
+    <li><b>BL が高い日は、その分だけ a を大きくしないと下に外れる</b>（2026/9/16 の BL は 1.86）</li>
     <li><b>ビュレットは1セットだけ。</b>分担できないので、6本を続けて1人で通す</li>
   </ul>
 </div>
@@ -2460,6 +2463,8 @@ function render(i){
       + '<div class="timer">30分</div>'
       + '<div class="body">三角フラスコ <b>5本</b>（' + day.extra.cod + ' ＋ BL）。</div>'
       + '<ul class="list">'
+      + '<li><b>先に メスシリンダーと三角フラスコを <span class="rx rx-sui">蒸留水</span>でしっかり洗う。</b>'
+      + '前に使った人がきちんと洗っているとは限らない</li>'
       + '<li>検水を量ってフラスコへ。量るのは <b>COD専用の 100mL メスシリンダー</b>'
       + '（遠心用とは別）。<b>足りない分は<span class="rx rx-sui">蒸留水</span>で100mLにメスアップ</b></li>'
       + '<li>BL は<b><span class="rx rx-sui">蒸留水</span> 100mL</b></li>'
@@ -2467,14 +2472,19 @@ function render(i){
       + '<b>色は紫</b></li>'
       + '<li>ウォーターバスに入れ、<b>30分タイマーを押す</b></li></ul>'
       + '<div class="push">▶ タイマー <b>30分</b> を押す</div>'
-      + '<div class="fill hot"><b>検水量はここで決める。'
-      + '目安は 透視度 × 2 ＋ 2〜4。</b>'
+      + '<div class="fill hot"><b>底の二重線が「うすぼんやり」見えた所で読む。</b>'
+      + 'マニュアルは「はっきり見える」だが、実際はこの読み方。<br>'
+      + '<b>検水量はここで決める。目安は 透視度 × 2 ＋ 2〜4。'
+      + '<br>多度志だけ ＋3〜5。</b>'
       + '上限は 100mL なので、透視度50以上は頭打ち。<br>'
       + '<b>目で見た汚れも入れる。</b>透視度が 50 あっても'
       + '<b>普段と色が違うと思ったら 98 などに減らす</b>。<br>'
-      + '<b>多A は透視度が 3cm 前後。</b>検水は一桁になる</div>'
+      + '<b>多A は透視度が 3cm 前後。ここは真剣に読む。</b>'
+      + '1cm ずれると検水が 2mL 動く<br>'
+      + '<b>ここは急がない。1回で通れば結果的に早い</b><br>'
+      + '<b>読み方は毎回そろえる。</b>ブレなければ当て方も安定する</div>'
       + '<div class="ask"><b>多度志は保険を掛けた方が無難。</b>'
-      + '自信が無ければ2本立てる。外した時は再加熱30分。<br>'
+      + '<b>自信が無いなら保険は必ず掛ける。</b>外した時は再加熱30分。<br>'
       + '<b>予備の三角フラスコは2本だけ。</b></div>'
       + '<div class="fill"><b>上げた時も 紫のまま。</b>'
       + '加熱しても変わらないので、色で進み具合は分からない（だからタイマー）。</div>'
@@ -2490,7 +2500,11 @@ function render(i){
       + 'そこで目盛りを読む。</div>'
       + '<ul class="list">'
       + '<li><b>5本分繰り返す。</b>ここが一番のネック。手が塞がる</li>'
-      + '<li>滴定値が <b>3.5〜5.5 mL</b> に入っていれば OK</li>'
+      + '<li><b>BL を引いた値（a − BL）が 3.5〜5.5 mL</b> なら OK</li>'
+      + '<li><b>検水が 100mL なら、3.5 を割っても（マイナスでも）それで合格。</b>'
+      + 'それ以上は増やせない</li>'
+      + '<li><b>BL が高い日は、その分だけ a を大きくしないと下に外れる</b>'
+      + '（2026/9/16 の BL は 1.86）</li>'
       + '<li><b>ビュレットは1セットだけ。</b>分担できないので、続けて1人で通す</li></ul></div>'
 
       + '<div class="step now"><div class="no">＋3</div>'
