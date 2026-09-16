@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>水質分析</title>
 <meta name="version" content="1.0">
-<meta name="build" content="20260916200305">
+<meta name="build" content="20260916201746">
 <meta name="theme-color" content="#0f6d8c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -441,7 +441,7 @@
   <div class="no">3</div>
   <div class="ttl2">遠心を回す</div>
   <div class="timer">20分</div>
-  <div class="body">AT-3・AT-4 の水を <b>100mL</b> 量って遠心へ。<b>1検水を2等分して2本に。</b>遠心は3台あるので一度に回せる。<br>量るのは<b>遠心用の 100mL メスシリンダー</b>。<b>COD用とは別</b>。</div>
+  <div class="body"><b>MLSS 3・MLSS 4</b> の水を <b>100mL</b> 量って遠心へ。<b>1検水を2等分して2本に。</b>遠心は3台あるので一度に回せる。<br>量るのは<b>遠心用の 100mL メスシリンダー</b>。<b>COD用とは別</b>。</div>
   <div class="push">▶ タイマー <b>20分</b> を押す</div>
 </div>
 
@@ -1882,7 +1882,7 @@ const DAYS = [
          "SS 磁皿"
         ]
        ],
-       ""
+       "検水 20mL"
       ]
      ]
     ],
@@ -1937,7 +1937,7 @@ const DAYS = [
          "SS 磁皿"
         ]
        ],
-       ""
+       "MLSS ／ 検水 50mL"
       ],
       [
        "音D",
@@ -1979,7 +1979,7 @@ const DAYS = [
        ""
       ],
       [
-       "音RS",
+       "音RSS",
        "返送",
        [
         [
@@ -1991,7 +1991,7 @@ const DAYS = [
          "SS 磁皿"
         ]
        ],
-       ""
+       "検水 50mL"
       ]
      ]
     ],
@@ -2422,10 +2422,10 @@ function render(i){
     : "これで午前の手作業は終わり。";
   const ke = document.getElementById("kanienshin");
   if (ke) ke.innerHTML = day.extra
-    ? 'AT-3・AT-4 ＋ <b>納OD1・納OD2・納RSS</b> の水を <b>各100mL</b> 量って遠心へ。'
+    ? '<b>MLSS 3・MLSS 4 ＋ 納MLSS 1・納MLSS 2・納RSS</b> の水を <b>各100mL</b> 量って遠心へ。'
       + '<b>5検水</b>。<b>1検水を2等分して2本に分ける。</b>遠心は1台に4か所＝<b>1台2検水</b>、<b>3台で6検水</b>。一度に回せる。'
       + '<br>量るのは<b>遠心用の 100mL メスシリンダー</b>。<b>COD用とは別</b>。'
-    : 'AT-3・AT-4 の水を <b>100mL</b> 量って遠心へ。<b>1検水を2等分して2本に。</b>1台4か所＝1台2検水、<b>3台で6検水</b>。'
+    : '<b>MLSS 3・MLSS 4</b> の水を <b>100mL</b> 量って遠心へ。<b>1検水を2等分して2本に。</b>1台4か所＝1台2検水、<b>3台で6検水</b>。'
       + '<br>量るのは<b>遠心用の 100mL メスシリンダー</b>。';
   {
     const rd = document.getElementById("roshidry");
@@ -2445,8 +2445,9 @@ function render(i){
     : '日常分析との差 … <b>水温と COD が無い</b>、<b>ろ過をしない</b>、採水が曝気槽中心。';
   const km = document.getElementById("kanimlss");
   if (km) km.innerHTML = day.extra
-    ? '<b>AT-3・AT-4 ＋ 納OD1・納OD2・納RSS</b> を磁皿に移して<b>ウォーターバスへ</b>。<b>5検水分</b>。'
-    : 'AT-3・AT-4 を磁皿に移して<b>ウォーターバスへ</b>。';
+    ? '<b>MLSS 3・MLSS 4 ＋ 納MLSS 1・納MLSS 2・納RSS</b> を磁皿に移して'
+      + '<b>ウォーターバスへ</b>。<b>5検水分</b>。'
+    : '<b>MLSS 3・MLSS 4</b> を磁皿に移して<b>ウォーターバスへ</b>。';
   const kw = document.getElementById("kaniwait");
   if (kw){ kw.hidden = !day.extra;
     kw.innerHTML = '<b style="color:var(--warn)">透視度で COD の検水量が決まる</b>'; }
