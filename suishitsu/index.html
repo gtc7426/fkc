@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>水質分析</title>
 <meta name="version" content="1.0">
-<meta name="build" content="20260916201746">
+<meta name="build" content="20260916202348">
 <meta name="theme-color" content="#0f6d8c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -259,7 +259,7 @@
     <div class="ttl2">次回の準備</div>
     <div class="body">次に分析がある日分の <b>ろ紙・磁皿</b> を用意する。1枚ずつ風袋を測って、その場でタブレットへ。<br>
     <b>取り違えないよう、磁皿にラベルを入れておく。</b></div>
-    <a class="prepbtn" href="../bunseki/index.html">次回の準備<span>磁皿・ろ紙が何枚いるか</span></a>
+    <a class="prepbtn" id="prepbtn" href="../bunseki/index.html">次回の準備<span>磁皿・ろ紙が何枚いるか</span></a>
   </div>
 
   <div id="items"></div>
@@ -2434,6 +2434,10 @@ function render(i){
         + '<b>脱水担当が午前中にろ液を吸引するとき、一緒に乾燥機へ入れてくれる。</b>'
       : '<b>5枚 ろ過し終わったら、まとめて自分で乾燥機へ入れる。</b>'
         + 'ろ紙は<b>ウォーターバスを通らない</b>ので、磁皿の 12:55 を待たない。';
+  }
+  {
+    const pb = document.getElementById("prepbtn");
+    if (pb) pb.href = "../bunseki/index.html?d=" + encodeURIComponent(day.tab.split(" ")[0]);
   }
   const kt = document.getElementById("kanitimer");
   if (kt) kt.innerHTML = day.extra
