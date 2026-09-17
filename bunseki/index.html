@@ -115,8 +115,9 @@
   .dz{flex:0 0 auto;font-size:12.5px;font-weight:700;letter-spacing:.06em;
       color:var(--dassui);border:1px solid currentColor;border-radius:4px;padding:2px 5px;line-height:1}
   .empty{padding:40px 0;text-align:center;color:var(--ink-2);font-size:15px}
-  .spanbox{margin:12px 0 0;padding:11px 13px;border-radius:9px;
-    background:#fff6e6;border:1px solid #e6c98a;color:#6b4d12;font-size:14px;line-height:1.6}
+  .spanbox{margin:6px 0 16px;padding:13px 14px;border-radius:9px;
+    background:#fdeef3;border:1px solid #e9aec4;color:#8a2551;font-size:14px;line-height:1.6}
+  .spanbox b{color:#c2185b}
   /* VSS の注意 */
   .vssbox{border:2px solid var(--dassui);border-radius:11px;padding:12px 13px;margin:0 0 14px;
           background:#fdf4f2}
@@ -162,7 +163,7 @@ const VOLR = {
   "音江":   {"A":"<span class=\"ap\">通常</span>100","D":"<span class=\"ap\">通常</span>500","ろ液":"<span class=\"ap\">通常</span>100"}
 };
 const D = [
- {d:"9/14(月)", tab:"9/14 月", target:"9/15(火)", none:false, plants:[
+ {d:"9/14(月)", tab:"9/14 月", target:"9/15(火)", none:false, ana:true, plants:[
    {name:"深川", kind:"簡易分析・脱水あり",
     r:[["ろ液",1]],
     s:["MLSS 3","MLSS 4","生汚泥1","生汚泥2",["投入汚泥1",1],["投入汚泥2",1],["ケーキ1",1],["ケーキ2",1]]},
@@ -170,7 +171,7 @@ const D = [
    {name:"音江", kind:"分析なし・脱水なし", r:[], s:[]},
    {name:"多度志", kind:"分析なし・脱水なし", r:[], s:[]}]},
 
- {d:"9/15(火)", tab:"9/15 火", target:"9/16(水)", none:false, plants:[
+ {d:"9/15(火)", tab:"9/15 火", target:"9/16(水)", none:false, ana:true, plants:[
    {name:"深川", kind:"簡易分析・脱水あり",
     r:[["ろ液",1]],
     s:["MLSS 3","MLSS 4","生汚泥1","生汚泥2",["投入汚泥1",1],["投入汚泥2",1],["ケーキ1",1],["ケーキ2",1]]},
@@ -181,7 +182,7 @@ const D = [
    {name:"多度志", kind:"日常分析・脱水あり",
     r:["A","D",["ろ液",1]], s:[["投入汚泥",1],["ケーキ",1]]}]},
 
- {d:"9/16(水)", tab:"9/16 水", target:"9/17(木)", none:false,
+ {d:"9/16(水)", tab:"9/16 水", target:"9/17(木)", none:false, ana:true,
   vss:{plant:"深川", names:["MLSS 3","MLSS 4"],
        why:"9/17 は水質中試験②。<b>この2枚は SS を測った後、そのまま炉で焼いて VSS を出す</b>（9/18 に測る）。"},
   plants:[
@@ -194,7 +195,7 @@ const D = [
     s:["MLSS","RSSS",["投入汚泥",1],["ケーキ1",1],["ケーキ2",1]]},
    {name:"多度志", kind:"分析なし・脱水なし", r:[], s:[]}]},
 
- {d:"9/17(木)", tab:"9/17 木", target:"9/18(金)", none:false, plants:[
+ {d:"9/17(木)", tab:"9/17 木", target:"9/18(金)", none:false, ana:true, plants:[
    {name:"深川", kind:"簡易分析・脱水なし",
     r:[],
     s:["MLSS 3","MLSS 4","生汚泥1","生汚泥2"]},
@@ -206,7 +207,7 @@ const D = [
 
  /* 9/21(月)〜9/23(水) は連休で人が1〜2名。分析は無いが出社している人がいるので、
     次回分の用意はその日の朝にできる（うさぎ 2026/9/17） */
- {d:"9/18(金)", tab:"9/18 金", target:"9/21(月)", none:false, plants:[
+ {d:"9/18(金)", tab:"9/18 金", target:"9/21(月)", none:false, ana:false, plants:[
    {name:"深川", kind:"分析なし・脱水のみ",
     r:[["ろ液",1]],
     s:[["投入汚泥1",1],["投入汚泥2",1],["ケーキ1",1],["ケーキ2",1]]},
@@ -214,20 +215,20 @@ const D = [
    {name:"音江", kind:"分析なし・脱水なし", r:[], s:[]},
    {name:"多度志", kind:"分析なし・脱水なし", r:[], s:[]}]},
 
- {d:"9/21(月)", tab:"9/21 月", target:"9/22(火)", none:false, plants:[
+ {d:"9/21(月)", tab:"9/21 月", target:"9/22(火)", none:false, ana:false, plants:[
    {name:"深川", kind:"分析なし・脱水なし", r:[], s:[]},
    {name:"納内", kind:"分析なし・脱水なし", r:[], s:[]},
    {name:"音江", kind:"分析なし・脱水のみ",
     r:[["ろ液",1]], s:[["投入汚泥",1],["ケーキ1",1],["ケーキ2",1]]},
    {name:"多度志", kind:"分析なし・脱水なし", r:[], s:[]}]},
 
- {d:"9/22(火)", tab:"9/22 火", target:"9/23(水)", none:false, plants:[
+ {d:"9/22(火)", tab:"9/22 火", target:"9/23(水)", none:false, ana:false, plants:[
    {name:"深川", kind:"分析なし・脱水なし", r:[], s:[]},
    {name:"納内", kind:"分析なし・脱水なし", r:[], s:[]},
    {name:"音江", kind:"分析なし・脱水なし", r:[], s:[]},
    {name:"多度志", kind:"分析なし・脱水なし", r:[], s:[]}]},
 
- {d:"9/23(水)", tab:"9/23 水", target:"9/24(木)", none:false, plants:[
+ {d:"9/23(水)", tab:"9/23 水", target:"9/24(木)", none:false, ana:true, plants:[
    {name:"深川", kind:"簡易分析・脱水あり",
     r:[["ろ液",1]],
     s:["MLSS 3","MLSS 4","生汚泥1","生汚泥2",["投入汚泥1",1],["投入汚泥2",1],["ケーキ1",1],["ケーキ2",1]]},
@@ -238,7 +239,7 @@ const D = [
    {name:"多度志", kind:"日常分析・脱水あり",
     r:["A","D",["ろ液",1]], s:[["投入汚泥",1],["ケーキ",1]]}]},
 
- {d:"9/24(木)", tab:"9/24 木", target:"9/25(金)", none:false, plants:[
+ {d:"9/24(木)", tab:"9/24 木", target:"9/25(金)", none:false, ana:true, plants:[
    {name:"深川", kind:"日常分析・脱水あり",
     r:["A","B","C","D","E",["ろ液",1]],
     s:["MLSS 3","MLSS 4","RSSS","生汚泥1","生汚泥2",["投入汚泥1",1],["投入汚泥2",1],["ケーキ1",1],["ケーキ2",1]]},
@@ -248,7 +249,7 @@ const D = [
     s:["MLSS","RSSS",["投入汚泥",1],["ケーキ1",1],["ケーキ2",1]]},
    {name:"多度志", kind:"分析なし・脱水なし", r:[], s:[]}]},
 
- {d:"9/25(金)", tab:"9/25 金", target:"9/28(月)", none:true}
+ {d:"9/25(金)", tab:"9/25 金", target:"9/28(月)", none:true, ana:true}
 ];
 
 const tabs = document.getElementById("tabs");
@@ -282,6 +283,21 @@ function items(list, cls, key, plant, vss){
     }).join("")}</ul></div>`;
 }
 
+/* その日の朝に作る分から、次の分析日ぶんまでを足す。
+   途中の日は分析が無いので誰も作らない → まとめて先に見えた方がいい（うさぎ 2026/9/17） */
+function spanTotal(i){
+  let R = 0, S = 0, last = null, n = 0;
+  for (let k = i; k < D.length; k++){
+    const d = D[k];
+    if (d.none) break;
+    R += d.plants.reduce((a,p)=>a+p.r.length,0);
+    S += d.plants.reduce((a,p)=>a+p.s.length,0);
+    last = d.target; n++;
+    if (d.ana) break;
+  }
+  return {R, S, last, n};
+}
+
 function render(i){
   const day = D[i];
   [...tabs.children].forEach((t,k)=>t.setAttribute("aria-selected", k===i ? "true":"false"));
@@ -298,7 +314,11 @@ function render(i){
       <div class="day">${esc(day.d)}の朝 に用意する次回分</div>
       <div class="sub">＝ <b>${esc(day.target)}</b> の分析分</div>
     </div>
-    ${day.span ? `<div class="spanbox">${day.span}</div>` : ''}
+    ${(()=>{ const t = spanTotal(i);
+        if (t.n <= 1 || !t.last) return '';
+        return `<div class="spanbox">次の分析は <b>${esc(t.last)}</b>。
+          そこまでの合計は <b>ろ紙 ${t.R}枚</b> ／ <b>磁皿 ${t.S}枚</b>。<br>
+          下は今日の朝ぶん。</div>`; })()}
     <div class="totals">
       <div class="tot r"><span class="lbl">ろ紙</span><span class="n">${R}<small>枚</small></span></div>
       <div class="tot s"><span class="lbl">磁皿</span><span class="n">${S}<small>枚</small></span></div>
