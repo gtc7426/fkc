@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>水質分析</title>
 <meta name="version" content="1.0">
-<meta name="build" content="20260917191425">
+<meta name="build" content="20260917193725">
 <meta name="theme-color" content="#0f6d8c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -228,13 +228,14 @@
     <div class="ttl2">電源を入れる・器具を出す</div>
     <ul class="list">
       <li><b>電源を入れる</b> … <b>ウォーターバス</b> など、その日使う機器</li>
-      <li id="asaotoe" hidden><b>音江用のフラン瓶</b> … <b><span class="rx rx-cu">硫酸銅スルファミン酸</span> 5mL</b>（深川用の 3mL と量が違う）<br>
+      <li id="asaotoe" hidden><b>音江用の DO 採水フラン瓶</b> … <b>深川のより少し大きい</b>。
+      入れる<b><span class="rx rx-cu"><span class="rx rx-cu">硫酸銅スルファミン酸</span></span>は 5mL</b>（深川用は 3mL）<br>
       <b>送りが出る前に、音江へ行く人に渡す。</b>出てしまうと間に合わない</li>
       <li id="asabottle"><b>採水ボトル</b> … <b>日常と簡易で大きさもカゴも違う。</b>専用のがある</li>
       <li id="asamldo"><b>MLDO</b> … フラン瓶 ／ ガラス容器 ／ コニカルビーカー<br>
       <b>300mL のフラン瓶には <span class="rx rx-cu">硫酸銅スルファミン酸</span> 3mL（青い液）を入れておく</b></li>
       <li id="asacod" hidden><b>COD</b> … 三角フラスコ</li>
-      <li id="asaph" hidden><b>pH</b> … ビーカー</li>
+      <li id="asaph" hidden></li>
     </ul>
     <div class="fill" id="asalabel" hidden><b>三角フラスコとビーカーにはラベルが書いてある</b>（BL・深A など）。
     どれに何を入れるかは決まっている。</div>
@@ -2884,6 +2885,7 @@ const DAYS = [
   "bl": true,
   "dassui": true,
   "oto": true,
+  "otoedo": true,
   "items": {
    "title": "日常分析 ＋ 音江 日常",
    "cap": "水温は現場で測る。音江の分は近いので深川の採水中に届く。",
@@ -3408,6 +3410,16 @@ function render(i){
     document.getElementById("asaotoe").hidden  = !day.otoedo;
     document.getElementById("asacod").hidden   = !cod;
     document.getElementById("asaph").hidden    = !ph;
+    /* ボトルが pH計の下に入らないので、入らないものはビーカーへ移す（うさぎ 2026/9/17） */
+    document.getElementById("asaph").innerHTML = day.oto
+      ? '<b>pH</b> … <b>100mL ビーカー 7個</b>（A・B・C・D・E ＋ <b>音A・音D</b>）<br>'
+        + '<b>採水ボトルは pH計の下に入らない</b>ので移す。'
+        + '<b>AT-3・AT-4・RS はボトルのまま</b>測れる。音MLSS・音RSS もそのまま入るはず<br>'
+        + '<b>入れるのは少しでいい</b>（ろ過ではないので量は要らない。電極が浸かれば足りる）'
+      : '<b>pH</b> … <b>100mL ビーカー 5個</b>（A・B・C・D・E）<br>'
+        + '<b>採水ボトルは pH計の下に入らない</b>ので移す。'
+        + '<b>AT-3・AT-4・RS はボトルのまま</b>測れる<br>'
+        + '<b>入れるのは少しでいい</b>（ろ過ではないので量は要らない。電極が浸かれば足りる）';
     document.getElementById("asalabel").hidden = !(cod || ph);
     /* 分析が無い日は採水もMLDOも無い。乾燥機から出して測るだけ */
     const na = (day.kind === "none");
