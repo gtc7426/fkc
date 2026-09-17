@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>水質分析</title>
 <meta name="version" content="1.0">
-<meta name="build" content="20260917183925">
+<meta name="build" content="20260917191425">
 <meta name="theme-color" content="#0f6d8c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -3388,6 +3388,9 @@ function chuHtml(c){
   return h + '</div>';
 }
 
+/* 遠心管は6本しかない。台数ではなく管が上限（うさぎ 2026/9/17） */
+const TUBE = '<b style="color:var(--warn)">遠心管は6本しかない。1検水で2本使うので1回に3検水まで。</b>';
+
 function render(i){
   const day = DAYS[i];
   [...tabs.children].forEach((t,x)=>t.setAttribute("aria-selected", x===i ? "true":"false"));
@@ -3423,9 +3426,11 @@ function render(i){
   const ke = document.getElementById("kanienshin");
   if (ke) ke.innerHTML = day.extra
     ? '<b>MLSS 3・MLSS 4 ＋ 納MLSS 1・納MLSS 2・納RSS</b> の水を <b>各100mL</b> 量って遠心へ。'
-      + '<b>5検水</b>。<b>1検水を2等分して2本に分ける。</b>遠心は1台に4か所＝<b>1台2検水</b>、<b>3台で6検水</b>。一度に回せる。'
+      + '<b>5検水＝管10本</b>。<b>1検水を2等分して2本に分ける。</b><br>'
+      + TUBE + '<b>この日は 2回に分ける</b>（3検水 → 2検水）。<b>タイマー20分を2回</b>。'
       + '<br>量るのは<b>遠心用の 100mL メスシリンダー</b>。<b>COD用とは別</b>。'
-    : '<b>MLSS 3・MLSS 4</b> の水を <b>100mL</b> 量って遠心へ。<b>1検水を2等分して2本に。</b>1台4か所＝1台2検水、<b>3台で6検水</b>。'
+    : '<b>MLSS 3・MLSS 4</b> の水を <b>100mL</b> 量って遠心へ。<b>1検水を2等分して2本に。</b><br>'
+      + TUBE + 'この日は2検水なので1回で済む。'
       + '<br>量るのは<b>遠心用の 100mL メスシリンダー</b>。';
   {
     const rd = document.getElementById("roshidry");
@@ -3441,7 +3446,7 @@ function render(i){
   }
   const kt = document.getElementById("kanitimer");
   if (kt) kt.innerHTML = day.extra
-    ? 'タイマーを押すのは <b>SV（30分・60分）</b>と<b>遠心（20分）</b>、<b>COD加熱（30分）</b>。'
+    ? 'タイマーを押すのは <b>SV（30分・60分）</b>と<b>遠心（20分 × 2回）</b>、<b>COD加熱（30分）</b>。'
     : 'タイマーを押すのは <b>SV（30分・60分）</b>と<b>遠心（20分）</b>だけ。';
   const kf = document.getElementById("kanifoot");
   if (kf) kf.innerHTML = day.extra
@@ -3551,10 +3556,12 @@ function render(i){
       : 'A / B（<b>30cm の透視度計</b>）<br>C / D / E（<b>50cm の透視度計</b>）<br>待ちなし。');
     set("nenshin", o
       ? '<b>MLSS 3・MLSS 4</b> を <b>各100mL</b>、<b>音MLSS・音RSS</b> を <b>各50mL</b> 量って遠心へ。'
-        + '<b>4検水</b>。<b>1検水を2等分して2本に。</b>遠心は3台あるので一度に回せる。'
+        + '<b>4検水＝管8本</b>。<b>1検水を2等分して2本に。</b><br>'
+        + TUBE + '<b>この日は 2回に分ける</b>（3検水 → 1検水）。<b>タイマー20分を2回</b>。'
         + '<br>量るのは<b>遠心用の 100mL メスシリンダー</b>。<b>COD用とは別</b>。'
       : '<b>MLSS 3・MLSS 4</b> の水を <b>100mL</b> 量って遠心へ。'
-        + '<b>1検水を2等分して2本に。</b>遠心は3台あるので一度に回せる。'
+        + '<b>1検水を2等分して2本に。</b><br>'
+        + TUBE + 'この日は2検水なので1回で済む。'
         + '<br>量るのは<b>遠心用の 100mL メスシリンダー</b>。<b>COD用とは別</b>。');
     set("ncodhd", o
       ? '三角フラスコ <b>8本</b>（A・B・C・D・E ＋ <b>音A・音D</b> ＋ BL）。'
